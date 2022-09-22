@@ -5,6 +5,8 @@ testcode = testcode + 'GameObject -x 50 -y 300 -v 0 0 -v 600 0 -v 600 16 -v 0 16
 testcode = testcode + 'GameObject -x 50 -y 50 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -i createPlatformVector -a PlatformerAnimationPackage -ca 0;'
 testcode = testcode + 'GameObject -x 300 -y 250 -rp 18 18 18 -a SniffsAnimationPackage -d -ca 0 -t enemy;'
 
+console.log(testcode);
+
 var inputArr = testcode.replaceAll('\n','').split(';');
 	
 for(var i = 0; i < inputArr.length; i++) {
