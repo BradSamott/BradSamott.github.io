@@ -1,0 +1,106 @@
+:root {
+  --gb-caseoutline: #c4c0bb;
+  --gb-darkest: #0f380f;
+  --gb-dark: #306230;
+  --gb-light: #8bac0f;
+  --gb-lightest: #9bbc0f;
+  
+  --black: #000000;
+  --white: #ffffff; 
+}
+
+.gb-theme {
+  background: var(--gb-caseoutline);
+}
+
+
+* { 
+	padding: 0; 
+	margin: 0; 
+}
+
+.gamecanvasBG { 
+	background: var(--gb-lightest); 
+	display: block;
+	/*margin: 0 auto;*/
+	margin-top: 0;
+	width: 640px; 
+	height: 576px;
+	z-index: 0;
+	/*position: absolute;*/
+}
+
+.gamecanvasPL { 
+	/*background: var(--gb-dark);*/
+	display: block;
+	/*margin: 0 auto;*/
+	margin-top: -576px;
+	width: 640px; 
+	height: 576px;
+	z-index: 1;
+	/*position: absolute;*/
+}
+
+.gamecanvasFG {  
+	display: block;
+	/*margin: 0 auto;*/
+	margin-top: -576px;
+	width: 640px; 
+	height: 576px;
+	z-index: 2;
+	/*position: absolute;*/
+}
+
+.gamecanvasGD {  
+	display: block;
+	/*margin: 0 auto;*/
+	margin-top: -576px;
+	width: 640px; 
+	height: 576px;
+	z-index: 3;
+	/*position: absolute;*/
+}
+
+.gamecanvasUI { 
+	display: block;
+	/*margin: 0 auto;*/
+	margin-top: -576px;
+	width: 640px; 
+	height: 576px;
+	z-index: 4;
+	/*position: absolute;*/
+}
+
+.noOver {
+	min-width:1000px;
+	min-height:600px;
+	padding-bottom:20px;
+	overflow:hidden;
+}
+
+.noOverScroll {
+	min-width:1000px;
+	min-height:600px;
+	padding-bottom:20px;
+}
+
+.customDivPrior {
+	position:relative;
+	float:left;
+	margin-left:20px;
+}
+
+.customDivLatter {
+	position:relative;
+	float:left;
+	margin-left:7%;
+	padding-bottom:20px;
+}
+
+.customDivLatterHead {
+	position:relative;
+	float:left;
+	margin-left:5%;
+	margin-right:5%;
+	padding-bottom:20px;
+}
