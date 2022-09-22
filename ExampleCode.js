@@ -17,20 +17,20 @@ for(var i = 0; i < inputArr.length; i++) {
 		var GOObj = createGOFromJSON(GOJ);
 		oHandler.addObject(GOObj);
 		
-		debugObjectList.push(GOObj);
+		//debugObjectList.push(GOObj);
 		
-		var row = objectViewer.insertRow();
+		//var row = objectViewer.insertRow();
 		
-		var objCol = row.insertCell();
-		var img = document.createElement("img");
-		img.src = GOObj.defaultFrame;
-		objCol.appendChild(img);
+		//var objCol = row.insertCell();
+		//var img = document.createElement("img");
+		//img.src = GOObj.defaultFrame;
+		//objCol.appendChild(img);
 		
-		var objInd = row.insertCell();
-		objInd.innerHTML = "Delete";
-		objInd.onclick = debugRemoveObject;
+		//var objInd = row.insertCell();
+		//objInd.innerHTML = "Delete";
+		//objInd.onclick = debugRemoveObject;
 		
-		var objStat = row.insertCell();
+		//var objStat = row.insertCell();
 			
 	} else if(ArgumentArr[0] == 'CanvasEdit') {
 		var CEJ = createCanvasArgJSONFromString(inputArr[i]);

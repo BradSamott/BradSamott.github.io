@@ -423,6 +423,7 @@ function ObjectHandler() {
 					PlayArea.stroke();
 				}
 				
+				/*
 				objectViewer.rows[objI + 1].cells[2].innerHTML = 'position: ' + JSON.stringify(this.Objects[objI].position) + ', properties: {';
 				
 				for (var key in this.Objects[objI].properties) {
@@ -434,6 +435,7 @@ function ObjectHandler() {
 					}
 				}
 				objectViewer.rows[objI + 1].cells[2].innerHTML = objectViewer.rows[objI + 1].cells[2].innerHTML + "}";
+				*/
 			}
 		}
 	}
