@@ -133,6 +133,7 @@ function createBatHitBox(PlayerObj) {
 	GOObj.properties.parentObj = PlayerObj;
 	oHandler.addObject(GOObj);
 	
+	/*
 	var row = objectViewer.insertRow();
 			
 	var objCol = row.insertCell();
@@ -145,6 +146,7 @@ function createBatHitBox(PlayerObj) {
 	objInd.onclick = debugRemoveObject;
 			
 	var objStat = row.insertCell();
+	*/
 }
 
 function platformerPlayerMovement() {
