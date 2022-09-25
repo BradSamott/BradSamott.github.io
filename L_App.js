@@ -4,23 +4,40 @@
 var canvasBackground = document.getElementById("canvasBG");
 var ctxBackground = canvasBackground.getContext("2d");
 
+var canvasBackgroundDev = document.getElementById("canvasBGDev");
+var ctxBackgroundDev = canvasBackgroundDev.getContext("2d");
+
 //Canvas Used for in play areas
 var canvasPlay = document.getElementById("canvasPL");
 var ctxPlay = canvasPlay.getContext("2d");
+
+var canvasPlayDev = document.getElementById("canvasPLDev");
+var ctxPlayDev = canvasPlayDev.getContext("2d");
 
 //Canvas Used for foreground images
 var canvasForeground = document.getElementById("canvasFG");
 var ctxForeground = canvasForeground.getContext("2d");
 
+var canvasForegroundDev = document.getElementById("canvasFGDev");
+var ctxForegroundDev = canvasForegroundDev.getContext("2d");
+
 //Canvas Used for the grid
 var canvasGrid = document.getElementById("canvasGD");
 var ctxGrid = canvasGrid.getContext("2d");
+
+var canvasGridDev = document.getElementById("canvasGDDev");
+var ctxGridDev = canvasGridDev.getContext("2d");
 
 //Canvas Used for a clickable UI
 var canvasUserInterface = document.getElementById("canvasUI");
 var ctxUserInterface = canvasUserInterface.getContext("2d");
 
+var canvasUserInterfaceDev = document.getElementById("canvasUIDev");
+var ctxUserInterfaceDev = canvasUserInterfaceDev.getContext("2d");
+
 var oHandler = new ObjectHandler();
+
+var oHandlerDev = new ObjectHandler();
 
 var paused = false;
 
@@ -43,6 +60,14 @@ function gameLoop() {
 		oHandler.renderTextObjects();
 	}
 	oHandler.systemTick();
+	
+	if(!paused) {
+		oHandlerDev.tickObjects();
+		oHandlerDev.checkCollisions();
+		oHandlerDev.renderObjects(ctxPlayDev,canvasPlayDev);
+		oHandlerDev.renderTextObjects();
+	}
+	oHandlerDev.systemTick();
 }
 
 // Adding the event listeners

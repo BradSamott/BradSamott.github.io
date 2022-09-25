@@ -104,3 +104,19 @@
 	margin-right:5%;
 	padding-bottom:20px;
 }
+
+.banner-table {
+	font-family: 'Helvetica', 'Arial', sans-serif;
+	border-collapse: collapse;
+}
+
+.banner-table th {
+	cursor: pointer;
+	border-right: 2px solid black;
+	border-left: 2px solid black;
+	padding: 12px 15px;
+}
+
+.banner-table th:hover {
+	text-decoration: underline;
+}

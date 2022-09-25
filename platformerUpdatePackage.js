@@ -94,13 +94,13 @@ function batHitCircleUpdate() {
 			this.position.x = this.properties.parentObj.position.x;
 			this.position.y = this.properties.parentObj.position.y;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 2) {
-			this.position.x = this.properties.parentObj.position.x - 18;
+			this.position.x = this.properties.parentObj.position.x + 18;
 			this.position.y = this.properties.parentObj.position.y + 27;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 3) {
-			this.position.x = this.properties.parentObj.position.x - 36;
+			this.position.x = this.properties.parentObj.position.x - 0;
 			this.position.y = this.properties.parentObj.position.y + 27;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 4) {
-			this.position.x = this.properties.parentObj.position.x - 72;
+			this.position.x = this.properties.parentObj.position.x - 36;
 			this.position.y = this.properties.parentObj.position.y;
 		}
 	} else {

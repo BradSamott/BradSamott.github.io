@@ -10,24 +10,97 @@
 	</head>
 
 	<body class="gb-theme">
-		<h1 style="text-align:center">Test</h1>
-		
-		<div class="customDivLatterHead">
-			<div style="width: 640px; height: 576px;">
-				
-				<canvas width="640" height="576" class="gamecanvasBG" id="canvasBG"></canvas>	
-				<canvas width="640" height="576" class="gamecanvasPL" id="canvasPL"></canvas>
-				<canvas width="640" height="576" class="gamecanvasFG" id="canvasFG"></canvas>
-				<canvas width="640" height="576" class="gamecanvasGD" id="canvasGD"></canvas>
-				<canvas width="640" height="576" class="gamecanvasUI" id="canvasUI"></canvas>
-					
-			</div>
+	
+		<div style="background-color: #EBEBEB;">
+			<table class="banner-table">
+				<tr>
+					<th id="GameOption">Game</th>
+					<th id="DevelopOption">Develop</th>
+				</tr>
+			</table>
 		</div>
+	
+		<div id="GameSetting">
+	
+			<h1 style="text-align:center">Game</h1>
+			
+			<div class="customDivLatterHead">
+				<div style="width: 640px; height: 576px;">
+					
+					<canvas width="640" height="576" class="gamecanvasBG" id="canvasBG"></canvas>	
+					<canvas width="640" height="576" class="gamecanvasPL" id="canvasPL"></canvas>
+					<canvas width="640" height="576" class="gamecanvasFG" id="canvasFG"></canvas>
+					<canvas width="640" height="576" class="gamecanvasGD" id="canvasGD"></canvas>
+					<canvas width="640" height="576" class="gamecanvasUI" id="canvasUI"></canvas>
+						
+				</div>
+			</div>
+		
+		</div>
+		
+		<div id="DevSetting" style="display:none;">
+		
+			<h1 style="text-align:center">Dev</h1>
+			
+			<div class="customDivPrior">
+			
+				<textarea id="inputBox" rows="4" cols="65"></textarea>
+				
+				<br>
+				
+				<input type="button" id="submitButton" value="Submit">
+				<input type="button" id="clearButton" value="Clear">
+				
+				<br>
+				
+				<input type="button" id="clearObjectsButton" value="Clear Objects">
+				
+				<br>
+				<br>
+				
+				<div>
+					<p>GameObject Arguments</p>
+					<p>X Coord: -x (horizontal location)</p>
+					<p>Y position: -y (vertical location)</p>
+					<p>Vertex: -v (x offset) (y offset)</p>
+					<p>Tag: -t (tag)</p>
+					<p>Update Function: -u (update function name)</p>
+					<p>Late Update Function: -lu (late update function name)</p>
+					<p>Collide Function: -cf (collide function name)</p>
+					<p>Animations: -a (animation package name)</p>
+					<p>Current Animation: -ca (index of animation to start with)</p>
+					<p>Default Frame: -df (path to default frame location)</p>
+					<p>Default Length: -dl (default length value)</p>
+					<p>Default Width: -dw (default width value)</p>
+					<p>Debug Mode: -d</p>
+					<p>Property: -p (property name) (property value)</p>
+					<p>Object Property: -op (property name) (variable name of property value)</p>
+					<p>Canvas: -cv (Background/Play/Foreground/Grid/UserInterface)</p>
+					<p>Audio: -au (path to audio file)</p>
+					<p>Init function: -i (init function name)</p>
+				</div>
+			</div>
+			
+			<div class="customDivLatterHead">
+				<div style="width: 640px; height: 576px;">
+					
+					<canvas width="640" height="576" class="gamecanvasBG" id="canvasBGDev"></canvas>	
+					<canvas width="640" height="576" class="gamecanvasPL" id="canvasPLDev"></canvas>
+					<canvas width="640" height="576" class="gamecanvasFG" id="canvasFGDev"></canvas>
+					<canvas width="640" height="576" class="gamecanvasGD" id="canvasGDDev"></canvas>
+					<canvas width="640" height="576" class="gamecanvasUI" id="canvasUIDev"></canvas>
+						
+				</div>
+			</div>
+		
+		<div>
 		
 		<script src="L_Math.js"></script>
 		<script src="L_KeyLogger.js"></script>
 		<script src="L_BaseObjects.js"></script>
 		<script src="L_App.js"></script>
+		<script src="L_InputHandle.js"></script>
+		<script src="bannerControls.js"></script>
 		<script src="example.js"></script>
 		<script src="platformerUpdatePackage.js"></script>
 		<script src="ExampleCode.js"></script>

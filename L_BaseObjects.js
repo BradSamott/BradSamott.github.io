@@ -460,7 +460,7 @@ Uses a JSON to build a Game Object.
 The elements of the JSON are used as
 arguments for the constructor.
 */
-function createGOFromJSON(jArg) {
+function createGOFromJSON(jArg,DevFlag) {
 	var x = 0;
 	var y = 0;
 	var vertices = [];
@@ -477,8 +477,15 @@ function createGOFromJSON(jArg) {
 	var defaultWidth = 50;
 	var debugMode = false;
 	var properties = {};
-	var canvas = canvasPlay;
-	var context = ctxPlay;
+	var canvas;
+	var context;
+	if(DevFlag == 1) {
+		canvas = canvasPlayDev;
+		context = ctxPlayDev;
+	} else {
+		canvas = canvasPlay;
+		context = ctxPlay;
+	}
 	var audio = {audioFiles: []};
 	var init = function() {};
 	var nilCollideFunction = function() {};
