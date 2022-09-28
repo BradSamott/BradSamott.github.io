@@ -196,7 +196,14 @@ function platformerPlayerMovement() {
 		if(this.properties.slideStateY == 0) {
 			this.properties.slideStateY = 2;
 		}
-		this.currAnimation = 2;
+		if(this.currAnimation != PlatformerAnimationStates.RunRight) {
+			//Reset Last Animation
+			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+			
+			
+			this.currAnimation = PlatformerAnimationStates.RunRight;
+			this.animations[this.currAnimation].currKeyFrame = 0;
+		}
 	}
 	
 	if(this.currAnimation == 2 && this.properties.xv == 0) {
@@ -242,10 +249,14 @@ function platformerPlayerMovement() {
 			this.currAnimation = 6;
 			this.animations[this.currAnimation].Done = false;
 			this.properties.BatReady = 0;
+			this.animations[this.currAnimation].currKeyFrame = 0;
+			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
 		} else if(this.currAnimation == 1 || this.currAnimation == 3 || this.currAnimation == 5) {
 			this.currAnimation = 7;
 			this.animations[this.currAnimation].Done = false;
 			this.properties.BatReady = 0;
+			this.animations[this.currAnimation].currKeyFrame = 0;
+			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
 		}
 		
 		createBatHitBox(this);

@@ -31,6 +31,17 @@ var SniffsAnimationPackage = [
 	}
 ]
 	
+var PlatformerAnimationStates = {
+	IdleRight: 0,
+	IdleLeft: 1,
+	RunRight: 2,
+	RunLeft: 3,
+	JumpRight: 4,
+	JumpLeft: 5,
+	SwingRight: 6,
+	SwingLeft: 7
+}
+	
 var PlatformerAnimationPackage = [
 	//Idle Right 0
 	{
@@ -55,16 +66,16 @@ var PlatformerAnimationPackage = [
 	//Run Right 2
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Contact1.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down1.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing1.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up1.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air1.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Contact2.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down2.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing2.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up2.png', length: 54, width: 36, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air2.png', length: 54, width: 36, duration: 1, currFrame: 1}
+			{keyFrame: './Assets/Animates/TheBoy_Contact1.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Down1.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Passing1.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Up1.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Air1.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Contact2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Down2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Passing2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Up2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Air2.png', length: 54, width: 36, duration: 2, currFrame: 1}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -113,11 +124,11 @@ var PlatformerAnimationPackage = [
 	//Swing Right 6
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Windup.png', length: 54, width: 72, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_FollowThru.png', length: 54, width: 72, duration: 1, currFrame: 1}
+			{keyFrame: './Assets/Animates/TheBoy_Windup.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru.png', length: 54, width: 72, duration: 4, currFrame: 1}
 		],
 		currKeyFrame: 0,
 		Loops: false,
