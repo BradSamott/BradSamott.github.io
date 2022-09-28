@@ -1,7 +1,7 @@
 'use strict'
 
 window.addEventListener("keydown", function(e) {
-    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+    if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1 && document.activeElement != document.getElementById("inputBox")) {
         e.preventDefault();
     }
 }, false);
