@@ -44,7 +44,8 @@ function platformerVectorNoCollide() {
 }
 
 function createPlatformVector() {
-	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 0 500 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
+	//var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 0 500 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
+	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
 	var GOObj = createGOFromJSON(GOJ);
 	this.properties.jumpVector = GOObj;
 	GOObj.properties.parentObj = this;
@@ -279,7 +280,8 @@ function platformerPlayerMovement() {
 		console.log('changing vecotr position');
 		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
 		this.properties.jumpVector.setPosition(newjumpVectorPosition);
-		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x + this.properties.jumpVector.vertices[1].offX, y: this.properties.jumpVector.position.y + this.properties.jumpVector.vertices[1].offY});
+		//this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x + this.properties.jumpVector.vertices[1].offX, y: this.properties.jumpVector.position.y + this.properties.jumpVector.vertices[1].offY});
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 	}
 	
 	this.properties.xv = 0;
