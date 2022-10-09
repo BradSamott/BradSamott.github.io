@@ -18,18 +18,42 @@ function uiLogger() {
 
 function platformerVectorCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
+		
 		if(colObj.tag == 'wall') {
-			
+			console.log('Wall Found');
 			if (colObj.position.y - this.properties.parentObj.position.y <= this.properties.parentObj.properties.height + 1) {
 				this.properties.parentObj.properties.jumpable = 1;
 				this.properties.parentObj.properties.gravity = 0;
 				//this.properties.parentObj.properties.yv = 0;
+				this.properties.hit = 1;
 			} else {
 				//console.log("No jump");
-				this.properties.parentObj.properties.jumpable = 0;
-				this.properties.parentObj.properties.gravity = 0.6;
+				if(this.properties.hit != 1) {
+					this.properties.parentObj.properties.jumpable = 0;
+					this.properties.parentObj.properties.gravity = 0.6;
+				}
 			}
 			
+		} else if(colObj.tag == 'platform') {
+			console.log('Platform Found');
+			console.log(colObj.position.y);
+			console.log(this.properties.parentObj.position.y);
+			console.log(colObj.position.y - this.properties.parentObj.position.y);
+			console.log(this.properties.parentObj.properties.height + 1);
+			//console.log();
+			if (colObj.position.y - this.properties.parentObj.position.y <= this.properties.parentObj.properties.height + 1) {
+				console.log("Jump");
+				this.properties.parentObj.properties.jumpable = 1;
+				this.properties.parentObj.properties.gravity = 0;
+				//this.properties.parentObj.properties.yv = 0;
+				this.properties.hit = 1;
+			} else {
+				//console.log("No jump");
+				if(this.properties.hit != 1) {
+					this.properties.parentObj.properties.jumpable = 0;
+					this.properties.parentObj.properties.gravity = 0.6;
+				}
+			}
 		} //else {
 			//this.properties.parentObj.properties.jumpable = 0;
 			//this.properties.parentObj.properties.gravity = 0.6;
@@ -45,7 +69,7 @@ function platformerVectorNoCollide() {
 
 function createPlatformVector() {
 	//var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 0 500 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
-	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
+	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide -p hit 0");
 	var GOObj = createGOFromJSON(GOJ);
 	this.properties.jumpVector = GOObj;
 	GOObj.properties.parentObj = this;
@@ -277,11 +301,12 @@ function platformerPlayerMovement() {
 	this.setPosition(newPosition);
 	
 	if(this.properties.jumpVector != null) {
-		console.log('changing vecotr position');
+		//console.log('changing vecotr position');
 		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
 		this.properties.jumpVector.setPosition(newjumpVectorPosition);
 		//this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x + this.properties.jumpVector.vertices[1].offX, y: this.properties.jumpVector.position.y + this.properties.jumpVector.vertices[1].offY});
 		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
 	}
 	
 	this.properties.xv = 0;
@@ -326,6 +351,20 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 			}
 		} else if(colObj.tag == 'testBall') {
 			console.log('Ball Intersection');
+		} else if(colObj.tag == 'platform') {
+			
+			if((this.position.y - this.delta.dy) < this.position.y) {
+				
+				this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
+				this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
+				//this.properties.jumpable = 1;
+				this.position.y--;
+				//this.properties.gravity = 0;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 1;
+				}
+			}
 		}
 	}
 }

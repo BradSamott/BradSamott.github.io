@@ -160,6 +160,12 @@ function ObjectHandler() {
 					for(var objC = 0; objC < this.Objects.length; objC++) {
 						if(this.Objects[objC].vertices != null && objC != objI) {
 							for(var verC = 0; verC < this.Objects[objC].vertices.length; verC++) { 
+							
+								if(verC == this.Objects[objC].vertices.length - 1 && this.Objects[objC].vertices.length == 2) {
+									//console.log('Stop');
+									break;
+								}
+							
 								var startX1 = (this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX) - this.Objects[objI].delta.dx;
 								var startY1 = (this.Objects[objI].position.y + this.Objects[objI].vertices[verI].offY) - this.Objects[objI].delta.dy;
 								var endX1 = this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX;
