@@ -6,7 +6,7 @@ Hold basic data such as position, tag, an update function
 to be ran and a late update to be run after.
 Also has a list of vertices used to keep track of the shape.
 */
-function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth, debugMode, properties, canvas, context, audio, init, nilCollideFunction) {
+function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth, debugMode, properties, canvas, context, audio, init, postInit, nilCollideFunction) {
 	this.position = {x, y};
 	this.delta = {dx: 0, dy: 0};
 
@@ -51,6 +51,7 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	this.audio = audio;
 	
 	this.init = init;
+	this.postInit = postInit;
 	
 	this.nilCollideFunction = nilCollideFunction;
 	
@@ -99,6 +100,11 @@ function ObjectHandler() {
 		object.properties.HandlerID = this.currID;
 		this.currID++;
 		this.Objects.push(object);
+		
+		if(object.postInit != null) {
+			//console.log('running post init');
+			object.postInit();
+		}
 	}
 	
 	this.addTextObject = function(object) {
@@ -154,7 +160,7 @@ function ObjectHandler() {
 	
 	this.checkCollisions = function() {
 		for(var objI = 0; objI < this.Objects.length; objI++) { 
-			//console.log('Checking Object: ' + objI);
+			//console.log('Checking Object: ' + objI + ' Tag: ' + this.Objects[objI].tag);
 			if(this.Objects[objI].vertices != null) {
 				for(var verI = 0; verI < this.Objects[objI].vertices.length; verI++) {
 					for(var objC = 0; objC < this.Objects.length; objC++) {
@@ -190,6 +196,21 @@ function ObjectHandler() {
 									
 									colVer2 = verC + 1;
 								}
+								/*
+								if(this.Objects[objI].tag == 'vector' && this.Objects[objC].tag == 'platform') {
+									var printJ = {
+										startX1: startX1,
+										startY1: startY1,
+										endX1: endX1,
+										endY1: endY1,
+										startX2: startX2,
+										startY2: startY2,
+										endX2: endX2,
+										endY2: endY2
+									}
+									console.log(printJ);
+								}
+								*/
 							
 								var inter = FindSegmentIntersection(startX1,startY1,endX1,endY1,startX2,startY2,endX2,endY2);
 								
@@ -494,6 +515,7 @@ function createGOFromJSON(jArg,DevFlag) {
 	}
 	var audio = {audioFiles: []};
 	var init = function() {};
+	var postInit = function() {};
 	var nilCollideFunction = function() {};
 	
 	if(jArg.x != null) {
@@ -576,11 +598,15 @@ function createGOFromJSON(jArg,DevFlag) {
 		init = jArg.init;
 	}
 	
+	if(jArg.postInit != null) {
+		postInit = jArg.postInit;
+	}
+	
 	if(jArg.nilCollideFunction != null) {
 		nilCollideFunction = jArg.nilCollideFunction;
 	}
 	
-	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,nilCollideFunction);
+	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,postInit,nilCollideFunction);
 	
 	return newGameObject;
 }
@@ -864,6 +890,18 @@ function createGOJsonFromString(args) {
 			if(argsList[i + 1] != null && argsList[i + 1] != '') {
 				try {
 					eval("jsonArg.init = "+ argsList[i + 1] + ";");
+					i++;
+				} catch(e) {
+					console.log('Error: Function for init does not exist');
+				}
+			}
+		}
+		
+		//postInit function
+		else if(argsList[i] == '-pi') {
+			if(argsList[i + 1] != null && argsList[i + 1] != '') {
+				try {
+					eval("jsonArg.postInit = "+ argsList[i + 1] + ";");
 					i++;
 				} catch(e) {
 					console.log('Error: Function for init does not exist');

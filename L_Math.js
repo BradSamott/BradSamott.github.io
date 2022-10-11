@@ -130,12 +130,15 @@ function testMainMath() {
 	
 	//console.log(IsCollinear(1,2,3,2,4,2));
 	
-	console.log(IsInSegment(150,100,150,100,300,100));
+	//console.log(IsInSegment(150,100,150,100,300,100));
 	
 	//console.log(IsInSegment(1,1,2,1,3,1));
+	
+	console.log(FindSegmentIntersection(257,250,257,750,250,250,350,250));
 }
 
 testMainMath();
 */
+
 
 

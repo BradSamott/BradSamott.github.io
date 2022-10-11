@@ -348,6 +348,11 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
 					this.properties.slideStateX = 1;
 				}
+				
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//this.properties.jumpVector.properties.hit = 0;
 			}
 		} else if(colObj.tag == 'testBall') {
 			console.log('Ball Intersection');
@@ -364,6 +369,16 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
 					this.properties.slideStateX = 1;
 				}
+				
+				console.log(this.properties.jumpVector.position);
+				console.log(this.properties.jumpVector.delta);
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				console.log(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				console.log({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				console.log(this.properties.jumpVector.delta);
+				//this.properties.jumpVector.properties.hit = 0;
 			}
 		}
 	}
