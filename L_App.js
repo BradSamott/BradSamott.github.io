@@ -56,7 +56,7 @@ function gameLoop() {
 	if(!paused) {
 		oHandler.tickObjects();
 		oHandler.checkCollisions();
-		oHandler.renderObjects(ctxPlay,canvasPlay);
+		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.renderTextObjects();
 	}
 	oHandler.systemTick();
@@ -64,7 +64,7 @@ function gameLoop() {
 	if(!paused) {
 		oHandlerDev.tickObjects();
 		oHandlerDev.checkCollisions();
-		oHandlerDev.renderObjects(ctxPlayDev,canvasPlayDev);
+		oHandlerDev.renderObjects(ctxPlayDev,canvasPlayDev, ctxBackgroundDev, canvasBackgroundDev, ctxForegroundDev, canvasForegroundDev, ctxUserInterfaceDev, canvasUserInterfaceDev);
 		oHandlerDev.renderTextObjects();
 	}
 	oHandlerDev.systemTick();

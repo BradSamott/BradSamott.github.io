@@ -129,7 +129,7 @@ function batHitCircleUpdate() {
 			this.position.y = this.properties.parentObj.position.y;
 		}
 	} else {
-		oHandler.removeObject(this);
+		this.handler.removeObject(this);
 	}
 }
 
@@ -156,7 +156,7 @@ function createBatHitBox(PlayerObj) {
 	var GOJ = createGOJsonFromString(creatinString);
 	var GOObj = createGOFromJSON(GOJ);
 	GOObj.properties.parentObj = PlayerObj;
-	oHandler.addObject(GOObj);
+	PlayerObj.handler.addObject(GOObj);
 	
 	/*
 	var row = objectViewer.insertRow();

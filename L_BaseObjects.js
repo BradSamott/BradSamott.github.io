@@ -66,6 +66,8 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 		this.position.y = newPosition.y;
 	}
 	
+	this.handler = null;
+	
 }
 
 function TextObject(x, y, size, font, color, textContent) {
@@ -105,6 +107,8 @@ function ObjectHandler() {
 			//console.log('running post init');
 			object.postInit();
 		}
+		
+		object.handler = this;
 	}
 	
 	this.addTextObject = function(object) {
@@ -355,13 +359,13 @@ function ObjectHandler() {
 		
 	}
 	
-	this.renderObjects = function(PlayArea,PlayCanvas) {
+	this.renderObjects = function(PlayArea,PlayCanvas, BackgroundArea, BackgroundCanvas, ForegroundArea, ForegroundCanvas, UIArea, UICanvas) {
 		PlayArea.clearRect(0, 0, PlayCanvas.width, PlayCanvas.height);
 		
-		ctxBackground.clearRect(0, 0, canvasBackground.width, canvasBackground.height);
-		ctxForeground.clearRect(0, 0, canvasForeground.width, canvasForeground.height);
+		BackgroundArea.clearRect(0, 0, BackgroundCanvas.width, BackgroundCanvas.height);
+		ForegroundArea.clearRect(0, 0, ForegroundCanvas.width, ForegroundCanvas.height);
 		//ctxGrid.clearRect(0, 0, canvasGrid.width, canvasGrid.height);
-		ctxUserInterface.clearRect(0, 0, canvasUserInterface.width, canvasUserInterface.height);
+		UIArea.clearRect(0, 0, UICanvas.width, UICanvas.height);
 		
 		for(var objI = 0; objI < this.Objects.length; objI++) {
 			//var img = new Image();
