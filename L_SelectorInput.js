@@ -38,5 +38,13 @@ function UploadTestGame() {
 	testcode = testcode + 'GameObject -x 250 -y 250 -v 0 0 -v 100 0 -d -t platform;'
 	testcode = testcode + 'GameObject -x 475 -y 370 -v 0 0 -v 100 0 -d -t platform;'
 	
+	oHandler.removeAllObjects();
+	enterObjects(testcode);
+}
+
+function UploadAntiGame() {
+	var testcode = '';
+	
+	oHandler.removeAllObjects();
 	enterObjects(testcode);
 }

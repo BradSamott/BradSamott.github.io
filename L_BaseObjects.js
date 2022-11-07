@@ -450,7 +450,7 @@ function ObjectHandler() {
 				for(var radI = 0; radI < this.Objects[objI].radialPoints.length; radI++) {
 					//console.log('Drawing Radial');
 					PlayArea.beginPath();
-					PlayArea.arc(this.Objects[objI].position.x + this.Objects[objI].radialPoints[radI].offX, this.Objects[objI].position.y + this.Objects[objI].radialPoints[radI].offY, this.Objects[objI].radialPoints[radI].radius, 0, 2 * Math.PI, false);
+					PlayArea.arc(this.Objects[objI].position.x + this.Objects[objI].radialPoints[radI].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].radialPoints[radI].offY - this.CameraY, this.Objects[objI].radialPoints[radI].radius, 0, 2 * Math.PI, false);
 					PlayArea.stroke();
 				}
 				

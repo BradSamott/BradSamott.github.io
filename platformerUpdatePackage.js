@@ -20,7 +20,7 @@ function platformerVectorCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		
 		if(colObj.tag == 'wall') {
-			console.log('Wall Found');
+			//console.log('Wall Found');
 			if (colObj.position.y - this.properties.parentObj.position.y <= this.properties.parentObj.properties.height + 1) {
 				this.properties.parentObj.properties.jumpable = 1;
 				this.properties.parentObj.properties.gravity = 0;
@@ -35,14 +35,14 @@ function platformerVectorCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 			}
 			
 		} else if(colObj.tag == 'platform') {
-			console.log('Platform Found');
-			console.log(colObj.position.y);
-			console.log(this.properties.parentObj.position.y);
-			console.log(colObj.position.y - this.properties.parentObj.position.y);
-			console.log(this.properties.parentObj.properties.height + 1);
+			//console.log('Platform Found');
+			//console.log(colObj.position.y);
+			//console.log(this.properties.parentObj.position.y);
+			//console.log(colObj.position.y - this.properties.parentObj.position.y);
+			//console.log(this.properties.parentObj.properties.height + 1);
 			//console.log();
 			if (colObj.position.y - this.properties.parentObj.position.y <= this.properties.parentObj.properties.height + 1) {
-				console.log("Jump");
+				//console.log("Jump");
 				this.properties.parentObj.properties.jumpable = 1;
 				this.properties.parentObj.properties.gravity = 0;
 				//this.properties.parentObj.properties.yv = 0;
@@ -370,14 +370,14 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					this.properties.slideStateX = 1;
 				}
 				
-				console.log(this.properties.jumpVector.position);
-				console.log(this.properties.jumpVector.delta);
+				//console.log(this.properties.jumpVector.position);
+				//console.log(this.properties.jumpVector.delta);
 				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
-				console.log(newjumpVectorPosition);
+				//console.log(newjumpVectorPosition);
 				this.properties.jumpVector.setPosition(newjumpVectorPosition);
-				console.log({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//console.log({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
-				console.log(this.properties.jumpVector.delta);
+				//console.log(this.properties.jumpVector.delta);
 				//this.properties.jumpVector.properties.hit = 0;
 			}
 		}
