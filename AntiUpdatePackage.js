@@ -31,9 +31,17 @@ function antiPlayerMovement() {
 	} else if(keys.left) {
 		//console.log('Left');
 		this.properties.xv = -7;
+		this.currAnimation = 3;
+		//this.animations[this.currAnimation].Done = false;
+		//this.animations[this.currAnimation].currKeyFrame = 0;
+		//this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
 	} else if(keys.right) {
 		//console.log('Right');
 		this.properties.xv = 7;
+		this.currAnimation = 2;
+		//this.animations[this.currAnimation].Done = false;
+		//this.animations[this.currAnimation].currKeyFrame = 0;
+		//this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
 	} 
 	
 	if(keys.up && keys.down) {
@@ -58,6 +66,14 @@ function antiPlayerMovement() {
 	} else if(this.properties.xv == -7 && this.properties.yv == -7) {
 		this.properties.xv = Math.sqrt((7 * 7)/2) * -1;
 		this.properties.yv = Math.sqrt((7 * 7)/2) * -1;
+	}
+	
+	if(this.properties.xv == 0 && this.properties.yv == 0) {
+		if(this.currAnimation == 2) {
+			this.currAnimation = 0;
+		} else if(this.currAnimation == 3) {
+			this.currAnimation = 1;
+		}
 	}
 	
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
