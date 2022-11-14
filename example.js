@@ -100,6 +100,26 @@ var AntiAnimationPackage = [
 		currKeyFrame: 0,
 		Loops: true,
 		Done: false
+	},
+	
+	//Run Up Right 4
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/Crawler_Stand.png', length: 54, width: 36, duration: 1, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Run Up Left 5
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/Crawler_Stand_R.png', length: 54, width: 36, duration: 1, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
 	}
 
 ]

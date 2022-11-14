@@ -49,6 +49,11 @@ function antiPlayerMovement() {
 	} else if(keys.up) {
 		//console.log('Up');
 		this.properties.yv = -7;
+		if(this.currAnimation == 2) {
+			this.currAnimation = 4;
+		} else if(this.currAnimation == 3) {
+			this.currAnimation = 5;
+		}
 	} else if(keys.down) {
 		//console.log('Down');
 		this.properties.yv = 7;
