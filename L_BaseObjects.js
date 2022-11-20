@@ -92,6 +92,7 @@ function ObjectHandler() {
 	this.AreaHeight = 576;
 	this.CameraX = 0;
 	this.CameraY = 0;
+	this.cBuff = [];
 	
 	this.addObject = function(object) {
 		//console.log('adding');
@@ -103,12 +104,14 @@ function ObjectHandler() {
 		this.currID++;
 		this.Objects.push(object);
 		
+		object.handler = this;
+		
 		if(object.postInit != null) {
 			//console.log('running post init');
 			object.postInit();
 		}
 		
-		object.handler = this;
+		//object.handler = this;
 	}
 	
 	this.addTextObject = function(object) {

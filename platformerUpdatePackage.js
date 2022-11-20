@@ -74,6 +74,12 @@ function createPlatformVector() {
 	this.properties.jumpVector = GOObj;
 	GOObj.properties.parentObj = this;
 	oHandler.addObject(GOObj);
+	
+	var GOJ2 = createGOJsonFromString("GameObject -u CameraController2");
+	var GOObj2 = createGOFromJSON(GOJ2);
+	//this.properties.jumpVector = GOObj2;
+	GOObj2.properties.parentObj = this;
+	oHandler.addObject(GOObj2);
 	/*
 	var row = objectViewer.insertRow();
 			
@@ -206,7 +212,7 @@ function platformerPlayerMovement() {
 		return;
 	}
 	
-	if(keys.left && this.properties.slideStateY != 0) {
+	if(keys.left && this.properties.slideStateY != 0 && this.properties.climbing == 0) {
 	//if(keys.left) {
 		this.properties.xv = -7;
 		if(this.properties.slideStateY == 1) {
@@ -215,7 +221,7 @@ function platformerPlayerMovement() {
 		this.currAnimation = 3;
 	}
 	
-	if(keys.right && this.properties.slideStateY != 1) {
+	if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0) {
 	//if(keys.right) {
 		this.properties.xv = 7;
 		if(this.properties.slideStateY == 0) {
@@ -237,7 +243,7 @@ function platformerPlayerMovement() {
 		this.currAnimation = 1;
 	}
 	
-	if(keys.up && this.properties.slideStateX != 0) {
+	if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 0) {
 	//if(keys.up) {
 		//console.log('Up Press');
 		if(this.properties.jumpable == 1) {
@@ -255,11 +261,23 @@ function platformerPlayerMovement() {
 				this.currAnimation = 5;
 			}
 		}
+	} else if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 1) {
+		this.properties.yv = -7;
+		
+		if(this.properties.climbing == 0) {
+			this.properties.climbing = 1;
+		}
 	}
 	
 	//if(keys.down && this.properties.slideStateX != 1) {
-	if(keys.down) {
+	if(keys.down && this.properties.climbMode == 0) {
 		
+	} else if(keys.down && this.properties.climbMode == 1) {
+		this.properties.yv = 7;
+		
+		if(this.properties.climbing == 0) {
+			this.properties.climbing = 1;
+		}
 	}
 	
 	if(!keys.space) {
@@ -295,7 +313,12 @@ function platformerPlayerMovement() {
 		}
 	}
 	
-	this.properties.yv = this.properties.yv + this.properties.gravity
+	console.log('climbMode: ' + this.properties.climbMode + ', climbing: ' + this.properties.climbing);
+	if(this.properties.climbing == 0) {
+		this.properties.yv = this.properties.yv + this.properties.gravity
+	} else {
+		this.properties.yv = this.properties.yv;
+	}
 	
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
@@ -310,6 +333,10 @@ function platformerPlayerMovement() {
 	}
 	
 	this.properties.xv = 0;
+	
+	if(this.properties.climbing == 1) {
+		this.properties.yv = 0;
+	}
 	//this.properties.yv = 0;
 }
 
@@ -380,6 +407,8 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				//console.log(this.properties.jumpVector.delta);
 				//this.properties.jumpVector.properties.hit = 0;
 			}
+		} else if(colObj.tag == 'ladder') {
+			this.properties.climbMode = 1;
 		}
 	}
 }
@@ -401,5 +430,28 @@ function CameraController() {
 	
 	if(keys.down) {
 		
+	}
+}
+
+function CameraController2() {
+	this.handler.CameraX = this.properties.parentObj.position.x - 100;
+	this.handler.CameraY = this.properties.parentObj.position.y - 200;
+}
+
+function addClickOption() {
+	var currentHandler = this.handler;
+	
+	canvasUserInterface.addEventListener('click', function(e) {
+		var mousepos = getMousePos(canvasUserInterface,e);
+		//console.log("x: " + mousepos.x + ", y: " + mousepos.y);
+		//console.log(currentHandler);
+		currentHandler.cBuff.push(mousepos);
+	});
+}
+
+function showClickPosition() {
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+		console.log({ localX: this.handler.cBuff[i].x, localY: this.handler.cBuff[i].y} );
+		console.log({ absX: this.handler.cBuff[i].x + this.handler.CameraX, absY: this.handler.cBuff[i].y + this.handler.CameraY} );
 	}
 }
