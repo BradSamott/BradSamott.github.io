@@ -32,7 +32,7 @@ function enterObjects(inputText) {
 function UploadTestGame() {
 	var testcode = 'GameObject -p lastPStatus 0 -su uiLogger;'
 	testcode = testcode + 'GameObject -x 50 -y 300 -v 0 0 -v 450 0 -v 450 16 -v 0 16 -d -t wall;'
-	testcode = testcode + 'GameObject -x 50 -y 50 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
+	testcode = testcode + 'GameObject -x 50 -y 50 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
 	testcode = testcode + 'GameObject -x 300 -y 250 -rp 18 18 18 -a SniffsAnimationPackage -d -ca 0 -t enemy;'
 	testcode = testcode + 'GameObject -x 150 -y 250 -v 0 0 -v 100 0 -v 100 20 -v 0 20 -d -t platform;'
 	testcode = testcode + 'GameObject -x 250 -y 250 -v 0 0 -v 100 0 -d -t platform;'
@@ -40,6 +40,9 @@ function UploadTestGame() {
 	testcode = testcode + 'GameObject -x 475 -y 230 -v 0 0 -v 100 0 -d -t wall;'
 	testcode = testcode + 'GameObject -pi addClickOption -u showClickPosition;'
 	testcode = testcode + 'GameObject -x 380 -y 0 -v 0 0 -v 50 0 -v 50 300 -v 0 300 -d -t ladder;'
+	testcode = testcode + 'GameObject -x 405 -y -90 -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;'
+	testcode = testcode + 'GameObject -x 280 -y -5 -v 0 0 -v 300 0 -d -t platform;'
+	testcode = testcode + 'GameObject -x 525 -y -350 -v 0 0 -v 50 0 -v 50 300 -v 0 300 -d -t ladder;'
 	
 	oHandler.removeAllObjects();
 	enterObjects(testcode);

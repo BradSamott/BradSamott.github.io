@@ -413,6 +413,15 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	}
 }
 
+function ladderStopperAction(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'player') {
+			colObj.properties.climbMode = 0;
+			colObj.properties.climbing = 0;
+		}
+	}
+}
+
 function CameraController() {
 	if(keys.left) {
 		oHandler.CameraX = oHandler.CameraX - 7;
@@ -435,7 +444,10 @@ function CameraController() {
 
 function CameraController2() {
 	this.handler.CameraX = this.properties.parentObj.position.x - 100;
-	this.handler.CameraY = this.properties.parentObj.position.y - 200;
+	
+	if(this.properties.parentObj.properties.climbing == 1) {
+		this.handler.CameraY = this.properties.parentObj.position.y - 200;
+	}
 }
 
 function addClickOption() {
