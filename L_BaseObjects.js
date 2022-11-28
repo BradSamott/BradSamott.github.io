@@ -287,6 +287,10 @@ function ObjectHandler() {
 									
 									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].Ran = true;
 									
+									//if(this.Objects[objC].properties.unmove == 1) {
+										
+									//}
+									
 								}
 							}
 						}

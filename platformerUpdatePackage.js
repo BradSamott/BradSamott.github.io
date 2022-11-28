@@ -96,6 +96,31 @@ function createPlatformVector() {
 	*/
 }
 
+function createLadderAndStopper() {
+	//var GOJ = createGOJsonFromString("GameObject -x 470 -y 1000 -v 0 0 -v 50 0 -v 50 150 -v 0 150 -d -t ladder;");
+	var xOffLad = 470;
+	var xOffStop = 495;
+	if(this.properties.side == "right") {
+		xOffLad = 470;
+		xOffStop = 495;
+	} else if(this.properties.side == "left") {
+		xOffLad = 120;
+		xOffStop = 145;
+	}
+	var GOJ = createGOJsonFromString("GameObject -x "+xOffLad+" -y "+(this.position.y+1)+" -v 0 0 -v 50 0 -v 50 150 -v 0 150 -d -t ladder;");
+	var GOObj = createGOFromJSON(GOJ);
+	//this.properties.ladder = GOObj;
+	GOObj.properties.parentObj = this;
+	oHandler.addObject(GOObj);
+	
+	//var GOJ2 = createGOJsonFromString("GameObject -x 495 -y 910 -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;");
+	var GOJ2 = createGOJsonFromString("GameObject -x "+xOffStop+" -y "+(this.position.y-89)+" -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;");
+	var GOObj2 = createGOFromJSON(GOJ2);
+	//this.properties.ladderStopper = GOObj2;
+	GOObj2.properties.parentObj = this;
+	oHandler.addObject(GOObj2);
+}
+
 function batHitCircleUpdate() {
 	//this.position.x = this.properties.parentObj.position.x + 72;
 	//this.position.y = this.properties.parentObj.position.y;
@@ -144,8 +169,110 @@ function batHitCircleCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		if(colObj.tag == 'enemy') {
 			console.log('OUCH!');
+			if(colObj.properties.health != null) {
+				colObj.properties.health--;
+			}
 		}
 	}		
+}
+
+function MrSniffsUpdate() {
+	if(this.properties.health <= 0) {
+		this.handler.removeObject(this);
+	}
+}
+
+function Floor1Trigger() {
+	if(this.properties.pulled == 0) {
+		var found = false;
+		for(var i = 0; i < this.handler.Objects.length; i++) {
+			if(this.handler.Objects[i].properties.trig == 'floor1') {
+				found = true;
+			}
+		}
+		
+		if(!found) {
+			var code = '';
+			code = code + 'GameObject -x 120 -y 999 -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side right;'
+			enterObjects(code);
+			this.properties.pulled = 1;
+		}
+	}
+}
+
+function Floor2Trigger() {
+	if(this.properties.pulled == 0) {
+		var found = false;
+		for(var i = 0; i < this.handler.Objects.length; i++) {
+			if(this.handler.Objects[i].properties.trig == 'floor2') {
+				found = true;
+			}
+		}
+		
+		if(!found) {
+			var code = '';
+			code = code + 'GameObject -x 120 -y 849 -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side left;'
+			enterObjects(code);
+			this.properties.pulled = 1;
+		}
+	}
+}
+
+function FloorNTrigger() {
+	//console.log('FloorNTrigger');
+	if(this.properties.pulled == 0) {
+		//console.log(this.properties.trig);
+		var found = false;
+		for(var i = 0; i < this.handler.Objects.length; i++) {
+			if(this.handler.Objects[i].properties.trig == this.properties.trigN) {
+				found = true;
+			}
+		}
+		
+		if(!found) {
+			console.log('Working');
+			var code = '';
+			if(this.properties.highest == 1) {
+				code = code + 'GameObject -x 340 -y 640 -rp 0 0 18 -d -cf refreshFloorsCollision;';
+			} else {
+				code = code + 'GameObject -x 120 -y '+this.properties.ycoord+' -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side '+this.properties.side+';'
+			}
+			enterObjects(code);
+			this.properties.pulled = 1;
+		}
+	}
+}
+
+function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'player') {
+			var testcode = '';
+			
+			testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
+			testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+			testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+			testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
+			
+			testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
+			testcode = testcode + 'GameObject -pi addClickOption -u showClickPosition;'
+			
+			testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor1;'
+			testcode = testcode + 'GameObject -u Floor1Trigger -p pulled 0;'
+			
+			testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor2;'
+			testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -p health 10 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor2;'
+			testcode = testcode + 'GameObject -u Floor2Trigger -p pulled 0;'
+			
+			testcode = testcode + 'GameObject -x 140 -y 790 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor3;'
+			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor3 -p ycoord 699 -p side right;'
+			
+			testcode = testcode + 'GameObject -x 140 -y 640 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor4;'
+			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor4 -p highest 1;'
+			
+			this.handler.removeAllObjects();
+			enterObjects(testcode);
+		}
+	}
 }
 
 function createBatHitBox(PlayerObj) {
@@ -313,7 +440,7 @@ function platformerPlayerMovement() {
 		}
 	}
 	
-	console.log('climbMode: ' + this.properties.climbMode + ', climbing: ' + this.properties.climbing);
+	//console.log('climbMode: ' + this.properties.climbMode + ', climbing: ' + this.properties.climbing);
 	if(this.properties.climbing == 0) {
 		this.properties.yv = this.properties.yv + this.properties.gravity
 	} else {
@@ -408,7 +535,10 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				//this.properties.jumpVector.properties.hit = 0;
 			}
 		} else if(colObj.tag == 'ladder') {
-			this.properties.climbMode = 1;
+			//console.log(colObj.parentObj);
+			if(this.position.y >= colObj.properties.parentObj.position.y) {
+				this.properties.climbMode = 1;
+			}
 		}
 	}
 }
@@ -421,6 +551,15 @@ function ladderStopperAction(colObj,verIndex,intersection,colVer1,colVer2) {
 		}
 	}
 }
+/*
+function ladderAction(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'player') {
+			colObj.properties.climbMode = 1;
+		}
+	}
+}
+*/
 
 function CameraController() {
 	if(keys.left) {
@@ -443,10 +582,11 @@ function CameraController() {
 }
 
 function CameraController2() {
-	this.handler.CameraX = this.properties.parentObj.position.x - 100;
+	//this.handler.CameraX = this.properties.parentObj.position.x - 100;
 	
 	if(this.properties.parentObj.properties.climbing == 1) {
-		this.handler.CameraY = this.properties.parentObj.position.y - 200;
+		//this.handler.CameraY = this.properties.parentObj.position.y - 200;
+		this.handler.CameraY = this.properties.parentObj.position.y - 394;
 	}
 }
 
@@ -466,4 +606,10 @@ function showClickPosition() {
 		console.log({ localX: this.handler.cBuff[i].x, localY: this.handler.cBuff[i].y} );
 		console.log({ absX: this.handler.cBuff[i].x + this.handler.CameraX, absY: this.handler.cBuff[i].y + this.handler.CameraY} );
 	}
+}
+
+function moveCameraPosition() {
+	this.handler.CameraX = this.position.x;
+	this.handler.CameraY = this.position.y;
+	
 }
