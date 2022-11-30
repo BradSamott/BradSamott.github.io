@@ -167,18 +167,43 @@ function batHitCircleUpdate() {
 function batHitCircleCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	//console.log('collide');
 	if(colObj.tag != null) {
+		/*
 		if(colObj.tag == 'enemy') {
 			console.log('OUCH!');
 			if(colObj.properties.health != null) {
-				colObj.properties.health--;
+				if(colObj.currAnimation != 1) {
+					console.log('PAIN!');
+					colObj.properties.health--;
+				}
 			}
 		}
+		*/
 	}		
 }
 
 function MrSniffsUpdate() {
 	if(this.properties.health <= 0) {
 		this.handler.removeObject(this);
+	}
+	if(this.currAnimation == 1) {
+		this.properties.iFrames++;
+	}
+	if(this.properties.iFrames == 60) {
+		this.currAnimation = 0;
+	}
+}
+
+function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'playerHitCircle') {
+			console.log('OUCH!');
+			if(this.currAnimation == 0) {
+				console.log('PAIN!');
+				this.properties.health--;
+				this.currAnimation = 1;
+				this.properties.iFrames = 0;
+			}
+		}
 	}
 }
 
@@ -256,17 +281,17 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 			testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
 			testcode = testcode + 'GameObject -pi addClickOption -u showClickPosition;'
 			
-			testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor1;'
+			testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1;'
 			testcode = testcode + 'GameObject -u Floor1Trigger -p pulled 0;'
-			
-			testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor2;'
-			testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -p health 10 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor2;'
+	
+			testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
+			testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 10 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
 			testcode = testcode + 'GameObject -u Floor2Trigger -p pulled 0;'
-			
-			testcode = testcode + 'GameObject -x 140 -y 790 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor3;'
+	
+			testcode = testcode + 'GameObject -x 140 -y 790 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor3;'
 			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor3 -p ycoord 699 -p side right;'
-			
-			testcode = testcode + 'GameObject -x 140 -y 640 -t enemy -u MrSniffsUpdate -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -p trig floor4;'
+	
+			testcode = testcode + 'GameObject -x 140 -y 640 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor4;'
 			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor4 -p highest 1;'
 			
 			this.handler.removeAllObjects();
@@ -285,7 +310,7 @@ function createBatHitBox(PlayerObj) {
 	oHandler.addObject(GOObj);
 	*/
 	
-	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + 72) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate -d -cf batHitCircleCollide';
+	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + 72) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate -d -cf batHitCircleCollide -t playerHitCircle';
 	var GOJ = createGOJsonFromString(creatinString);
 	var GOObj = createGOFromJSON(GOJ);
 	GOObj.properties.parentObj = PlayerObj;
