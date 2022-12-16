@@ -96,6 +96,30 @@ function createPlatformVector() {
 	*/
 }
 
+function MrSniffHitBoxUpdate() {
+	this.position.x = this.properties.parentObj.position.x;
+	this.position.y = this.properties.parentObj.position.y;
+}
+
+function createPlatformVectorAndHitBox() {
+	//var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 0 500 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide");
+	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide -p hit 0");
+	var GOObj = createGOFromJSON(GOJ);
+	this.properties.jumpVector = GOObj;
+	GOObj.properties.parentObj = this;
+	oHandler.addObject(GOObj);
+	
+	var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+	var GOObj2 = createGOFromJSON(GOJ2);
+	if(this.properties.children == null) {
+		this.properties.children = []
+		this.properties.children.push(GOObj2);
+	}
+	GOObj2.properties.parentObj = this;
+	oHandler.addObject(GOObj2);
+	
+}
+
 function createLadderAndStopper() {
 	//var GOJ = createGOJsonFromString("GameObject -x 470 -y 1000 -v 0 0 -v 50 0 -v 50 150 -v 0 150 -d -t ladder;");
 	var xOffLad = 470;
@@ -107,7 +131,7 @@ function createLadderAndStopper() {
 		xOffLad = 120;
 		xOffStop = 145;
 	}
-	var GOJ = createGOJsonFromString("GameObject -x "+xOffLad+" -y "+(this.position.y+1)+" -v 0 0 -v 50 0 -v 50 150 -v 0 150 -d -t ladder;");
+	var GOJ = createGOJsonFromString("GameObject -x "+xOffLad+" -y "+(this.position.y+1)+" -v 0 0 topleft -v 50 0 topright -v 50 150 bottomright -v 0 150 bottomleft -d -t ladder;");
 	var GOObj = createGOFromJSON(GOJ);
 	//this.properties.ladder = GOObj;
 	GOObj.properties.parentObj = this;
@@ -183,26 +207,132 @@ function batHitCircleCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 
 function MrSniffsUpdate() {
 	if(this.properties.health <= 0) {
+		this.handler.removeObject(this.properties.jumpVector);
+		if(this.properties.children != null) {
+			for(var i = 0; i < this.properties.children.length; i++) {
+				this.handler.removeObject(this.properties.children[i]);
+			}
+		}
 		this.handler.removeObject(this);
 	}
-	if(this.currAnimation == 1) {
+	if(this.currAnimation == SniffAnimationStates.HurtLeft || this.currAnimation == SniffAnimationStates.HurtRight) {
 		this.properties.iFrames++;
 	}
 	if(this.properties.iFrames == 60) {
-		this.currAnimation = 0;
+		if(this.currAnimation == SniffAnimationStates.HurtLeft) {
+			this.currAnimation = SniffAnimationStates.IdleLeft;
+			this.properties.xv = -3;
+		} else if(this.currAnimation == SniffAnimationStates.HurtRight) {
+			this.currAnimation = SniffAnimationStates.IdleRight;
+			this.properties.xv = 3;
+		}
+		
+		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var GOObj2 = createGOFromJSON(GOJ2);
+		if(this.properties.children == null) {
+			this.properties.children = []
+		}
+		this.properties.children.push(GOObj2);
+		GOObj2.properties.parentObj = this;
+		oHandler.addObject(GOObj2);
+		
+		this.properties.iFrames++;
 	}
+	if(this.properties.xv == null) {
+		this.properties.xv = 0;
+	}
+	
+	if(this.properties.yv == null) {
+		this.properties.yv = 0;
+	}
+	if(this.properties.gravity == null) {
+		//console.log('No Prop');
+		return;
+	} //else {
+		//console.log(this.properties.gravity);
+	//}
+	
+	this.properties.yv = this.properties.yv + this.properties.gravity
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
 }
 
 function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		if(colObj.tag == 'playerHitCircle') {
 			console.log('OUCH!');
-			if(this.currAnimation == 0) {
+			if(this.currAnimation == SniffAnimationStates.IdleLeft || this.currAnimation == SniffAnimationStates.IdleRight) {
 				console.log('PAIN!');
 				this.properties.health--;
-				this.currAnimation = 1;
+				if(this.currAnimation == SniffAnimationStates.IdleLeft) {
+					this.currAnimation = SniffAnimationStates.HurtLeft;
+				} else if(this.currAnimation == SniffAnimationStates.IdleRight) {
+					this.currAnimation = SniffAnimationStates.HurtRight;
+				}
 				this.properties.iFrames = 0;
+				
+				if(this.properties.children != null) {
+					console.log('Children removal');
+					for(var i = 0; i < this.properties.children.length; i++) {
+						this.handler.removeObject(this.properties.children[i]);
+					}
+				}
+				this.properties.xv = 0;
+				
 			}
+		} else if(colObj.tag == 'wall') {
+			//console.log('Wall Collide');
+			this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
+			this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
+			
+			if((this.position.x - this.delta.dx) > this.position.x) {
+				this.position.x++;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 0;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			} else if((this.position.x - this.delta.dx) < this.position.x) {
+				this.position.x--;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 1;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			}
+			
+			if((this.position.y - this.delta.dy) > this.position.y) {
+				//this.properties.jumpable = 1;
+				this.position.y++;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 0;
+				}
+			} else if((this.position.y - this.delta.dy) < this.position.y) {
+				//this.properties.jumpable = 1;
+				this.position.y--;
+				//this.properties.gravity = 0;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 1;
+				}
+				
+				console.log('Redoing vector');
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//this.properties.jumpVector.properties.hit = 0;
+			}
+			
 		}
 	}
 }
@@ -364,117 +494,136 @@ function platformerPlayerMovement() {
 		return;
 	}
 	
-	if(keys.left && this.properties.slideStateY != 0 && this.properties.climbing == 0) {
-	//if(keys.left) {
-		this.properties.xv = -7;
-		if(this.properties.slideStateY == 1) {
-			this.properties.slideStateY = 2;
-		}
-		this.currAnimation = 3;
-	}
-	
-	if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0) {
-	//if(keys.right) {
-		this.properties.xv = 7;
-		if(this.properties.slideStateY == 0) {
-			this.properties.slideStateY = 2;
-		}
-		if(this.currAnimation != PlatformerAnimationStates.RunRight) {
-			//Reset Last Animation
-			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
-			
-			
-			this.currAnimation = PlatformerAnimationStates.RunRight;
-			this.animations[this.currAnimation].currKeyFrame = 0;
-		}
-	}
-	
-	if(this.currAnimation == 2 && this.properties.xv == 0) {
-		this.currAnimation = 0;
-	} else if(this.currAnimation == 3 && this.properties.xv == 0) {
-		this.currAnimation = 1;
-	}
-	
-	if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 0) {
-	//if(keys.up) {
-		//console.log('Up Press');
-		if(this.properties.jumpable == 1) {
-			this.properties.yv = -10;
-			//this.properties.jumpable = 0;
-			if(this.properties.slideStateX == 1) {
-				this.properties.slideStateX = 2;
+	if(this.properties.inStun == 0 && this.properties.inControl == 1) {
+		if(keys.left && this.properties.slideStateY != 0 && this.properties.climbing == 0) {
+		//if(keys.left) {
+			this.properties.xv = -7;
+			if(this.properties.slideStateY == 1) {
+				this.properties.slideStateY = 2;
 			}
-			//if(this.properties.gravity == 0) {
-			//	this.properties.gravity = 0.6;
-			//}
-			if(this.currAnimation == 0 || this.currAnimation == 2) {
-				this.currAnimation = 4;
-			} else if(this.currAnimation == 1 || this.currAnimation == 3) {
-				this.currAnimation = 5;
+			this.currAnimation = 3;
+		}
+		
+		if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0) {
+		//if(keys.right) {
+			this.properties.xv = 7;
+			if(this.properties.slideStateY == 0) {
+				this.properties.slideStateY = 2;
+			}
+			if(this.currAnimation != PlatformerAnimationStates.RunRight) {
+				//Reset Last Animation
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+				
+				
+				this.currAnimation = PlatformerAnimationStates.RunRight;
+				this.animations[this.currAnimation].currKeyFrame = 0;
 			}
 		}
-	} else if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 1) {
-		this.properties.yv = -7;
 		
-		if(this.properties.climbing == 0) {
-			this.properties.climbing = 1;
-		}
-	}
-	
-	//if(keys.down && this.properties.slideStateX != 1) {
-	if(keys.down && this.properties.climbMode == 0) {
-		
-	} else if(keys.down && this.properties.climbMode == 1) {
-		this.properties.yv = 7;
-		
-		if(this.properties.climbing == 0) {
-			this.properties.climbing = 1;
-		}
-	}
-	
-	if(!keys.space) {
-		this.properties.BatReady = 1;
-	}
-	
-	if(keys.space && this.properties.BatReady == 1) {
-		
-		//this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame
-		
-		if(this.currAnimation == 0 || this.currAnimation == 2 || this.currAnimation == 4) {
-			this.currAnimation = 6;
-			this.animations[this.currAnimation].Done = false;
-			this.properties.BatReady = 0;
-			this.animations[this.currAnimation].currKeyFrame = 0;
-			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
-		} else if(this.currAnimation == 1 || this.currAnimation == 3 || this.currAnimation == 5) {
-			this.currAnimation = 7;
-			this.animations[this.currAnimation].Done = false;
-			this.properties.BatReady = 0;
-			this.animations[this.currAnimation].currKeyFrame = 0;
-			this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
-		}
-		
-		createBatHitBox(this);
-	}
-	
-	if(this.animations[this.currAnimation].Done) {
-		if(this.currAnimation == 6) {
+		if(this.currAnimation == 2 && this.properties.xv == 0) {
 			this.currAnimation = 0;
-		} else if(this.currAnimation == 7) {
+		} else if(this.currAnimation == 3 && this.properties.xv == 0) {
 			this.currAnimation = 1;
 		}
+		
+		if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 0) {
+		//if(keys.up) {
+			//console.log('Up Press');
+			if(this.properties.jumpable == 1) {
+				this.properties.yv = -10;
+				//this.properties.jumpable = 0;
+				if(this.properties.slideStateX == 1) {
+					this.properties.slideStateX = 2;
+				}
+				//if(this.properties.gravity == 0) {
+				//	this.properties.gravity = 0.6;
+				//}
+				if(this.currAnimation == 0 || this.currAnimation == 2) {
+					this.currAnimation = 4;
+				} else if(this.currAnimation == 1 || this.currAnimation == 3) {
+					this.currAnimation = 5;
+				}
+			}
+		} else if(keys.up && this.properties.slideStateX != 0 && this.properties.climbMode == 1) {
+			this.properties.yv = -7;
+			
+			if(this.properties.climbing == 0) {
+				this.properties.climbing = 1;
+			}
+		}
+		
+		//if(keys.down && this.properties.slideStateX != 1) {
+		if(keys.down && this.properties.climbMode == 0) {
+			
+		} else if(keys.down && this.properties.climbMode == 1) {
+			this.properties.yv = 7;
+			
+			if(this.properties.climbing == 0) {
+				this.properties.climbing = 1;
+			}
+		}
+		
+		if(!keys.space) {
+			this.properties.BatReady = 1;
+		}
+		
+		if(keys.space && this.properties.BatReady == 1) {
+			
+			//this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame
+			
+			if(this.currAnimation == 0 || this.currAnimation == 2 || this.currAnimation == 4) {
+				this.currAnimation = 6;
+				this.animations[this.currAnimation].Done = false;
+				this.properties.BatReady = 0;
+				this.animations[this.currAnimation].currKeyFrame = 0;
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+			} else if(this.currAnimation == 1 || this.currAnimation == 3 || this.currAnimation == 5) {
+				this.currAnimation = 7;
+				this.animations[this.currAnimation].Done = false;
+				this.properties.BatReady = 0;
+				this.animations[this.currAnimation].currKeyFrame = 0;
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+			}
+			
+			createBatHitBox(this);
+		}
+		
+		if(this.animations[this.currAnimation].Done) {
+			if(this.currAnimation == 6) {
+				this.currAnimation = 0;
+			} else if(this.currAnimation == 7) {
+				this.currAnimation = 1;
+			}
+		}
+		
+	} else if(this.properties.inStun == 1) {
+		if(this.currAnimation == PlatformerAnimationStates.HurtRight) {
+			this.properties.xv = -4;
+		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft) {
+			this.properties.xv = 4;
+		}
+		
+		this.properties.stunCounter++;
+		if(this.properties.stunCounter == 30) {
+			this.properties.inStun = 0;
+			if(this.currAnimation == PlatformerAnimationStates.HurtRight) {
+				this.currAnimation = PlatformerAnimationStates.IdleRight;
+			} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft) {
+				this.currAnimation = PlatformerAnimationStates.IdleLeft;
+			}
+		}
 	}
-	
+		
 	//console.log('climbMode: ' + this.properties.climbMode + ', climbing: ' + this.properties.climbing);
 	if(this.properties.climbing == 0) {
 		this.properties.yv = this.properties.yv + this.properties.gravity
 	} else {
 		this.properties.yv = this.properties.yv;
 	}
-	
+		
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
-	
+		
 	if(this.properties.jumpVector != null) {
 		//console.log('changing vecotr position');
 		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
@@ -483,13 +632,21 @@ function platformerPlayerMovement() {
 		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 		this.properties.jumpVector.properties.hit = 0;
 	}
-	
+		
 	this.properties.xv = 0;
-	
+		
 	if(this.properties.climbing == 1) {
 		this.properties.yv = 0;
 	}
 	//this.properties.yv = 0;
+	
+	
+	if(this.properties.iFrames != -1) {
+		this.properties.iFrames++;
+	}
+	if(this.properties.iFrames == 60) {
+		this.properties.iFrames = -1;
+	}
 }
 
 function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
@@ -562,7 +719,47 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'ladder') {
 			//console.log(colObj.parentObj);
 			if(this.position.y >= colObj.properties.parentObj.position.y) {
-				this.properties.climbMode = 1;
+				if(this.vertices[verIndex].label == 'topright') {
+					console.log('topright collision');
+					console.log(colObj.vertices[colVer1].label);
+					console.log(colObj.vertices[colVer2].label);
+					if(colObj.vertices[colVer1].label == 'bottomleft' && colObj.vertices[colVer2].label == 'topleft') {
+						console.log('left ladder wall');
+						if((this.position.x - this.delta.dx) < this.position.x) {
+							this.properties.climbMode = 1;
+						} else if((this.position.x - this.delta.dx) > this.position.x) {
+							this.properties.climbMode = 0;
+						}
+					}
+				} else if(this.vertices[verIndex].label == 'topleft') {
+					console.log('topleft collision');
+					if(colObj.vertices[colVer1].label == 'topright' && colObj.vertices[colVer2].label == 'bottomright') {
+						console.log('right ladder wall');
+						if((this.position.x - this.delta.dx) < this.position.x) {
+							this.properties.climbMode = 0;
+						} else if((this.position.x - this.delta.dx) > this.position.x) {
+							this.properties.climbMode = 1;
+						}
+					}
+				}
+				//this.properties.climbMode = 1;
+			}
+		} else if(colObj.tag == 'enemyHitBox') {
+			console.log('Attacked');
+			if(this.properties.iFrames == -1) {
+				console.log('From Health: ' + this.properties.health);
+				this.properties.health--;
+				console.log('To Health: ' + this.properties.health);
+				this.properties.iFrames = 0;
+				
+				this.properties.inStun = 1;
+				this.properties.stunCounter = 0;
+				//console.log(this.properties.inStun);
+				if(this.currAnimation == PlatformerAnimationStates.IdleRight || this.currAnimation == PlatformerAnimationStates.RunRight || this.currAnimation == PlatformerAnimationStates.JumpRight || this.currAnimation == PlatformerAnimationStates.SwingRight) {
+					this.currAnimation = PlatformerAnimationStates.HurtRight;
+				} else if(this.currAnimation == PlatformerAnimationStates.IdleLeft || this.currAnimation == PlatformerAnimationStates.RunLeft || this.currAnimation == PlatformerAnimationStates.JumpLeft || this.currAnimation == PlatformerAnimationStates.SwingLeft) {
+					this.currAnimation = PlatformerAnimationStates.HurtLeft;
+				}
 			}
 		}
 	}

@@ -41,6 +41,8 @@ var oHandlerDev = new ObjectHandler();
 
 var paused = false;
 
+var GlobalVars = {};
+
 function gameLoop() {
 	/*
 	ctxPlay.clearRect(0, 0, canvasPlay.width, canvasPlay.height);

@@ -33,7 +33,7 @@ function UploadTestGame() {
 	var testcode = 'GameObject -p lastPStatus 0 -su uiLogger;'
 	testcode = testcode + 'GameObject -x 50 -y 300 -v 0 0 -v 450 0 -v 450 16 -v 0 16 -d -t wall;'
 	testcode = testcode + 'GameObject -x 50 -y 50 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
-	testcode = testcode + 'GameObject -x 300 -y 250 -rp 18 18 18 -a SniffsAnimationPackage -d -ca 0 -t enemy;'
+	testcode = testcode + 'GameObject -x 300 -y 250 -rp 18 18 18 -a SniffsAnimationPackage -d -ca 0 -t enemy -v 0 0 -v 36 0 -v 36 36 -v 0 36;'
 	testcode = testcode + 'GameObject -x 150 -y 250 -v 0 0 -v 100 0 -v 100 20 -v 0 20 -d -t platform;'
 	testcode = testcode + 'GameObject -x 250 -y 250 -v 0 0 -v 100 0 -d -t platform;'
 	testcode = testcode + 'GameObject -x 475 -y 370 -v 0 0 -v 100 0 -d -t platform;'
@@ -69,10 +69,10 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
 	//testcode = testcode + 'GameObject -x 120 -y 999 -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side right;'
 	//testcode = testcode + 'GameObject -x 120 -y 849 -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side left;'
-	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 -v 36 0 -v 36 54 -v 0 54 -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0;'
+	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
 	testcode = testcode + 'GameObject -pi addClickOption -u showClickPosition;'
 	
-	testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1;'
+	testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
 	testcode = testcode + 'GameObject -u Floor1Trigger -p pulled 0;'
 	
 	testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'

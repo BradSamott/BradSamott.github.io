@@ -19,11 +19,54 @@ var CrawlerAnimationPackage = [
 		}
 	]
 
+var SniffAnimationStates = {
+	IdleRight: 0,
+	IdleLeft: 1,
+	HurtRight: 2,
+	HurtLeft: 3
+}
+
 var SniffsAnimationPackage = [
 	//Idle Right 0
 	{
 		keyFrames: [
 			{keyFrame: './Assets/Animates/MrSniffs.png', length: 36, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Idle Left 1
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 36, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Right
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs.png', length: 36, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/MrSniffs.png', length: 36, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Left
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 36, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 36, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -39,7 +82,9 @@ var PlatformerAnimationStates = {
 	JumpRight: 4,
 	JumpLeft: 5,
 	SwingRight: 6,
-	SwingLeft: 7
+	SwingLeft: 7,
+	HurtRight: 8,
+	HurtLeft: 9
 }
 
 var AntiAnimationPackage = [
@@ -228,6 +273,32 @@ var PlatformerAnimationPackage = [
 		],
 		currKeyFrame: 0,
 		Loops: false,
+		Done: false
+	},
+	
+	//Hurt Right
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Left
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
 		Done: false
 	}
 ]

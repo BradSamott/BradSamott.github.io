@@ -684,7 +684,18 @@ function createGOJsonFromString(args) {
 				
 				if(!isNaN(argsList[i + 2]) && argsList[i + 2] != null && argsList[i + 2] != '') {
 					newVert.offY = parseFloat(argsList[i + 2]);
-					i = i + 2;
+					//i = i + 2;
+					
+					if(argsList[i + 3] != null && argsList[i + 3] != '') {
+						if(argsList[i + 3].substring(0,1) != '-') {
+							newVert.label = argsList[i + 3];
+							i = i + 3;
+						} else {
+							i = i + 2;
+						}
+					} else {
+						i = i + 2;
+					}
 				} else {
 					newVert.offY = 0;
 					i++;
