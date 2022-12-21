@@ -59,7 +59,7 @@ function gameLoop() {
 		oHandler.tickObjects();
 		oHandler.checkCollisions();
 		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
-		oHandler.renderTextObjects();
+		oHandler.renderTextObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.cBuff = [];
 	}
 	oHandler.systemTick();
@@ -68,7 +68,7 @@ function gameLoop() {
 		oHandlerDev.tickObjects();
 		oHandlerDev.checkCollisions();
 		oHandlerDev.renderObjects(ctxPlayDev,canvasPlayDev, ctxBackgroundDev, canvasBackgroundDev, ctxForegroundDev, canvasForegroundDev, ctxUserInterfaceDev, canvasUserInterfaceDev);
-		oHandlerDev.renderTextObjects();
+		oHandlerDev.renderTextObjects(ctxPlayDev,canvasPlayDev, ctxBackgroundDev, canvasBackgroundDev, ctxForegroundDev, canvasForegroundDev, ctxUserInterfaceDev, canvasUserInterfaceDev);
 		oHandlerDev.cBuff = [];
 	}
 	oHandlerDev.systemTick();

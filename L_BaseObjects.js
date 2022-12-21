@@ -70,13 +70,14 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	
 }
 
-function TextObject(x, y, size, font, color, textContent) {
+function TextObject(x, y, size, font, color, textContent, properties) {
 	this.position = {x, y};
 	
 	this.size = size;
 	this.font = font;
 	this.color = color;
 	this.textContent = textContent;
+	this.properties = properties;
 }
 
 /*
@@ -116,6 +117,7 @@ function ObjectHandler() {
 	
 	this.addTextObject = function(object) {
 		this.textObjects.push(object);
+		object.Handler = this;
 	}
 	
 	this.removeObject = function(object) {
@@ -478,12 +480,21 @@ function ObjectHandler() {
 		}
 	}
 	
-	this.renderTextObjects = function() {
+	this.renderTextObjects = function(PlayArea,PlayCanvas, BackgroundArea, BackgroundCanvas, ForegroundArea, ForegroundCanvas, UIArea, UICanvas) {
 		for(var objI = 0; objI < this.textObjects.length; objI++) {
-			ctxUserInterface.font = ""+this.textObjects[objI].size+"px "+this.textObjects[objI].font+"";
-			ctxUserInterface.fillStyle = this.textObjects[objI].color;
-			ctxUserInterface.textAlign = "left";
-			ctxUserInterface.fillText(this.textObjects[objI].textContent, this.textObjects[objI].position.x, this.textObjects[objI].position.y);
+			//console.log("Text Obj x: " + this.textObjects[objI].textContent);
+			//ctxUserInterface.font = ""+this.textObjects[objI].size+"px "+this.textObjects[objI].font+"";
+			//ctxUserInterface.fillStyle = this.textObjects[objI].color;
+			//ctxUserInterface.textAlign = "left";
+			//ctxUserInterface.fillText(this.textObjects[objI].textContent, this.textObjects[objI].position.x, this.textObjects[objI].position.y);
+			
+			var xPos = this.textObjects[objI].position.x - this.CameraX;
+			var yPos = this.textObjects[objI].position.y - this.CameraY;
+			
+			UIArea.font = ""+this.textObjects[objI].size+"px "+this.textObjects[objI].font+"";
+			UIArea.fillStyle = this.textObjects[objI].color;
+			UIArea.textAlign = "left";
+			UIArea.fillText(this.textObjects[objI].textContent, xPos, yPos);
 		}
 	}
 	
@@ -956,6 +967,7 @@ function createTOFromJSON(jArg) {
 	var font = 'Arial';
 	var color = 'white';
 	var textContent = '';
+	var properties = {};
 	
 	if(jArg.x != null) {
 		x = jArg.x;
@@ -981,13 +993,19 @@ function createTOFromJSON(jArg) {
 		textContent = jArg.textContent;
 	}
 	
-	var newTextObject = new TextObject(x, y, size, font, color, textContent);
+	if(jArg.properties != null) {
+		properties = jArg.properties;
+	}
+	
+	var newTextObject = new TextObject(x, y, size, font, color, textContent, properties);
 	
 	return newTextObject;
 }
 
 function createTOJsonFromString(args) { 
-	var jsonArg = {};
+	var jsonArg = {
+		properties: {}
+	};
 	
 	var argsList = splitQuoteGroup(args.replace(';','').replace('\n',''));
 	

@@ -770,6 +770,10 @@ function ladderStopperAction(colObj,verIndex,intersection,colVer1,colVer2) {
 		if(colObj.tag == 'player') {
 			colObj.properties.climbMode = 0;
 			colObj.properties.climbing = 0;
+			
+			var TOJ = createTOJsonFromString('TextObject -x 130 -y '+(this.position.y-10)+' -t "Hi Im Tom"');
+			var TOObj = createTOFromJSON(TOJ);
+			this.handler.addTextObject(TOObj);
 		}
 	}
 }
