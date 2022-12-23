@@ -72,13 +72,14 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
 	testcode = testcode + 'GameObject -pi addClickOption -u showClickPosition;'
 	
-	testcode = testcode + 'GameObject -x 140 -y 1090 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
-	testcode = testcode + 'GameObject -u Floor1Trigger -p pulled 0;'
+	testcode = testcode + 'GameObject -x 240 -y 1090 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
+	//testcode = testcode + 'GameObject -u Floor1Trigger -p pulled 0;'
+	testcode = testcode + 'GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor1 -p side right -p ycoord 1000;'
 	testcode = testcode + 'TextObject -x 130 -y 1077 -t "Hi Im Tom";'
 	
 	testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
 	testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 10 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
-	testcode = testcode + 'GameObject -u Floor2Trigger -p pulled 0;'
+	testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor2 -p side left -p ycoord 850;'
 	
 	testcode = testcode + 'GameObject -x 140 -y 790 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor3;'
 	testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor3 -p ycoord 699 -p side right;'

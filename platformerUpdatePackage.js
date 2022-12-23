@@ -389,13 +389,57 @@ function FloorNTrigger() {
 			var code = '';
 			if(this.properties.highest == 1) {
 				code = code + 'GameObject -x 340 -y 640 -rp 0 0 18 -d -cf refreshFloorsCollision;';
+				console.log(code);
+				enterObjects(code);
 			} else {
-				code = code + 'GameObject -x 120 -y '+this.properties.ycoord+' -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side '+this.properties.side+';'
+				//code = code + 'GameObject -x 120 -y '+this.properties.ycoord+' -v 0 0 -v 400 0 -t platform -d -pi createLadderAndStopper -p side '+this.properties.side+';'
+				this.handler.addObject(this.properties.children[0].properties.children[0]);
+				this.handler.addObject(this.properties.children[0].properties.children[1]);
 			}
-			enterObjects(code);
+			//console.log(code);
+			//enterObjects(code);
 			this.properties.pulled = 1;
 		}
 	}
+}
+
+function createFloorChildren() {
+	var xOffLad = 470;
+	var xOffStop = 495;
+	if(this.properties.side == "right") {
+		xOffLad = 470;
+		xOffStop = 495;
+	} else if(this.properties.side == "left") {
+		xOffLad = 120;
+		xOffStop = 145;
+	}
+	
+	if(this.properties.children == null) {
+		this.properties.children = []
+	}
+	
+	var GOJ0 = createGOJsonFromString('GameObject -x 120 -y '+this.properties.ycoord+' -v 0 0 -v 400 0 -t platform -d -p side '+this.properties.side+';');
+	var GOObj0 = createGOFromJSON(GOJ0);
+	//this.properties.ladder = GOObj;
+	GOObj0.properties.parentObj = this;
+	this.properties.children[0] = GOObj0; 
+	GOObj0.properties.children = [];
+	this.handler.addObject(GOObj0);
+	
+	var GOJ = createGOJsonFromString("GameObject -x "+xOffLad+" -y "+(GOObj0.position.y+1)+" -v 0 0 topleft -v 50 0 topright -v 50 150 bottomright -v 0 150 bottomleft -d -t ladder;");
+	var GOObj = createGOFromJSON(GOJ);
+	//this.properties.ladder = GOObj;
+	GOObj.properties.parentObj = GOObj0;
+	GOObj0.properties.children[0] = GOObj;
+	//oHandler.addObject(GOObj);
+	
+	//var GOJ2 = createGOJsonFromString("GameObject -x 495 -y 910 -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;");
+	var GOJ2 = createGOJsonFromString("GameObject -x "+xOffStop+" -y "+(GOObj0.position.y-89)+" -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;");
+	var GOObj2 = createGOFromJSON(GOJ2);
+	//this.properties.ladderStopper = GOObj2;
+	GOObj2.properties.parentObj = GOObj0;
+	GOObj0.properties.children[1] = GOObj2;
+	//oHandler.addObject(GOObj2);
 }
 
 function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
