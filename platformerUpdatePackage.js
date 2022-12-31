@@ -545,7 +545,15 @@ function platformerPlayerMovement() {
 			if(this.properties.slideStateY == 1) {
 				this.properties.slideStateY = 2;
 			}
-			this.currAnimation = 3;
+			if(this.currAnimation != PlatformerAnimationStates.RunLeft && this.currAnimation != PlatformerAnimationStates.JumpRight && this.currAnimation != PlatformerAnimationStates.JumpLeft) {
+				//Reset Last Animation
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+				
+				
+				this.currAnimation = PlatformerAnimationStates.RunLeft;
+				this.animations[this.currAnimation].currKeyFrame = 0;
+			}
+			//this.currAnimation = 3;
 		}
 		
 		if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0) {
@@ -554,7 +562,7 @@ function platformerPlayerMovement() {
 			if(this.properties.slideStateY == 0) {
 				this.properties.slideStateY = 2;
 			}
-			if(this.currAnimation != PlatformerAnimationStates.RunRight) {
+			if(this.currAnimation != PlatformerAnimationStates.RunRight && this.currAnimation != PlatformerAnimationStates.JumpRight && this.currAnimation != PlatformerAnimationStates.JumpLeft) {
 				//Reset Last Animation
 				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
 				
@@ -733,6 +741,16 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.properties.jumpVector.setPosition(newjumpVectorPosition);
 				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 				//this.properties.jumpVector.properties.hit = 0;
+				
+				if(this.currAnimation == PlatformerAnimationStates.JumpRight) {
+					this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+					this.currAnimation = PlatformerAnimationStates.IdleRight;
+					this.animations[this.currAnimation].currKeyFrame = 0;
+				} else if(this.currAnimation == PlatformerAnimationStates.JumpLeft) {
+					this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+					this.currAnimation = PlatformerAnimationStates.IdleLeft;
+					this.animations[this.currAnimation].currKeyFrame = 0;
+				}
 			}
 		} else if(colObj.tag == 'testBall') {
 			console.log('Ball Intersection');
@@ -759,6 +777,16 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 				//console.log(this.properties.jumpVector.delta);
 				//this.properties.jumpVector.properties.hit = 0;
+				
+				if(this.currAnimation == PlatformerAnimationStates.JumpRight) {
+					this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+					this.currAnimation = PlatformerAnimationStates.IdleRight;
+					this.animations[this.currAnimation].currKeyFrame = 0;
+				} else if(this.currAnimation == PlatformerAnimationStates.JumpLeft) {
+					this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+					this.currAnimation = PlatformerAnimationStates.IdleLeft;
+					this.animations[this.currAnimation].currKeyFrame = 0;
+				}
 			}
 		} else if(colObj.tag == 'ladder') {
 			//console.log(colObj.parentObj);
