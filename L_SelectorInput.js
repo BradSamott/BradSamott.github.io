@@ -57,6 +57,8 @@ function UploadAntiGame() {
 
 function UploadDoomScrollerGame() {
 	var testcode = '';
+	
+	/*
 	//testcode = testcode + 'GameObject -x 120 -y 850 -v 0 0 -v 50 0 -v 50 150 -v 0 150 -d -t ladder;'
 	//testcode = testcode + 'GameObject -x 145 -y 760 -rp 0 0 30 -d -t ladderStopper -cf ladderStopperAction;'
 	
@@ -77,15 +79,24 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor1 -p side right -p ycoord 1000;'
 	testcode = testcode + 'TextObject -x 130 -y 1077 -t "Hi Im Tom";'
 	
-	testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
-	testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 10 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
-	testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor2 -p side left -p ycoord 850;'
+	testcode = testcode + 'GameObject -x 140 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
+	testcode = testcode + 'GameObject -x 240 -y 940 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor2;'
+	testcode = testcode + 'GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor2 -p side left -p ycoord 850;'
 	
 	testcode = testcode + 'GameObject -x 140 -y 790 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor3;'
-	testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor3 -p ycoord 699 -p side right;'
+	testcode = testcode + 'GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor3 -p ycoord 699 -p side right;'
 	
 	testcode = testcode + 'GameObject -x 140 -y 640 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor4;'
-	testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor4 -p highest 1;'
+	testcode = testcode + 'GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor4 -p highest 1;'
+	*/
+	
+	
+	testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+	testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+	testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
+	testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
+	testcode = testcode + 'GameObject -pi setupFloorRandom ;';
+	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
 	
 	oHandler.removeAllObjects();
 	enterObjects(testcode);

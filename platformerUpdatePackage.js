@@ -333,6 +333,50 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				//this.properties.jumpVector.properties.hit = 0;
 			}
 			
+		} else if(colObj.tag == 'platform') {
+			//console.log('Platform Collide');
+			this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
+			this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
+			
+			if((this.position.x - this.delta.dx) > this.position.x) {
+				this.position.x++;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 0;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			} else if((this.position.x - this.delta.dx) < this.position.x) {
+				this.position.x--;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 1;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			}
+			
+			if((this.position.y - this.delta.dy) < this.position.y) {
+				//this.properties.jumpable = 1;
+				this.position.y--;
+				//this.properties.gravity = 0;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 1;
+				}
+				
+				console.log('Redoing vector');
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//this.properties.jumpVector.properties.hit = 0;
+			}
 		}
 	}
 }
@@ -388,7 +432,7 @@ function FloorNTrigger() {
 			console.log('Working');
 			var code = '';
 			if(this.properties.highest == 1) {
-				code = code + 'GameObject -x 340 -y 640 -rp 0 0 18 -d -cf refreshFloorsCollision;';
+				code = code + 'GameObject -x 340 -y '+(this.properties.ycoord + 50)+' -rp 0 0 18 -d -cf refreshFloorsCollision;';
 				console.log(code);
 				enterObjects(code);
 			} else {
@@ -447,6 +491,7 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 		if(colObj.tag == 'player') {
 			var testcode = '';
 			
+			/*
 			testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
 			testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
 			testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
@@ -467,9 +512,52 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 	
 			testcode = testcode + 'GameObject -x 140 -y 640 -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor4;'
 			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor4 -p highest 1;'
+			*/
+			
+			testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+			testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+			testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
+			testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
+			testcode = testcode + 'GameObject -pi setupFloorRandom ;';
+			testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
 			
 			this.handler.removeAllObjects();
 			enterObjects(testcode);
+		}
+	}
+}
+
+function setupFloorRandom() {
+	var side = 'right';
+	
+	for(var i = 1; i <= 5; i++) {
+		var enemAmt = Math.floor(Math.random() * 3) + 1;
+		
+		console.log( 1000 - ((i-1)*150) );
+		var GOJ0;
+		if(i == 5) {
+			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p highest 1 -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
+		} else {
+			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
+		}
+		var GOObj0 = createGOFromJSON(GOJ0);
+		GOObj0.properties.parentObj = this;
+		this.properties.children = [];
+		this.properties.children[i - 1] = GOObj0; 
+		GOObj0.properties.children = [];
+		this.handler.addObject(GOObj0);
+		
+		for(var j = 1; j <= enemAmt; j++) {
+			//testcode = testcode + 'GameObject -x 240 -y '+( 1090 - ((i-1)*150)) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
+			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
+			var GOObjE = createGOFromJSON(GOJE);
+			this.handler.addObject(GOObjE);
+		}
+		
+		if(side == 'right') {
+			side = 'left';
+		} else {
+			side = 'right';
 		}
 	}
 }

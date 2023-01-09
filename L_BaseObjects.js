@@ -937,7 +937,7 @@ function createGOJsonFromString(args) {
 					eval("jsonArg.postInit = "+ argsList[i + 1] + ";");
 					i++;
 				} catch(e) {
-					console.log('Error: Function for init does not exist');
+					console.log('Error: Function for post init does not exist');
 				}
 			}
 		}
