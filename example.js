@@ -252,9 +252,9 @@ var PlatformerAnimationPackage = [
 	{
 		keyFrames: [
 			{keyFrame: './Assets/Animates/TheBoy_Windup.png', length: 54, width: 72, duration: 4, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 4, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 4, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 2, currFrame: 1},
 			{keyFrame: './Assets/Animates/TheBoy_FollowThru.png', length: 54, width: 72, duration: 4, currFrame: 1}
 		],
 		currKeyFrame: 0,
@@ -265,11 +265,11 @@ var PlatformerAnimationPackage = [
 	//Swing Left 7
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Windup_R.png', length: 54, width: 72, duration: 1, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
-			{keyFrame: './Assets/Animates/TheBoy_ReadyStep_R.png', length: 54, width: 72, duration: 1, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
-			{keyFrame: './Assets/Animates/TheBoy_Swing_R.png', length: 54, width: 72, duration: 1, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
-			{keyFrame: './Assets/Animates/TheBoy_BatHit_R.png', length: 54, width: 72, duration: 1, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
-			{keyFrame: './Assets/Animates/TheBoy_FollowThru_R.png', length: 54, width: 72, duration: 1, currFrame: 1, drawOffX: -36, drawOffsetY: 0}
+			{keyFrame: './Assets/Animates/TheBoy_Windup_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_Swing_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0}
 		],
 		currKeyFrame: 0,
 		Loops: false,

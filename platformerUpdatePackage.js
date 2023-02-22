@@ -162,16 +162,18 @@ function batHitCircleUpdate() {
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 3) {
 			this.position.x = this.properties.parentObj.position.x + 36;
 			this.position.y = this.properties.parentObj.position.y + 27;
+			this.radialPoints[0].radius = 24;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 4) {
 			this.position.x = this.properties.parentObj.position.x + 72;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		}
 	} else if(this.properties.parentObj.currAnimation == 7) {
 		if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 0) {
-			this.position.x = this.properties.parentObj.position.x;
+			this.position.x = this.properties.parentObj.position.x + 36;
 			this.position.y = this.properties.parentObj.position.y;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 1) {
-			this.position.x = this.properties.parentObj.position.x;
+			this.position.x = this.properties.parentObj.position.x + 36;
 			this.position.y = this.properties.parentObj.position.y;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 2) {
 			this.position.x = this.properties.parentObj.position.x + 18;
@@ -179,9 +181,11 @@ function batHitCircleUpdate() {
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 3) {
 			this.position.x = this.properties.parentObj.position.x - 0;
 			this.position.y = this.properties.parentObj.position.y + 27;
+			this.radialPoints[0].radius = 24;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 4) {
 			this.position.x = this.properties.parentObj.position.x - 36;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		}
 	} else {
 		this.handler.removeObject(this);
@@ -256,6 +260,100 @@ function MrSniffsUpdate() {
 	
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
+	
+	if(this.properties.jumpVector != null) {
+		//console.log('changing vecotr position');
+		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.jumpVector.setPosition(newjumpVectorPosition);
+		//this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x + this.properties.jumpVector.vertices[1].offX, y: this.properties.jumpVector.position.y + this.properties.jumpVector.vertices[1].offY});
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
+	}
+}
+
+function MrSniffsUpdate2() {
+	if(this.properties.stayFrames == null) {
+		this.properties.stayFrames = 0;
+	}
+	if(this.properties.jumping == null) {
+		this.properties.jumping = 1;
+	}
+	if(this.properties.stayFrames < 20 && this.properties.jumping == 0) {
+		if(this.currAnimation == SniffAnimationStates.IdleLeft || this.currAnimation == SniffAnimationStates.IdleRight) {
+			this.properties.stayFrames++;
+			this.properties.xv = 0;
+			this.properties.yv = 0;
+		}
+	} else if(this.properties.jumping == 0) {
+		if(this.currAnimation == SniffAnimationStates.IdleRight) {
+			this.properties.xv = 3;
+			this.properties.yv = -3;
+			this.properties.jumping = 1;
+		} else if(this.currAnimation == SniffAnimationStates.IdleLeft) {
+			this.properties.xv = -3;
+			this.properties.yv = -3;
+			this.properties.jumping = 1;
+		}
+	}
+	if(this.properties.health <= 0) {
+		this.handler.removeObject(this.properties.jumpVector);
+		if(this.properties.children != null) {
+			for(var i = 0; i < this.properties.children.length; i++) {
+				this.handler.removeObject(this.properties.children[i]);
+			}
+		}
+		this.handler.removeObject(this);
+	}
+	if(this.currAnimation == SniffAnimationStates.HurtLeft || this.currAnimation == SniffAnimationStates.HurtRight) {
+		this.properties.iFrames++;
+	}
+	if(this.properties.iFrames == 60) {
+		if(this.currAnimation == SniffAnimationStates.HurtLeft) {
+			this.currAnimation = SniffAnimationStates.IdleLeft;
+			//this.properties.xv = -3;
+		} else if(this.currAnimation == SniffAnimationStates.HurtRight) {
+			this.currAnimation = SniffAnimationStates.IdleRight;
+			//this.properties.xv = 3;
+		}
+		
+		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var GOObj2 = createGOFromJSON(GOJ2);
+		if(this.properties.children == null) {
+			this.properties.children = []
+		}
+		this.properties.children.push(GOObj2);
+		GOObj2.properties.parentObj = this;
+		oHandler.addObject(GOObj2);
+		
+		this.properties.iFrames++;
+	}
+	if(this.properties.xv == null) {
+		this.properties.xv = 0;
+	}
+	
+	if(this.properties.yv == null) {
+		this.properties.yv = 0;
+	}
+	if(this.properties.gravity == null) {
+		//console.log('No Prop');
+		return;
+	} //else {
+		//console.log(this.properties.gravity);
+	//}
+	
+	this.properties.yv = this.properties.yv + this.properties.gravity;
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
+	
+	if(this.properties.jumpVector != null) {
+		//console.log('changing vecotr position');
+		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.jumpVector.setPosition(newjumpVectorPosition);
+		//this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x + this.properties.jumpVector.vertices[1].offX, y: this.properties.jumpVector.position.y + this.properties.jumpVector.vertices[1].offY});
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
+	}
 }
 
 function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
@@ -317,7 +415,7 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
 					this.properties.slideStateX = 0;
 				}
-			} else if((this.position.y - this.delta.dy) < this.position.y) {
+			} else if((this.position.y - this.delta.dy) < this.position.y) { //landing
 				//this.properties.jumpable = 1;
 				this.position.y--;
 				//this.properties.gravity = 0;
@@ -362,7 +460,7 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				}
 			}
 			
-			if((this.position.y - this.delta.dy) < this.position.y) {
+			if((this.position.y - this.delta.dy) < this.position.y) { //landing
 				//this.properties.jumpable = 1;
 				this.position.y--;
 				//this.properties.gravity = 0;
@@ -376,6 +474,135 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.properties.jumpVector.setPosition(newjumpVectorPosition);
 				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
 				//this.properties.jumpVector.properties.hit = 0;
+			}
+		}
+	}
+}
+
+function MrSniffCollide2(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'playerHitCircle') {
+			console.log('OUCH!');
+			if(this.currAnimation == SniffAnimationStates.IdleLeft || this.currAnimation == SniffAnimationStates.IdleRight) {
+				console.log('PAIN!');
+				this.properties.health--;
+				if(this.currAnimation == SniffAnimationStates.IdleLeft) {
+					this.currAnimation = SniffAnimationStates.HurtLeft;
+				} else if(this.currAnimation == SniffAnimationStates.IdleRight) {
+					this.currAnimation = SniffAnimationStates.HurtRight;
+				}
+				this.properties.iFrames = 0;
+				
+				if(this.properties.children != null) {
+					console.log('Children removal');
+					for(var i = 0; i < this.properties.children.length; i++) {
+						this.handler.removeObject(this.properties.children[i]);
+					}
+				}
+				this.properties.xv = 0;
+				
+			}
+		} else if(colObj.tag == 'wall') {
+			//console.log('Wall Collide');
+			this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
+			this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
+			
+			if((this.position.x - this.delta.dx) > this.position.x) {
+				this.position.x++;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 0;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			} else if((this.position.x - this.delta.dx) < this.position.x) {
+				this.position.x--;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 1;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			}
+			
+			if((this.position.y - this.delta.dy) > this.position.y) {
+				//this.properties.jumpable = 1;
+				this.position.y++;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 0;
+				}
+			} else if((this.position.y - this.delta.dy) < this.position.y) { //landing
+				//this.properties.jumpable = 1;
+				this.position.y--;
+				//this.properties.gravity = 0;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 1;
+				}
+				
+				console.log('Redoing vector');
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//this.properties.jumpVector.properties.hit = 0;
+				
+				this.properties.jumping = 0;
+				this.properties.stayFrames = 0;
+			}
+			
+		} else if(colObj.tag == 'platform') {
+			//console.log('Platform Collide');
+			this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
+			this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
+			
+			if((this.position.x - this.delta.dx) > this.position.x) {
+				this.position.x++;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 0;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			} else if((this.position.x - this.delta.dx) < this.position.x) {
+				this.position.x--;
+				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.properties.slideStateY = 1;
+				}
+				this.properties.xv = this.properties.xv * -1;
+				if(this.properties.xv > 0) {
+					this.currAnimation = SniffAnimationStates.IdleRight;
+				} else if(this.properties.xv < 0) {
+					this.currAnimation = SniffAnimationStates.IdleLeft;
+				}
+			}
+			
+			if((this.position.y - this.delta.dy) < this.position.y) { //landing
+				//this.properties.jumpable = 1;
+				this.position.y--;
+				//this.properties.gravity = 0;
+				this.properties.yv = 0;
+				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+					this.properties.slideStateX = 1;
+				}
+				
+				console.log('Redoing vector');
+				var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+				this.properties.jumpVector.setPosition(newjumpVectorPosition);
+				this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+				//this.properties.jumpVector.properties.hit = 0;
+				
+				this.properties.jumping = 0;
+				this.properties.stayFrames = 0;
 			}
 		}
 	}
@@ -549,7 +776,22 @@ function setupFloorRandom() {
 		
 		for(var j = 1; j <= enemAmt; j++) {
 			//testcode = testcode + 'GameObject -x 240 -y '+( 1090 - ((i-1)*150)) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
-			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
+			var enemyTypeNum = Math.floor(Math.random() * 2) + 1;
+			var enemyType = '';
+			var collideType = '';
+			
+			if(enemyTypeNum == 1) {
+				enemyType = 'MrSniffsUpdate';
+				collideType = 'MrSniffCollide';
+			} else if(enemyTypeNum == 2) {
+				enemyType = 'MrSniffsUpdate2';
+				collideType = 'MrSniffCollide2';
+			} else {
+				enemyType = 'MrSniffsUpdate';
+				collideType = 'MrSniffCollide';
+			}
+			
+			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
 			var GOObjE = createGOFromJSON(GOJE);
 			this.handler.addObject(GOObjE);
 		}
@@ -572,7 +814,17 @@ function createBatHitBox(PlayerObj) {
 	oHandler.addObject(GOObj);
 	*/
 	
-	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + 72) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate -d -cf batHitCircleCollide -t playerHitCircle';
+	var startOffset = -72;
+	
+	if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleRight || PlayerObj.currAnimation == PlatformerAnimationStates.RunRight || PlayerObj.currAnimation == PlatformerAnimationStates.JumpRight) {
+		startOffset = -72;
+	} else if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleLeft || PlayerObj.currAnimation == PlatformerAnimationStates.RunLeft || PlayerObj.currAnimation == PlatformerAnimationStates.JumpLeft) {
+		startOffset = 72;
+	}
+	
+	console.log(startOffset);
+	
+	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + startOffset) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate -d -cf batHitCircleCollide -t playerHitCircle';
 	var GOJ = createGOJsonFromString(creatinString);
 	var GOObj = createGOFromJSON(GOJ);
 	GOObj.properties.parentObj = PlayerObj;
