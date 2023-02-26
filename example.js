@@ -84,7 +84,8 @@ var PlatformerAnimationStates = {
 	SwingRight: 6,
 	SwingLeft: 7,
 	HurtRight: 8,
-	HurtLeft: 9
+	HurtLeft: 9,
+	Climb: 10
 }
 
 var AntiAnimationPackage = [
@@ -276,7 +277,7 @@ var PlatformerAnimationPackage = [
 		Done: false
 	},
 	
-	//Hurt Right
+	//Hurt Right 8
 	{
 		keyFrames: [
 			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 54, width: 36, duration: 3, currFrame: 1},
@@ -289,13 +290,24 @@ var PlatformerAnimationPackage = [
 		Done: false
 	},
 	
-	//Hurt Left
+	//Hurt Left 9
 	{
 		keyFrames: [
 			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
 			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
 			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
 			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Climb 10
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Climb.png', length: 54, width: 36, duration: 5, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Climb_R.png', length: 54, width: 36, duration: 5, currFrame: 1}
 		],
 		currKeyFrame: 0,
 		Loops: true,

@@ -286,12 +286,12 @@ function MrSniffsUpdate2() {
 		}
 	} else if(this.properties.jumping == 0) {
 		if(this.currAnimation == SniffAnimationStates.IdleRight) {
-			this.properties.xv = 3;
-			this.properties.yv = -3;
+			this.properties.xv = 6;
+			this.properties.yv = -6;
 			this.properties.jumping = 1;
 		} else if(this.currAnimation == SniffAnimationStates.IdleLeft) {
-			this.properties.xv = -3;
-			this.properties.yv = -3;
+			this.properties.xv = -6;
+			this.properties.yv = -6;
 			this.properties.jumping = 1;
 		}
 	}
@@ -388,24 +388,40 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.position.x++;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 0;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			} else if((this.position.x - this.delta.dx) < this.position.x) {
 				this.position.x--;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 1;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			}
 			
 			if((this.position.y - this.delta.dy) > this.position.y) {
@@ -440,24 +456,40 @@ function MrSniffCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.position.x++;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 0;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			} else if((this.position.x - this.delta.dx) < this.position.x) {
 				this.position.x--;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 1;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			}
 			
 			if((this.position.y - this.delta.dy) < this.position.y) { //landing
@@ -511,24 +543,40 @@ function MrSniffCollide2(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.position.x++;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 0;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			} else if((this.position.x - this.delta.dx) < this.position.x) {
 				this.position.x--;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 1;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			}
 			
 			if((this.position.y - this.delta.dy) > this.position.y) {
@@ -566,24 +614,40 @@ function MrSniffCollide2(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.position.x++;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 0;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			} else if((this.position.x - this.delta.dx) < this.position.x) {
 				this.position.x--;
 				if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
 					this.properties.slideStateY = 1;
+					this.properties.xv = this.properties.xv * -1;
+					if(this.properties.xv > 0) {
+						this.currAnimation = SniffAnimationStates.IdleRight;
+					} else if(this.properties.xv < 0) {
+						this.currAnimation = SniffAnimationStates.IdleLeft;
+					}
 				}
+				/*
 				this.properties.xv = this.properties.xv * -1;
 				if(this.properties.xv > 0) {
 					this.currAnimation = SniffAnimationStates.IdleRight;
 				} else if(this.properties.xv < 0) {
 					this.currAnimation = SniffAnimationStates.IdleLeft;
 				}
+				*/
 			}
 			
 			if((this.position.y - this.delta.dy) < this.position.y) { //landing
@@ -942,6 +1006,15 @@ function platformerPlayerMovement() {
 			if(this.properties.climbing == 0) {
 				this.properties.climbing = 1;
 			}
+			
+			if(this.currAnimation != PlatformerAnimationStates.Climb) {
+				//Reset prev animation
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+				
+				//console.log('Changing to climb anim');
+				this.currAnimation = PlatformerAnimationStates.Climb;
+				this.animations[this.currAnimation].currKeyFrame = 0;
+			}
 		}
 		
 		//if(keys.down && this.properties.slideStateX != 1) {
@@ -952,6 +1025,15 @@ function platformerPlayerMovement() {
 			
 			if(this.properties.climbing == 0) {
 				this.properties.climbing = 1;
+			}
+			
+			if(this.currAnimation != PlatformerAnimationStates.Climb) {
+				//Reset prev animation
+				this.animations[this.currAnimation].keyFrames[this.animations[this.currAnimation].currKeyFrame].currFrame = 1;
+				
+				//console.log('Changing to climb anim');
+				this.currAnimation = PlatformerAnimationStates.Climb;
+				this.animations[this.currAnimation].currKeyFrame = 0;
 			}
 		}
 		
@@ -989,10 +1071,12 @@ function platformerPlayerMovement() {
 		}
 		
 	} else if(this.properties.inStun == 1) {
-		if(this.currAnimation == PlatformerAnimationStates.HurtRight) {
+		if(this.currAnimation == PlatformerAnimationStates.HurtRight && this.properties.climbing != 1) {
 			this.properties.xv = -4;
-		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft) {
+		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft && this.properties.climbing != 1) {
 			this.properties.xv = 4;
+		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft && this.properties.climbing == 1) {
+			this.properties.xv = 0;
 		}
 		
 		this.properties.stunCounter++;
@@ -1169,9 +1253,9 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				//console.log(this.properties.inStun);
 				if(this.currAnimation == PlatformerAnimationStates.IdleRight || this.currAnimation == PlatformerAnimationStates.RunRight || this.currAnimation == PlatformerAnimationStates.JumpRight || this.currAnimation == PlatformerAnimationStates.SwingRight) {
 					this.currAnimation = PlatformerAnimationStates.HurtRight;
-				} else if(this.currAnimation == PlatformerAnimationStates.IdleLeft || this.currAnimation == PlatformerAnimationStates.RunLeft || this.currAnimation == PlatformerAnimationStates.JumpLeft || this.currAnimation == PlatformerAnimationStates.SwingLeft) {
+				} else if(this.currAnimation == PlatformerAnimationStates.IdleLeft || this.currAnimation == PlatformerAnimationStates.RunLeft || this.currAnimation == PlatformerAnimationStates.JumpLeft || this.currAnimation == PlatformerAnimationStates.SwingLeft || this.currAnimation == PlatformerAnimationStates.Climb) {
 					this.currAnimation = PlatformerAnimationStates.HurtLeft;
-				}
+				} 
 			}
 		}
 	}
