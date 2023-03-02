@@ -91,6 +91,8 @@ function UploadDoomScrollerGame() {
 	*/
 	
 	
+	testcode = testcode + 'GameObject -x 69 -y 0 -a badPhoneAnimationPackage -ca 0 -d;'
+	
 	testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
 	testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
 	testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'

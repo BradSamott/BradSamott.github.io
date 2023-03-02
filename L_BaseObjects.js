@@ -385,6 +385,12 @@ function ObjectHandler() {
 			
 			var xPos = this.Objects[objI].position.x - this.CameraX;
 			var yPos = this.Objects[objI].position.y - this.CameraY;
+			if(this.Objects[objI].animations[this.Objects[objI].currAnimation] != null) {
+			if(this.Objects[objI].animations[this.Objects[objI].currAnimation].fixedAnimation == true) {
+					var xPos = this.Objects[objI].position.x;
+					var yPos = this.Objects[objI].position.y;
+				}
+			}
 			var cWidth = 0;
 			var cLength = 0;
 			var drawOffsetX = 0;

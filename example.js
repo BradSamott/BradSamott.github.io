@@ -169,6 +169,19 @@ var AntiAnimationPackage = [
 	}
 
 ]
+
+var badPhoneAnimationPackage = [
+	//normal
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/BadPhone.png', length: 576, width: 502, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false,
+		fixedAnimation: true
+	}
+]
 	
 var PlatformerAnimationPackage = [
 	//Idle Right 0
