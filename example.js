@@ -73,6 +73,54 @@ var SniffsAnimationPackage = [
 		Done: false
 	}
 ]
+
+var bigSniffsAnimationPackage = [
+	//Idle Right 0
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs.png', length: 72, width: 72, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Idle Left 1
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 72, width: 72, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Right
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs.png', length: 72, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/MrSniffs.png', length: 72, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Left
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 72, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/MrSniffs_R.png', length: 72, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]
 	
 var PlatformerAnimationStates = {
 	IdleRight: 0,

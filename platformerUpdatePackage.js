@@ -109,7 +109,10 @@ function createPlatformVectorAndHitBox() {
 	GOObj.properties.parentObj = this;
 	oHandler.addObject(GOObj);
 	
-	var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+	var hitboxRadius = 0;
+	hitboxRadius = this.properties.height / 2
+	
+	var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp "+hitboxRadius+" "+hitboxRadius+" "+hitboxRadius+" -t enemyHitBox -u MrSniffHitBoxUpdate");
 	var GOObj2 = createGOFromJSON(GOJ2);
 	if(this.properties.children == null) {
 		this.properties.children = []
@@ -231,7 +234,11 @@ function MrSniffsUpdate() {
 			this.properties.xv = 3;
 		}
 		
-		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var hitboxRadius = 0;
+		hitboxRadius = (this.properties.height / 2)
+		
+		//var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp "+hitboxRadius+" "+hitboxRadius+" "+hitboxRadius+" -t enemyHitBox -u MrSniffHitBoxUpdate");
 		var GOObj2 = createGOFromJSON(GOJ2);
 		if(this.properties.children == null) {
 			this.properties.children = []
@@ -316,7 +323,11 @@ function MrSniffsUpdate2() {
 			//this.properties.xv = 3;
 		}
 		
-		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var hitboxRadius = 0;
+		hitboxRadius = (this.properties.height / 2)
+		
+		//var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp 18 18 18 -t enemyHitBox -u MrSniffHitBoxUpdate");
+		var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -d -rp "+hitboxRadius+" "+hitboxRadius+" "+hitboxRadius+" -t enemyHitBox -u MrSniffHitBoxUpdate");
 		var GOObj2 = createGOFromJSON(GOJ2);
 		if(this.properties.children == null) {
 			this.properties.children = []
@@ -840,12 +851,33 @@ function setupFloorRandom() {
 		GOObj0.properties.children = [];
 		this.handler.addObject(GOObj0);
 		
-		for(var j = 1; j <= enemAmt; j++) {
-			//testcode = testcode + 'GameObject -x 240 -y '+( 1090 - ((i-1)*150)) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
+		if(i < 5) {
+			for(var j = 1; j <= enemAmt; j++) {
+				//testcode = testcode + 'GameObject -x 240 -y '+( 1090 - ((i-1)*150)) )+' -t enemy -u MrSniffsUpdate -cf MrSniffCollide -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor1 -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;'
+				var enemyTypeNum = Math.floor(Math.random() * 2) + 1;
+				var enemyType = '';
+				var collideType = '';
+				
+				if(enemyTypeNum == 1) {
+					enemyType = 'MrSniffsUpdate';
+					collideType = 'MrSniffCollide';
+				} else if(enemyTypeNum == 2) {
+					enemyType = 'MrSniffsUpdate2';
+					collideType = 'MrSniffCollide2';
+				} else {
+					enemyType = 'MrSniffsUpdate';
+					collideType = 'MrSniffCollide';
+				}
+				
+				var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
+				var GOObjE = createGOFromJSON(GOJE);
+				this.handler.addObject(GOObjE);
+			}
+		} else {
 			var enemyTypeNum = Math.floor(Math.random() * 2) + 1;
 			var enemyType = '';
 			var collideType = '';
-			
+				
 			if(enemyTypeNum == 1) {
 				enemyType = 'MrSniffsUpdate';
 				collideType = 'MrSniffCollide';
@@ -856,8 +888,8 @@ function setupFloorRandom() {
 				enemyType = 'MrSniffsUpdate';
 				collideType = 'MrSniffCollide';
 			}
-			
-			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
+				
+			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((0-1)*100) )+' -y '+( 1058 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 5 -d -rp 36 36 36 -a bigSniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 72 0 topright -v 72 72 bottomright -v 0 72 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 72 -p xv 3;');
 			var GOObjE = createGOFromJSON(GOJE);
 			this.handler.addObject(GOObjE);
 		}
