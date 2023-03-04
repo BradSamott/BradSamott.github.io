@@ -805,6 +805,8 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 			testcode = testcode + 'GameObject -u FloorNTrigger -p pulled 0 -p trigN floor4 -p highest 1;'
 			*/
 			
+			testcode = testcode + 'GameObject -x 69 -y 0 -a badPhoneAnimationPackage -ca 0 -d;'
+			
 			testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
 			testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
 			testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
@@ -1246,6 +1248,11 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				console.log('From Health: ' + this.properties.health);
 				this.properties.health--;
 				console.log('To Health: ' + this.properties.health);
+				
+				if(this.properties.health == 0) {
+					console.log('Death');
+				}
+				
 				this.properties.iFrames = 0;
 				
 				this.properties.inStun = 1;
@@ -1255,7 +1262,25 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					this.currAnimation = PlatformerAnimationStates.HurtRight;
 				} else if(this.currAnimation == PlatformerAnimationStates.IdleLeft || this.currAnimation == PlatformerAnimationStates.RunLeft || this.currAnimation == PlatformerAnimationStates.JumpLeft || this.currAnimation == PlatformerAnimationStates.SwingLeft || this.currAnimation == PlatformerAnimationStates.Climb) {
 					this.currAnimation = PlatformerAnimationStates.HurtLeft;
-				} 
+				}
+
+				if(this.properties.health <= 0) {
+					console.log('resetting');
+					var testcode = '';
+					
+					testcode = testcode + 'GameObject -x 69 -y 0 -a badPhoneAnimationPackage -ca 0 -d;'
+			
+					testcode = testcode + 'GameObject -x 119 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+					testcode = testcode + 'GameObject -x 521 -y 0 -t wall -v 0 0 -v 0 2000 -d;'
+					testcode = testcode + 'GameObject -x 120 -y 1150 -v 0 0 -v 400 0 -t wall -d;'
+					testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
+					testcode = testcode + 'GameObject -pi setupFloorRandom ;';
+					testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
+					
+					this.handler.removeAllObjects();
+					enterObjects(testcode);
+				}
+				
 			}
 		}
 	}
