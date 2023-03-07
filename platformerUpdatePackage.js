@@ -730,7 +730,7 @@ function FloorNTrigger() {
 			}
 		}
 		
-		if(!found) {
+		if(!found && this.properties.active == 1) {
 			console.log('Working');
 			var code = '';
 			if(this.properties.highest == 1) {
@@ -834,15 +834,17 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 function setupFloorRandom() {
 	var side = 'right';
 	
+	var lastTrigger;
+	
 	for(var i = 1; i <= 5; i++) {
 		var enemAmt = Math.floor(Math.random() * 3) + 1;
 		
 		console.log( 1000 - ((i-1)*150) );
 		var GOJ0;
 		if(i == 5) {
-			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p highest 1 -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
+			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p active 0 -p highest 1 -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
 		} else {
-			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
+			GOJ0 = createGOJsonFromString('GameObject -u FloorNTrigger -pi createFloorChildren -p active 0 -p pulled 0 -p trigN floor'+i+' -p side '+side+' -p ycoord '+( 1000 - ((i-1)*150) )+';');
 		}
 		var GOObj0 = createGOFromJSON(GOJ0);
 		GOObj0.properties.parentObj = this;
@@ -850,6 +852,14 @@ function setupFloorRandom() {
 		this.properties.children[i - 1] = GOObj0; 
 		GOObj0.properties.children = [];
 		this.handler.addObject(GOObj0);
+		
+		if(i > 1) {
+			lastTrigger.properties.nextTrigger = GOObj0;
+		} else {
+			GOObj0.properties.active = 1;
+		}
+		
+		lastTrigger = GOObj0;
 		
 		if(i < 5) {
 			for(var j = 1; j <= enemAmt; j++) {
@@ -871,7 +881,11 @@ function setupFloorRandom() {
 				
 				var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((j-1)*100) )+' -y '+( 1090 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 2 -d -rp 18 18 18 -a SniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 36 0 topright -v 36 36 bottomright -v 0 36 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 36 -p xv 3;');
 				var GOObjE = createGOFromJSON(GOJE);
-				this.handler.addObject(GOObjE);
+				if(i == 1) {
+					this.handler.addObject(GOObjE);
+				} else {
+					GOObj0.properties.children[j] = GOObjE;
+				}
 			}
 		} else {
 			var enemyTypeNum = Math.floor(Math.random() * 2) + 1;
@@ -891,7 +905,8 @@ function setupFloorRandom() {
 				
 			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((0-1)*100) )+' -y '+( 1058 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 5 -d -rp 36 36 36 -a bigSniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 72 0 topright -v 72 72 bottomright -v 0 72 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 72 -p xv 3;');
 			var GOObjE = createGOFromJSON(GOJE);
-			this.handler.addObject(GOObjE);
+			//this.handler.addObject(GOObjE);
+			GOObj0.properties.children[1] = GOObjE;
 		}
 		
 		if(side == 'right') {
@@ -1320,13 +1335,26 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 
 function ladderStopperAction(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
-		if(colObj.tag == 'player') {
+		if(colObj.tag == 'player' && this.properties.activated != true) {
 			colObj.properties.climbMode = 0;
 			colObj.properties.climbing = 0;
 			
 			var TOJ = createTOJsonFromString('TextObject -x 130 -y '+(this.position.y-10)+' -t "Hi Im Tom"');
 			var TOObj = createTOFromJSON(TOJ);
 			this.handler.addTextObject(TOObj);
+			
+			//console.log(this.properties.parentObj)
+			this.handler.addObject(this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.children[1]);
+			if(this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.children[2] != null) {
+				this.handler.addObject(this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.children[2]);
+			}
+			if(this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.children[3] != null) {
+				this.handler.addObject(this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.children[3]);
+			}
+			
+			this.properties.parentObj.properties.parentObj.properties.nextTrigger.properties.active = 1;
+			
+			this.properties.activated = true;
 		}
 	}
 }
