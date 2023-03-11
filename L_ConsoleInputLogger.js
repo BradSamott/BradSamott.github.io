@@ -45,6 +45,15 @@ leftConsoleButton.onmouseleave = function() {
 	keys.left = false;
 }
 
+leftConsoleButton.ontouchstart = function() {
+	keys.left = true;
+}
+
+leftConsoleButton.ontouchend = function() {
+	keys.left = false;
+}
+
+
 //UP BUTTON
 upConsoleButton.onmousedown = function() {
 	keys.up = true;
@@ -57,6 +66,15 @@ upConsoleButton.onmouseup = function() {
 upConsoleButton.onmouseleave = function() {
 	keys.up = false;
 }
+
+upConsoleButton.ontouchstart = function() {
+	keys.up = true;
+}
+
+upConsoleButton.ontouchend = function() {
+	keys.up = false;
+}
+
 
 //A BUTTON
 aConsoleButton.onmousedown = function() {
@@ -71,6 +89,14 @@ aConsoleButton.onmouseleave = function() {
 	keys.up = false;
 }
 
+aConsoleButton.ontouchstart = function() {
+	keys.up = true;
+}
+
+aConsoleButton.ontouchend = function() {
+	keys.up = false;
+}
+
 //B BUTTON
 bConsoleButton.onmousedown = function() {
 	keys.space = true;
@@ -81,6 +107,14 @@ bConsoleButton.onmouseup = function() {
 }
 
 bConsoleButton.onmouseleave = function() {
+	keys.space = false;
+}
+
+bConsoleButton.ontouchstart = function() {
+	keys.space = true;
+}
+
+bConsoleButton.ontouchend = function() {
 	keys.space = false;
 }
 
