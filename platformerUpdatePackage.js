@@ -992,7 +992,7 @@ function platformerPlayerMovement() {
 	}
 	
 	if(this.properties.inStun == 0 && this.properties.inControl == 1) {
-		if(keys.left && this.properties.slideStateY != 0 && this.properties.climbing == 0) {
+		if(keys.left && this.properties.slideStateY != 0 && this.properties.climbing == 0 && this.currAnimation != PlatformerAnimationStates.SwingRight && this.currAnimation != PlatformerAnimationStates.SwingLeft) {
 		//if(keys.left) {
 			this.properties.xv = -7;
 			if(this.properties.slideStateY == 1) {
@@ -1009,7 +1009,7 @@ function platformerPlayerMovement() {
 			//this.currAnimation = 3;
 		}
 		
-		if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0) {
+		if(keys.right && this.properties.slideStateY != 1 && this.properties.climbing == 0 && this.currAnimation != PlatformerAnimationStates.SwingRight && this.currAnimation != PlatformerAnimationStates.SwingLeft) {
 		//if(keys.right) {
 			this.properties.xv = 7;
 			if(this.properties.slideStateY == 0) {
