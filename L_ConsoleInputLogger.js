@@ -23,6 +23,15 @@ rightConsoleButton.onmouseleave = function() {
 	keys.right = false;
 }
 
+rightConsoleButton.touchstart = function() {
+	keys.right = true;
+}
+
+rightConsoleButton.touchend = function() {
+	keys.right = false;
+}
+
+
 //LEFT BUTTON
 leftConsoleButton.onmousedown = function() {
 	keys.left = true;
