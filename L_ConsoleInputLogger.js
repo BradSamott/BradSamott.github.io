@@ -23,11 +23,11 @@ rightConsoleButton.onmouseleave = function() {
 	keys.right = false;
 }
 
-rightConsoleButton.touchstart = function() {
+rightConsoleButton.ontouchstart = function() {
 	keys.right = true;
 }
 
-rightConsoleButton.touchend = function() {
+rightConsoleButton.ontouchend = function() {
 	keys.right = false;
 }
 
