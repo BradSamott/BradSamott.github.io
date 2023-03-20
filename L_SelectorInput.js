@@ -99,6 +99,8 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
 	testcode = testcode + 'GameObject -pi setupFloorRandom ;';
 	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
+	testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -su uiLogger;'
+	
 	
 	oHandler.removeAllObjects();
 	enterObjects(testcode);

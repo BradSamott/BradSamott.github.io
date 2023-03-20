@@ -40,6 +40,7 @@ var oHandler = new ObjectHandler();
 var oHandlerDev = new ObjectHandler();
 
 var paused = false;
+var frameFlip = false;
 
 var GlobalVars = {};
 
@@ -61,6 +62,13 @@ function gameLoop() {
 		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.renderTextObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.cBuff = [];
+	} else if(frameFlip && paused) {
+		oHandler.tickObjects();
+		oHandler.checkCollisions();
+		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
+		oHandler.renderTextObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
+		oHandler.cBuff = [];
+		frameFlip = false;
 	}
 	oHandler.systemTick();
 	

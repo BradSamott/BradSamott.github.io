@@ -1,6 +1,41 @@
 'use strict'
 
 function uiLogger() {
+	
+	if(keys.right) {
+		if(paused) {
+			if(this.properties.lastRightStatus == 0) {
+				frameFlip = true;
+			}
+			this.properties.lastRightStatus = 1;
+		}
+	} else {
+		this.properties.lastRightStatus = 0;
+	}
+	
+	if(keys.space) {
+		if(paused) {
+			if(this.properties.lastSpaceStatus == 0) {
+				var fullPrint = {};
+				for(var objI = 0; objI < this.handler.Objects.length; objI++) {
+					//console.log("Object: " + objI);
+					//console.log("  Tag: " + this.handler.Objects[objI].tag);
+					//console.log("  X: " + this.handler.Objects[objI].position.x);
+					//console.log("  Y: " + this.handler.Objects[objI].position.y);
+					fullPrint[objI] = {};
+					fullPrint[objI].ObjectIndex = objI;
+					fullPrint[objI].Tag = this.handler.Objects[objI].tag;
+					fullPrint[objI].X = this.handler.Objects[objI].position.x;
+					fullPrint[objI].Y = this.handler.Objects[objI].position.y;
+				}
+				console.log(fullPrint);
+			}
+			this.properties.lastSpaceStatus = 1;
+		}
+	} else {
+		this.properties.lastSpaceStatus = 0;
+	}
+	
 	if(keys.p) {
 		console.log(this);
 		if(this.properties.lastPStatus == 0) {
@@ -824,6 +859,7 @@ function refreshFloorsCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 			testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
 			testcode = testcode + 'GameObject -pi setupFloorRandom ;';
 			testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
+			testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -su uiLogger;'
 			
 			this.handler.removeAllObjects();
 			enterObjects(testcode);
@@ -1196,14 +1232,22 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 			
 			if((this.position.y - this.delta.dy) > this.position.y) {
 				//this.properties.jumpable = 1;
-				this.position.y++;
+				
+				if(colObj.position.x + colObj.vertices[colVer1].offX != colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.position.y++;
+				}
+				
 				this.properties.yv = 0;
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
 					this.properties.slideStateX = 0;
 				}
 			} else if((this.position.y - this.delta.dy) < this.position.y) {
 				//this.properties.jumpable = 1;
-				this.position.y--;
+				
+				if(colObj.position.x + colObj.vertices[colVer1].offX != colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.position.y--;
+				}
+				
 				//this.properties.gravity = 0;
 				this.properties.yv = 0;
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
@@ -1234,7 +1278,9 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				this.position.x = this.position.x - (((this.position.x + this.vertices[verIndex].offX) - intersection[0]));
 				this.position.y = this.position.y - (((this.position.y + this.vertices[verIndex].offY) - intersection[1]));
 				//this.properties.jumpable = 1;
-				this.position.y--;
+				if(colObj.position.x + colObj.vertices[colVer1].offX != colObj.position.x + colObj.vertices[colVer2].offX) {
+					this.position.y--;
+				}
 				//this.properties.gravity = 0;
 				this.properties.yv = 0;
 				if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
@@ -1323,6 +1369,7 @@ function platformerPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					testcode = testcode + 'GameObject -x 0 -y 700 -pi moveCameraPosition;'
 					testcode = testcode + 'GameObject -pi setupFloorRandom ;';
 					testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
+					testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -su uiLogger;'
 					
 					this.handler.removeAllObjects();
 					enterObjects(testcode);
