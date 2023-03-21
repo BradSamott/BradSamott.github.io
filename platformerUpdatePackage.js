@@ -41,8 +41,20 @@ function uiLogger() {
 		if(this.properties.lastPStatus == 0) {
 			if(paused == false) {
 				paused = true;
+				
+				for(var objI = 0; objI < this.handler.Objects.length; objI++) {
+					if(this.handler.Objects[objI].tag == 'musicPlayer') {
+						this.handler.Objects[objI].audio.audioFiles[0].player.pause();
+					}
+				}
 			} else {
 				paused = false;
+				
+				for(var objI = 0; objI < this.handler.Objects.length; objI++) {
+					if(this.handler.Objects[objI].tag == 'musicPlayer') {
+						this.handler.Objects[objI].audio.audioFiles[0].player.play();
+					}
+				}
 			}
 		}
 		this.properties.lastPStatus = 1
@@ -1466,4 +1478,8 @@ function moveCameraPosition() {
 	this.handler.CameraX = this.position.x;
 	this.handler.CameraY = this.position.y;
 	
+}
+
+function playTrack() {
+	this.audio.audioFiles[0].player.play();
 }
