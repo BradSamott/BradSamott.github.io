@@ -206,7 +206,7 @@ function ObjectHandler() {
 									colVer2 = verC + 1;
 								}
 								/*
-								if(this.Objects[objI].tag == 'vector' && this.Objects[objC].tag == 'platform') {
+								if(this.Objects[objI].tag == 'player' && this.Objects[objC].tag == 'wall') {
 									var printJ = {
 										startX1: startX1,
 										startY1: startY1,
@@ -278,6 +278,22 @@ function ObjectHandler() {
 									*/
 									
 									var currentLength = this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions.length - 1;
+									
+									/*
+									if(this.Objects[objI].tag == 'player' && this.Objects[objC].tag == 'wall') {
+										var printJ = {
+											startX1: startX1,
+											startY1: startY1,
+											endX1: endX1,
+											endY1: endY1,
+											startX2: startX2,
+											startY2: startY2,
+											endX2: endX2,
+											endY2: endY2
+										}
+										console.log(printJ);
+									}
+									*/
 									
 									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions[currentLength].RunObject.collideFunction(
 									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions[currentLength].collObj

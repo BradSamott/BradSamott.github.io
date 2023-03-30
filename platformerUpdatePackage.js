@@ -2,7 +2,7 @@
 
 function uiLogger() {
 	
-	if(keys.right) {
+	if(keys.d) {
 		if(paused) {
 			if(this.properties.lastRightStatus == 0) {
 				frameFlip = true;
@@ -11,6 +11,27 @@ function uiLogger() {
 		}
 	} else {
 		this.properties.lastRightStatus = 0;
+	}
+	
+	if(keys.q) {
+		if(paused) {
+			if(this.properties.lastQStatus == 0) {
+				if(this.properties.allDebug != 1) {
+					for(var objI = 0; objI < this.handler.Objects.length; objI++) {
+						this.handler.Objects[objI].debugMode = true;
+					}
+					this.properties.allDebug = 1;
+				} else {
+					for(var objI = 0; objI < this.handler.Objects.length; objI++) {
+						this.handler.Objects[objI].debugMode = false;
+					}
+					this.properties.allDebug = 0;
+				}
+			}
+			this.properties.lastQStatus == 1;
+		}
+	} else {
+		this.properties.lastQStatus == 0;
 	}
 	
 	if(keys.space) {
@@ -27,6 +48,15 @@ function uiLogger() {
 					fullPrint[objI].Tag = this.handler.Objects[objI].tag;
 					fullPrint[objI].X = this.handler.Objects[objI].position.x;
 					fullPrint[objI].Y = this.handler.Objects[objI].position.y;
+					if(this.handler.Objects[objI].vertices.length > 0) {
+						fullPrint[objI].vertices = {};
+						for(var verI = 0; verI < this.handler.Objects[objI].vertices.length; verI++) {
+							var newver = {};
+							newver.x = this.handler.Objects[objI].position.x + this.handler.Objects[objI].vertices[verI].offX;
+							newver.y = this.handler.Objects[objI].position.y + this.handler.Objects[objI].vertices[verI].offY;
+							fullPrint[objI].vertices[verI] = newver;
+						}
+					}
 				}
 				console.log(fullPrint);
 			}
@@ -1439,11 +1469,13 @@ function CameraController() {
 	}
 	
 	if(keys.up) {
-		
+		oHandler.CameraY = oHandler.CameraY - 7;
+		console.log(oHandler.CameraY);
 	}
 	
 	if(keys.down) {
-		
+		oHandler.CameraY = oHandler.CameraY + 7;
+		console.log(oHandler.CameraY);
 	}
 }
 

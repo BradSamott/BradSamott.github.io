@@ -15,7 +15,13 @@ var keys = {
 	space: false,
 	lastSpaceStatus: false,
 	p: false,
-	lastPStatus: false
+	lastPStatus: false,
+	w: false,
+	a: false,
+	s: false,
+	d: false,
+	enter: false,
+	q: false
 };
 
 // This function will be called when a key on the keyboard is pressed
@@ -49,6 +55,36 @@ function keydown(e) {
 	if(e.keyCode == 80) {
 		keys.p = true;
 	}
+	
+	// 87 is the code for the w key
+	if(e.keyCode == 87) {
+		keys.w = true;
+	}
+	
+	// 65 is the code for the w key
+	if(e.keyCode == 65) {
+		keys.a = true;
+	}
+	
+	// 83 is the code for the w key
+	if(e.keyCode == 83) {
+		keys.s = true;
+	}
+	
+	// 68 is the code for the w key
+	if(e.keyCode == 68) {
+		keys.d = true;
+	}
+	
+	// 13 is the code for the enter key
+	if(e.keyCode == 13) {
+		keys.enter = true;
+	}
+	
+	// 81 is the code for the q key
+	if(e.keyCode == 81) {
+		keys.q = true;
+	}
 }
 	
 // This function is called when the pressed key is released
@@ -81,5 +117,35 @@ function keyup(e) {
 	//p
 	if(e.keyCode == 80) {
 		keys.p = false;
+	}
+	
+	//w
+	if(e.keyCode == 87) {
+		keys.w = false;
+	}
+	
+	//a
+	if(e.keyCode == 65) {
+		keys.a = false;
+	}
+	
+	//s
+	if(e.keyCode == 83) {
+		keys.s = false;
+	}
+	
+	//d
+	if(e.keyCode == 68) {
+		keys.d = false;
+	}
+	
+	//enter
+	if(e.keyCode == 13) {
+		keys.enter = false;
+	}
+	
+	//q
+	if(e.keyCode == 81) {
+		keys.q = false;
 	}
 }

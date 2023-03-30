@@ -1,5 +1,7 @@
 'use strict'
 
+var GameTitle = document.getElementById("GameTitle");
+
 function enterObjects(inputText) {
 
 	var inputArr = inputText.replaceAll('\n','').split(';');
@@ -100,9 +102,44 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -pi setupFloorRandom ;';
 	testcode = testcode + 'GameObject -x 125 -y 1090 -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft -rp 18 15 18 -p BatReady 1 -p xv 0 -p yv 0 -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54 -d -u platformerPlayerMovement -cf platformerPlayerCollide -t player -pi createPlatformVector -a PlatformerAnimationPackage -ca 0 -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0;'
 	testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -su uiLogger;'
-	testcode = testcode + 'GameObject -au ./Assets/Music/lifelike-126735.mp3 -pi playTrack -t musicPlayer'
+	//testcode = testcode + 'GameObject -au ./Assets/Music/lifelike-126735.mp3 -pi playTrack -t musicPlayer'
+	testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer'
 	
 	
 	oHandler.removeAllObjects();
 	enterObjects(testcode);
+}
+
+function UploadMimiGame() {
+	
+	GameTitle.innerHTML = "Mimi's Delivery Service";
+	
+	/*
+	var testcode = '';
+	
+	testcode = testcode + 'GameObject -v 0 0 -v 50 0 -v 50 50 -v 0 50 -u MimiAirPlayerMovement -cf MimiAirPlayerCollide -d -t player -x 50 -y 50 -rp 25 25 25 -p slideStateX 2 -p slideStateY 2 ' //player
+	testcode = testcode + '-a MimiAnimationPackage -pi MimiDefaults -p health 3 '
+	testcode = testcode + ';'
+	
+	//testcode = testcode + 'GameObject -u CameraController;' //camera
+	
+	testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 664 0 -d -t wall -p wallname top;' //top wall
+	testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname left;' //left wall
+	testcode = testcode + 'GameObject -d -x 652 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname right;' //right wall
+	testcode = testcode + 'GameObject -d -x -12 -y 588 -v 0 0 -v 664 0 -d -t wall -p wallname bottom;' //bottom wall
+	
+	//testcode = testcode + 'GameObject -d -x 200 -y 100 -t hurtBall -rp 0 0 18;' //test hit box
+	
+	testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -su uiLogger;'
+	
+	oHandler.removeAllObjects();
+	enterObjects(testcode);
+	*/
+	
+	var gameBooterCode = '';
+	
+	gameBooterCode = gameBooterCode + 'GameObject -u LoaderButtonUpdate;'
+	
+	oHandler.removeAllObjects();
+	enterObjects(gameBooterCode);
 }
