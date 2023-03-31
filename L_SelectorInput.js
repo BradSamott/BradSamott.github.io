@@ -140,6 +140,8 @@ function UploadMimiGame() {
 	
 	gameBooterCode = gameBooterCode + 'GameObject -u LoaderButtonUpdate;'
 	
+	gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
+	
 	oHandler.removeAllObjects();
 	enterObjects(gameBooterCode);
 }
