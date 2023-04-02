@@ -238,75 +238,75 @@ function LoaderButtonUpdate() {
 		testcode = testcode + ';'
 		
 		testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 664 0 -d -t wall -p wallname top;' //top wall
-		testcode = testcode + 'GameObject -d -x 620 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 580 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 540 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 500 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 460 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 420 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 380 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 340 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 300 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 260 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 220 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 180 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 140 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 100 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 60 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 20 -t edge -rp 0 0 20;'
+		testcode = testcode + 'GameObject -d -x 620 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 580 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 540 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 500 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 460 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 420 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 380 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 340 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 300 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 260 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 220 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 180 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 140 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 100 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 60 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -d -x 20 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
 		
 		testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname left;' //left wall
 		//testcode = testcode + 'GameObject -d -x 20 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 60 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 100 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 140 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 180 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 220 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 260 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 300 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 340 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 380 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 420 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 460 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 500 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 540 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 580 -t edge -rp 0 0 20;'
+		testcode = testcode + 'GameObject -d -x 20 -y 60 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 100 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 140 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 180 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 220 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 260 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 300 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 340 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 380 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 420 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 460 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 500 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 540 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -d -x 20 -y 580 -t edge -rp 0 0 20 -p edgeType left;'
 		
 		testcode = testcode + 'GameObject -d -x 652 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname right;' //right wall
 		//testcode = testcode + 'GameObject -d -x 620 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 60 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 100 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 140 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 180 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 220 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 260 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 300 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 340 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 380 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 420 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 460 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 500 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 540 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 580 -t edge -rp 0 0 20;'
+		testcode = testcode + 'GameObject -d -x 620 -y 60 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 100 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 140 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 180 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 220 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 260 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 300 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 340 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 380 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 420 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 460 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 500 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 540 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -d -x 620 -y 580 -t edge -rp 0 0 20 -p edgeType right;'
 		
 		
 		testcode = testcode + 'GameObject -d -x -12 -y 588 -v 0 0 -v 664 0 -d -t wall -p wallname bottom;' //bottom wall
-		testcode = testcode + 'GameObject -d -x 620 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 580 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 540 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 500 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 460 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 420 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 380 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 340 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 300 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 260 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 220 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 180 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 140 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 100 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 60 -y 556 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 556 -t edge -rp 0 0 20;'
+		testcode = testcode + 'GameObject -d -x 620 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 580 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 540 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 500 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 460 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 420 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 380 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 340 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 300 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 260 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 220 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 180 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 140 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 100 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 60 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -d -x 20 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
 		
 		
 		//testcode = testcode + 'GameObject -d -x 600 -y 100 -t shooter -u TestShooterUpdate -p delayFrames 0 -rp 0 0 9;' //test shooter
@@ -324,6 +324,9 @@ function LoaderButtonUpdate() {
 		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 40 -y 586;'
 		
 		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 0 -y -10 -u DropperUpdate -p ballVel 6 -pi setupDropper;'
+		
+		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 10 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
+		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 630 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
 		
 		this.handler.removeObject(this);
 		this.handler.removeAllObjects();
@@ -345,6 +348,38 @@ function reverseShooter(colObj,verIndex,intersection,colVer1,colVer2) {
 function CannonBallUpdate() {
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
+}
+
+function CannonBallCollision(colObj,verIndex,intersection,colVer1,colVer2) {
+	
+	if(colObj.tag != null) {
+		if(colObj.tag == 'edge') {
+			if(this.properties.edgeType == 'left') {
+				if(colObj.properties.edgeType == 'right') {
+					console.log('removed left right');
+					this.handler.removeObject(this);
+				}
+			} else if(this.properties.edgeType == 'right') {
+				if(colObj.properties.edgeType == 'left') {
+					console.log('removed right left');
+					this.handler.removeObject(this);
+				}
+			} else if(this.properties.edgeType == 'top') {
+				if(colObj.properties.edgeType == 'bottom') {
+					console.log('removed top bottom');
+					this.handler.removeObject(this);
+				}
+			} else if(this.properties.edgeType == 'bottom') {
+				if(colObj.properties.edgeType == 'top') {
+					console.log('removed bottom top');
+					this.handler.removeObject(this);
+				}
+			}
+		} else if(colObj.tag == 'testBall') {
+			console.log('Ball Intersection');
+		}
+	}
+	
 }
 
 /********
@@ -1493,6 +1528,18 @@ function setupDropper() {
 	}
 }
 
+function setupRocketShooter() {
+	for(var i = 0; i < this.handler.Objects.length; i++) {
+		if(this.handler.Objects[i].tag == 'player') {
+			this.properties.parentObj = this.handler.Objects[i];
+		}
+		
+		if(this.handler.Objects[i].tag == 'musicPlayer') {
+			this.properties.musicParent = this.handler.Objects[i];
+		}
+	}
+}
+
 /********
 Timed Test shooter
 *********/
@@ -1541,7 +1588,17 @@ function TimedTestShooterUpdate() {
 		*/
 		
 		if(this.properties.delayFrames == this.properties.delayList[this.properties.currShot]) {
-			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv '+this.properties.ballVel+' -p yv 0;';
+			
+			var edgeType = 'right';
+			if(this.properties.ballVel > 0) {
+				edgeType = 'left';
+			} else if(this.properties.ballVel < 0) {
+				edgeType = 'right';
+			}
+			
+			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+';';
+			//var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+';';
+			//console.log(shotText);
 			enterObjects(shotText);
 			this.properties.currShot++;
 		}
@@ -1559,7 +1616,7 @@ function TimedTestShooterUpdate() {
 }
 
 /********
-Timed Test shooter
+Dropper
 *********/
 function DropperUpdate() {
 	if(this.properties.musicParent.audio.audioFiles[0].player.currentTime >= 36 && this.properties.trig != 1) {
@@ -1571,7 +1628,7 @@ function DropperUpdate() {
 		
 		//if(this.properties.delayFrames % 225 == 0) {
 		if(this.properties.delayFrames % 135 == 0) {
-			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv 0 -p yv '+this.properties.ballVel+';';
+			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv 0 -p yv '+this.properties.ballVel+' -p edgeType top;';
 			enterObjects(shotText);
 		}
 		
@@ -1582,4 +1639,27 @@ function DropperUpdate() {
 	//var newPosition = {x: this.position.x, y: this.position.y + this.properties.yv};
 	var newPosition = {x: this.properties.parentObj.position.x + 25, y: this.position.y};
 	this.setPosition(newPosition);
+}
+
+
+function RocketShooterUpdate() {
+	if(this.properties.musicParent.audio.audioFiles[0].player.currentTime >= 96 && this.properties.trig != 1) {
+		this.properties.trig = 1;
+		this.properties.delayFrames = 0;
+	}
+	
+	if(this.properties.trig == 1) {
+		
+		if(this.properties.delayFrames % 180 == 0) {
+			var dx = this.properties.parentObj.position.x - this.position.x;
+			var dy = this.properties.parentObj.position.y - this.position.y;
+			var hyp = Math.sqrt( (dx*dx) + (dy*dy) )
+			
+			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv '+((dx/hyp) * this.properties.ballVel)+' -p yv '+((dy/hyp) * this.properties.ballVel)+' -p edgeType bottom;';
+			enterObjects(shotText);
+		}
+		
+		this.properties.delayFrames++;
+		
+	}
 }
