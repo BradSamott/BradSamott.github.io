@@ -138,9 +138,12 @@ function UploadMimiGame() {
 	
 	var gameBooterCode = '';
 	
+	gameBooterCode = 'Run setBackgroudColorMimi;';
+	
 	gameBooterCode = gameBooterCode + 'GameObject -u LoaderButtonUpdate;'
 	
 	gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
+	gameBooterCode = gameBooterCode + 'GameObject -x 0 -y 0 -a TitleAnimationPackage -ca 0;'
 	
 	oHandler.removeAllObjects();
 	enterObjects(gameBooterCode);

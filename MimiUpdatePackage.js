@@ -233,8 +233,11 @@ function LoaderButtonUpdate() {
 	if(keys.enter) {
 		var testcode = '';
 	
-		testcode = testcode + 'GameObject -v 0 0 -v 50 0 -v 50 50 -v 0 50 -u MimiAirPlayerMovement -cf MimiAirPlayerCollide -d -t player -x 50 -y 50 -rp 25 25 25 -p slideStateX 2 -p slideStateY 2 ' //player
+	
+		//-rp 26 -45 3 -rp 25 -22 2
+		testcode = testcode + 'GameObject -v 0 0 -v 50 0 -v 50 50 -v 0 50 -u MimiAirPlayerMovement -cf MimiAirPlayerCollide -t player -x 295 -y 263 -rp 25 25 25 -p slideStateX 2 -p slideStateY 2 ' //player
 		testcode = testcode + '-a MimiAnimationPackage -pi MimiDefaults -p health 3 '
+		//testcode = testcode + '-d '
 		testcode = testcode + ';'
 		
 		testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 664 0 -d -t wall -p wallname top;' //top wall
@@ -1628,7 +1631,8 @@ function DropperUpdate() {
 		
 		//if(this.properties.delayFrames % 225 == 0) {
 		if(this.properties.delayFrames % 135 == 0) {
-			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv 0 -p yv '+this.properties.ballVel+' -p edgeType top;';
+			//var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv 0 -p yv '+this.properties.ballVel+' -p edgeType top -a BombAnimationPackage -ca 0;';
+			var shotText = 'GameObject -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv 0 -p yv '+this.properties.ballVel+' -p edgeType top -a BombAnimationPackage -ca 0;';
 			enterObjects(shotText);
 		}
 		
@@ -1651,15 +1655,20 @@ function RocketShooterUpdate() {
 	if(this.properties.trig == 1) {
 		
 		if(this.properties.delayFrames % 180 == 0) {
-			var dx = this.properties.parentObj.position.x - this.position.x;
-			var dy = this.properties.parentObj.position.y - this.position.y;
+			var dx = this.properties.parentObj.position.x - this.position.x + 25;
+			var dy = this.properties.parentObj.position.y - this.position.y + 25;
 			var hyp = Math.sqrt( (dx*dx) + (dy*dy) )
 			
-			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv '+((dx/hyp) * this.properties.ballVel)+' -p yv '+((dy/hyp) * this.properties.ballVel)+' -p edgeType bottom;';
+			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv '+((dx/hyp) * this.properties.ballVel)+' -p yv '+((dy/hyp) * this.properties.ballVel)+' -p edgeType bottom -a CannonBallAnimationPackage -ca 0;';
 			enterObjects(shotText);
 		}
 		
 		this.properties.delayFrames++;
 		
 	}
+}
+
+function setBackgroudColorMimi() {
+	var backgroundCanvas = document.getElementById("canvasBG");
+	backgroundCanvas.style = "background-color: white;"
 }

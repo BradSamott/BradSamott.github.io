@@ -16,7 +16,7 @@ var MimiAnimationPackage = [
 	//IdleRight 0
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy.png', length: 50, width: 50, duration: 60, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Standard.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -26,7 +26,7 @@ var MimiAnimationPackage = [
 	//IdleLeft 1
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoyR.png', length: 50, width: 50, duration: 60, currFrame: 1}
+			{keyFrame: './Assets/Animates/TheBoyR.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -36,16 +36,7 @@ var MimiAnimationPackage = [
 	//FlyRight 2
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Contact1.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down1.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing1.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up1.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air1.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Contact2.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down2.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing2.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up2.png', length: 50, width: 50, duration: 2, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air2.png', length: 50, width: 50, duration: 2, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Forward.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -55,16 +46,7 @@ var MimiAnimationPackage = [
 	//FlyLeft 3
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Contact1_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down1_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing1_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up1_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air1_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Contact2_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Down2_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Passing2_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Up2_R.png', length: 50, width: 50, duration: 1, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Air2_R.png', length: 50, width: 50, duration: 1, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Backward.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -74,7 +56,7 @@ var MimiAnimationPackage = [
 	//FlyUpRight 4
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Jump.png', length: 50, width: 50, duration: 60, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Up.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -84,7 +66,7 @@ var MimiAnimationPackage = [
 	//FlyDownRight 5
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Jump.png', length: 25, width: 50, duration: 60, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Down.png', length: 100, width: 50, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -94,9 +76,9 @@ var MimiAnimationPackage = [
 	//HurtRight 6
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 50, width: 50, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/Drone_Hurt.png', length: 100, width: 50, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: -50},
 			{keyFrame: '', length: 50, width: 50, duration: 3, currFrame: 1},
-			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 50, width: 50, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/Drone_Hurt.png', length: 100, width: 50, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: -50},
 			{keyFrame: '', length: 50, width: 50, duration: 3, currFrame: 1}
 		],
 		currKeyFrame: 0,
@@ -107,7 +89,7 @@ var MimiAnimationPackage = [
 	//Death 7
 	{
 		keyFrames: [
-			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 25, width: 25, duration: 3, currFrame: 1}
+			{keyFrame: './Assets/Animates/Drone_Death.png', length: 100, width: 50, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: -50}
 		],
 		currKeyFrame: 0,
 		Loops: true,
@@ -118,4 +100,39 @@ var MimiAnimationPackage = [
 	//FlyDownLeft 7
 	
 	//HurtLeft 9
+]
+
+var TitleAnimationPackage = [
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MimiTitlePage.png', length: 576, width: 640, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]
+
+var BombAnimationPackage = [
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBomb1.png', length: 45, width: 36, duration: 3, currFrame: 1, drawOffX: -18, drawOffY: -27},
+			{keyFrame: './Assets/Animates/TheBomb2.png', length: 45, width: 36, duration: 3, currFrame: 1, drawOffX: -18, drawOffY: -27},
+			{keyFrame: './Assets/Animates/TheBomb3.png', length: 45, width: 36, duration: 3, currFrame: 1, drawOffX: -18, drawOffY: -27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]
+
+var CannonBallAnimationPackage = [
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/CannonBall.png', length: 36, width: 36, duration: 3, currFrame: 1, drawOffX: -18, drawOffY: -18},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
 ]
