@@ -14,11 +14,13 @@ var enterConsoleButton = document.getElementById("enterConsoleButton");
 //	keys.right = true;
 //}
 
+/*
 ConsoleButtons.addEventListener("touchstart", StopDefault);
 
 function StopDefault(evt) {
 	evt.preventDefault();
 }
+*/
 
 //RIGHT BUTTON
 rightConsoleButton.onmousedown = function() {
