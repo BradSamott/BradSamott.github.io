@@ -256,7 +256,7 @@ function LoaderButtonUpdate() {
 	if(keys.enter) {
 		var testcode = '';
 	
-		testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi CreateShooterChildren -t musicPlayer -u StartAudio;'
+		testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi CreateShooterChildren -t musicPlayer;' //-u StartAudio
 		//-rp 26 -45 3 -rp 25 -22 2
 		testcode = testcode + 'GameObject -v 0 0 -v 50 0 -v 50 50 -v 0 50 -u MimiAirPlayerMovement -cf MimiAirPlayerCollide -t player -x 295 -y 263 -rp 25 25 25 -p slideStateX 2 -p slideStateY 2 ' //player
 		testcode = testcode + '-a MimiAnimationPackage -pi MimiDefaults -p health 3 '
@@ -465,16 +465,19 @@ function TestShooterUpdate() {
 	this.properties.delayFrames++;
 }
 
+/*
 function StartAudio() {
 	if(this.audio.audioFiles[0].player.paused && !paused) {
 		this.audio.audioFiles[0].player.play();
 	}
 }
+*/
 
 function CreateShooterChildren() {
 	
-	//this.audio.audioFiles[0].player.play();
+	this.audio.audioFiles[0].player.play();
 	
+	/*
 	//Why do I have to stay here on the ground
 	var ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
 	var objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 19 -p ballVel -6 -rp 0 0 9 -pi setupShooter -p yv -7"
@@ -1569,7 +1572,7 @@ function CreateShooterChildren() {
 	this.properties.children.push(GOObjChild1);
 	GOObjChild1.properties.parentObj = this;
 	this.handler.addObject(GOObjChild1);
-	
+	*/
 	//this.audio.audioFiles[0].player.play();
 }
 
