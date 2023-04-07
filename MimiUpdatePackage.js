@@ -263,6 +263,8 @@ function LoaderButtonUpdate() {
 		//testcode = testcode + '-d '
 		testcode = testcode + ';'
 		
+		testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer1;';
+		
 		testcode = testcode + 'GameObject -x 25 -y 25 -cv UserInterface -a MHealthAnimationPackage -ca 3 -u HealthUpdate -pi setupRocketShooter;';
 		
 		testcode = testcode + 'GameObject -x 25 -y 25 -u CompletionCheckerUpdate -pi setupRocketShooter;';
@@ -1572,7 +1574,7 @@ function CreateShooterChildren() {
 	GOObjChild1.properties.parentObj = this;
 	this.handler.addObject(GOObjChild1);
 	
-	this.audio.audioFiles[0].player.play();
+	//this.audio.audioFiles[0].player.play();
 }
 
 function setupShooter() {

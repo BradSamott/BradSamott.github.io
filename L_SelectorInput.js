@@ -145,7 +145,7 @@ function UploadMimiGame() {
 	gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
 	gameBooterCode = gameBooterCode + 'GameObject -x 0 -y 0 -a TitleAnimationPackage -ca 0;'
 	
-	gameBooterCode = gameBooterCode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer1;'
+	//gameBooterCode = gameBooterCode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer1;'
 	
 	oHandler.resetCamera();
 	oHandler.removeAllObjects();
