@@ -147,3 +147,53 @@ var BoardAnimationPackage = [
 		Done: false
 	}
 ]
+
+var MBackgroundAnimationPackage = [
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MBackground.png', length: 576, width: 640, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]
+
+var MHealthAnimationPackage = [
+
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MHealth0.png', length: 75, width: 75, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MHealth1.png', length: 75, width: 75, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MHealth2.png', length: 75, width: 75, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/MHealth3.png', length: 75, width: 75, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]

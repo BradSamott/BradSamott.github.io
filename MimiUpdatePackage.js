@@ -263,94 +263,100 @@ function LoaderButtonUpdate() {
 		//testcode = testcode + '-d '
 		testcode = testcode + ';'
 		
-		testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 664 0 -d -t wall -p wallname top;' //top wall
-		testcode = testcode + 'GameObject -d -x 620 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 580 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 540 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 500 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 460 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 420 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 380 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 340 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 300 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 260 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 220 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 180 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 140 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 100 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 60 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
-		testcode = testcode + 'GameObject -d -x 20 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 25 -y 25 -cv UserInterface -a MHealthAnimationPackage -ca 3 -u HealthUpdate -pi setupRocketShooter;';
 		
-		testcode = testcode + 'GameObject -d -x -12 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname left;' //left wall
+		testcode = testcode + 'GameObject -x 25 -y 25 -u CompletionCheckerUpdate -pi setupRocketShooter;';
+		
+		testcode = testcode + 'GameObject -x 0 -y 0 -a MBackgroundAnimationPackage -ca 0;';
+		
+		testcode = testcode + 'GameObject -x -12 -y -12 -v 0 0 -v 664 0 -d -t wall -p wallname top;' //top wall
+		testcode = testcode + 'GameObject -x 620 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 580 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 540 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 500 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 460 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 420 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 380 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 340 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 300 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 260 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 220 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 180 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 140 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 100 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 60 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		testcode = testcode + 'GameObject -x 20 -y 20 -t edge -rp 0 0 20 -p edgeType top;'
+		
+		testcode = testcode + 'GameObject -x -12 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname left;' //left wall
 		//testcode = testcode + 'GameObject -d -x 20 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 20 -y 60 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 100 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 140 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 180 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 220 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 260 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 300 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 340 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 380 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 420 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 460 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 500 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 540 -t edge -rp 0 0 20 -p edgeType left;'
-		testcode = testcode + 'GameObject -d -x 20 -y 580 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 60 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 100 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 140 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 180 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 220 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 260 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 300 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 340 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 380 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 420 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 460 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 500 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 540 -t edge -rp 0 0 20 -p edgeType left;'
+		testcode = testcode + 'GameObject -x 20 -y 580 -t edge -rp 0 0 20 -p edgeType left;'
 		
-		testcode = testcode + 'GameObject -d -x 652 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname right;' //right wall
+		testcode = testcode + 'GameObject -x 652 -y -12 -v 0 0 -v 0 600 -d -t wall -p wallname right;' //right wall
 		//testcode = testcode + 'GameObject -d -x 620 -y 20 -t edge -rp 0 0 20;'
-		testcode = testcode + 'GameObject -d -x 620 -y 60 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 100 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 140 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 180 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 220 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 260 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 300 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 340 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 380 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 420 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 460 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 500 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 540 -t edge -rp 0 0 20 -p edgeType right;'
-		testcode = testcode + 'GameObject -d -x 620 -y 580 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 60 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 100 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 140 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 180 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 220 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 260 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 300 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 340 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 380 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 420 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 460 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 500 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 540 -t edge -rp 0 0 20 -p edgeType right;'
+		testcode = testcode + 'GameObject -x 620 -y 580 -t edge -rp 0 0 20 -p edgeType right;'
 		
 		
-		testcode = testcode + 'GameObject -d -x -12 -y 588 -v 0 0 -v 664 0 -d -t wall -p wallname bottom;' //bottom wall
-		testcode = testcode + 'GameObject -d -x 620 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 580 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 540 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 500 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 460 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 420 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 380 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 340 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 300 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 260 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 220 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 180 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 140 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 100 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 60 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
-		testcode = testcode + 'GameObject -d -x 20 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x -12 -y 588 -v 0 0 -v 664 0 -d -t wall -p wallname bottom;' //bottom wall
+		testcode = testcode + 'GameObject -x 620 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 580 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 540 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 500 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 460 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 420 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 380 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 340 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 300 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 260 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 220 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 180 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 140 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 100 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 60 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
+		testcode = testcode + 'GameObject -x 20 -y 556 -t edge -rp 0 0 20 -p edgeType bottom;'
 		
 		
 		//testcode = testcode + 'GameObject -d -x 600 -y 100 -t shooter -u TestShooterUpdate -p delayFrames 0 -rp 0 0 9;' //test shooter
 		
 		testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -p lastQStatus 0 -su uiLogger -t UI;'
 		
-		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 600 -y -10;'
+		testcode = testcode + 'GameObject -cf reverseShooter -rp 0 0 9 -x 600 -y -10;'
 		
-		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 600 -y 586;'
+		testcode = testcode + 'GameObject -cf reverseShooter -rp 0 0 9 -x 600 -y 586;'
 		
-		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 40 -y -10;'
+		testcode = testcode + 'GameObject -cf reverseShooter -rp 0 0 9 -x 40 -y -10;'
 		
-		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 40 -y 586;'
+		testcode = testcode + 'GameObject -cf reverseShooter -rp 0 0 9 -x 40 -y 586;'
 		
-		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 0 -y -10 -u DropperUpdate -p ballVel 6 -pi setupDropper;'
+		testcode = testcode + 'GameObject -rp 0 0 9 -x 0 -y -10 -u DropperUpdate -p ballVel 6 -pi setupDropper;'
 		
-		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 10 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
-		testcode = testcode + 'GameObject -d -rp 0 0 9 -x 630 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
+		testcode = testcode + 'GameObject -rp 0 0 9 -x 10 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
+		testcode = testcode + 'GameObject -rp 0 0 9 -x 630 -y 566 -u RocketShooterUpdate -p ballVel 6 -pi setupRocketShooter;'
 		
 		this.handler.removeObject(this);
 		this.handler.removeAllObjects();
@@ -463,7 +469,7 @@ function CreateShooterChildren() {
 	
 	//Why do I have to stay here on the ground
 	var ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	var objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 19 -p ballVel -6 -rp 0 0 9 -pi setupShooter -p yv -7"
+	var objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 19 -p ballVel -6 -rp 0 0 9 -pi setupShooter -p yv -7"
 	objText = objText + " -p d0 0 -p w0 Why"
 	objText = objText + " -p d1 17 -p w1 do"
 	objText = objText + " -p d2 35 -p w2 I"
@@ -486,7 +492,7 @@ function CreateShooterChildren() {
 	
 	//it’s overrated
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 22 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 22 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 it's"
 	objText = objText + " -p d1 17 -p w1 overrated"
 	var GOJChild1 = createGOJsonFromString(objText);
@@ -500,7 +506,7 @@ function CreateShooterChildren() {
 	
 	//The cityscape escapes you with a sound
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 23 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 23 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 The"
 	objText = objText + " -p d1 17 -p w1 cityscape"
 	objText = objText + " -p d2 35 -p w2 escapes"
@@ -519,7 +525,7 @@ function CreateShooterChildren() {
 	
 	//It’s delineated
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 27 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 27 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 It’s"
 	objText = objText + " -p d1 17 -p w1 delineated"
 	var GOJChild1 = createGOJsonFromString(objText);
@@ -533,7 +539,7 @@ function CreateShooterChildren() {
 	
 	//I waited at the station for an hour
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 28 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 28 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 waited"
 	objText = objText + " -p d2 34 -p w2 at"
@@ -553,7 +559,7 @@ function CreateShooterChildren() {
 	
 	//But I won’t make it
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-    objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 31 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+    objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 31 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
     objText = objText + " -p d0 0 -p w0 But"
     objText = objText + " -p d1 17 -p w1 I"
     objText = objText + " -p d2 34 -p w2 won’t"
@@ -570,7 +576,7 @@ function CreateShooterChildren() {
 	
 	//You take off on an updraft by the tower
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 33 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 33 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You"
 	objText = objText + " -p d1 17 -p w1 take"
 	objText = objText + " -p d2 34 -p w2 off"
@@ -591,7 +597,7 @@ function CreateShooterChildren() {
 	
 	//And you overtake it
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 36 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 36 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 you"
 	objText = objText + " -p d2 34 -p w2 overtake"
@@ -607,7 +613,7 @@ function CreateShooterChildren() {
 	
 	//Every moon that I
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 37 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 37 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Every"
 	objText = objText + " -p d1 17 -p w1 moon"
 	objText = objText + " -p d2 34 -p w2 that"
@@ -623,7 +629,7 @@ function CreateShooterChildren() {
 	
 	//See you on the rise
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 41 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 41 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 See"
 	objText = objText + " -p d1 17 -p w1 you"
 	objText = objText + " -p d2 34 -p w2 on"
@@ -640,7 +646,7 @@ function CreateShooterChildren() {
 	
 	//You’re drawn across the sky
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 43 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 43 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’re"
 	objText = objText + " -p d1 17 -p w1 drawn"
 	objText = objText + " -p d2 34 -p w2 across"
@@ -657,7 +663,7 @@ function CreateShooterChildren() {
 	
 	//Now that ink has dried
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 47 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 47 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Now"
 	objText = objText + " -p d1 17 -p w1 that"
 	objText = objText + " -p d2 34 -p w2 ink"
@@ -674,7 +680,7 @@ function CreateShooterChildren() {
 	
 	//And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 51 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 51 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -692,7 +698,7 @@ function CreateShooterChildren() {
 	
 	//Oh, Mimi can you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 53 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 53 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Oh,"
 	objText = objText + " -p d1 17 -p w1 Mimi"
 	objText = objText + " -p d2 34 -p w2 can"
@@ -708,7 +714,7 @@ function CreateShooterChildren() {
 	
 	//Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 54 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 54 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -725,7 +731,7 @@ function CreateShooterChildren() {
 	
 	//I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 56 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 56 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -744,7 +750,7 @@ function CreateShooterChildren() {
 	
 	//I hear you tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 58 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 58 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -764,7 +770,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 61 You’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 61 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 61 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 before"
@@ -779,7 +785,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 62 Oh, Mimi can you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 62 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 62 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Oh,"
 	objText = objText + " -p d1 17 -p w1 Mimi"
 	objText = objText + " -p d2 34 -p w2 can"
@@ -795,7 +801,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 63 Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 63 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 63 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -812,7 +818,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 65 I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 65 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 65 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -831,7 +837,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 67 I hear you tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 67 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 67 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -851,7 +857,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 70 You’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 70 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 70 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 before"
@@ -866,7 +872,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 72 I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 72 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 72 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 can’t"
 	objText = objText + " -p d2 34 -p w2 tell"
@@ -883,7 +889,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 74 No, I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 74 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 74 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 No,"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -901,7 +907,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 77 Why do you have to stay here on the ground
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 77 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 77 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Why"
 	objText = objText + " -p d1 17 -p w1 do"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -923,7 +929,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 80 it’s overrated
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 80 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 80 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 it’s"
 	objText = objText + " -p d1 17 -p w1 overrated"
 	var GOJChild1 = createGOJsonFromString(objText);
@@ -937,7 +943,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 81 The cityscape berates you with a sound
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 81 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 81 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 The"
 	objText = objText + " -p d1 17 -p w1 cityscape"
 	objText = objText + " -p d2 34 -p w2 berates"
@@ -956,7 +962,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 85 It’s delineated
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 85 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 85 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 It’s"
 	objText = objText + " -p d1 17 -p w1 delineated"
 	var GOJChild1 = createGOJsonFromString(objText);
@@ -970,7 +976,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 86 And no one here has even learned your name
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 86 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 86 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 no"
 	objText = objText + " -p d2 34 -p w2 one"
@@ -991,7 +997,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 89 But they all claim it
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 89 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 89 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 But"
 	objText = objText + " -p d1 17 -p w1 they"
 	objText = objText + " -p d2 34 -p w2 all"
@@ -1008,7 +1014,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 91 They saw you land and ran to do the same
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 91 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 91 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 They"
 	objText = objText + " -p d1 17 -p w1 saw"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -1030,7 +1036,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 94 But they won’t make it
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 94 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 94 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 But"
 	objText = objText + " -p d1 17 -p w1 they"
 	objText = objText + " -p d2 34 -p w2 won’t"
@@ -1047,7 +1053,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 96 Every moon that I
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 96 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 96 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Every"
 	objText = objText + " -p d1 17 -p w1 moon"
 	objText = objText + " -p d2 34 -p w2 that"
@@ -1063,7 +1069,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 99 See you on the rise
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 99 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 99 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 See"
 	objText = objText + " -p d1 17 -p w1 you"
 	objText = objText + " -p d2 34 -p w2 on"
@@ -1080,7 +1086,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 101 You’re drawn across the sky
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 101 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 101 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’re"
 	objText = objText + " -p d1 17 -p w1 drawn"
 	objText = objText + " -p d2 34 -p w2 across"
@@ -1097,7 +1103,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 104 Now that ink has dried
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 104 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 104 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Now"
 	objText = objText + " -p d1 17 -p w1 that"
 	objText = objText + " -p d2 34 -p w2 ink"
@@ -1114,7 +1120,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 108 And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 108 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 108 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -1132,7 +1138,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 110 Oh, Mimi can you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 110 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 110 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Oh,"
 	objText = objText + " -p d1 17 -p w1 Mimi"
 	objText = objText + " -p d2 34 -p w2 can"
@@ -1148,7 +1154,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 111 Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 111 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 111 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -1165,7 +1171,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 113 I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 113 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 113 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -1184,7 +1190,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 115 I hear you tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 115 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 115 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -1204,7 +1210,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 118 You’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 118 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 118 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 before"
@@ -1219,7 +1225,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 119 Oh, Mimi can you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 119 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 119 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Oh,"
 	objText = objText + " -p d1 17 -p w1 Mimi"
 	objText = objText + " -p d2 34 -p w2 can"
@@ -1235,7 +1241,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 120 Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 120 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 120 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -1252,7 +1258,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 122 I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 122 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 122 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -1271,7 +1277,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 124 I hear you tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 124 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 124 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -1291,7 +1297,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 127 You’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 127 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 127 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 before"
@@ -1306,7 +1312,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 131 And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 131 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 131 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -1324,7 +1330,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 135 And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 135 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 135 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -1342,7 +1348,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 140 And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 140 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 140 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -1360,7 +1366,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 145 I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 145 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 145 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 can’t"
 	objText = objText + " -p d2 34 -p w2 tell"
@@ -1377,7 +1383,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 150 Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 150 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 150 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -1394,7 +1400,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 152 I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 152 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 152 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -1413,7 +1419,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 154 I hear you tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 154 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 154 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -1433,7 +1439,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 157 You’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 157 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 157 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 You’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 before"
@@ -1448,7 +1454,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 158 Oh, Mimi can you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 158 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 158 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Oh,"
 	objText = objText + " -p d1 17 -p w1 Mimi"
 	objText = objText + " -p d2 34 -p w2 can"
@@ -1464,7 +1470,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 159 Tell me there’s an issue
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 159 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 159 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 Tell"
 	objText = objText + " -p d1 17 -p w1 me"
 	objText = objText + " -p d2 34 -p w2 there’s"
@@ -1481,7 +1487,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 161 I’ve seen it clouded all around you
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 161 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 161 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I’ve"
 	objText = objText + " -p d1 17 -p w1 seen"
 	objText = objText + " -p d2 34 -p w2 it"
@@ -1500,7 +1506,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 163 I hear you tell me there’s an issue you’ve seen before
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 163 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 163 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 hear"
 	objText = objText + " -p d2 34 -p w2 you"
@@ -1523,7 +1529,7 @@ function CreateShooterChildren() {
 	
 	//node TestProg 167 And I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 167 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 40 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 167 -p ballVel 6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 And"
 	objText = objText + " -p d1 17 -p w1 I"
 	objText = objText + " -p d2 34 -p w2 can’t"
@@ -1541,7 +1547,7 @@ function CreateShooterChildren() {
 	
 	//node TestProgR 170 I can’t tell you why
 	ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
-	objText = "GameObject -d -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 170 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
+	objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 170 -p ballVel -6 -rp 0 0 9 -pi setupShooter"
 	objText = objText + " -p d0 0 -p w0 I"
 	objText = objText + " -p d1 17 -p w1 can’t"
 	objText = objText + " -p d2 34 -p w2 tell"
@@ -1742,4 +1748,40 @@ function RocketShooterUpdate() {
 function setBackgroudColorMimi() {
 	var backgroundCanvas = document.getElementById("canvasBG");
 	backgroundCanvas.style = "background-color: white;"
+}
+
+function HealthUpdate() {
+	if(this.properties.parentObj.properties.health == 3) {
+		this.currAnimation = 3;
+	} else if(this.properties.parentObj.properties.health == 2) {
+		this.currAnimation = 2;
+	} else if(this.properties.parentObj.properties.health == 1) {
+		this.currAnimation = 1;
+	} else if(this.properties.parentObj.properties.health == 0) {
+		this.currAnimation = 0;
+	}
+}
+
+function CompletionCheckerUpdate() {
+	if(this.properties.musicParent.audio.audioFiles[0].player.currentTime >= 178 && this.properties.trig != 1) {
+		this.properties.trig = 1;
+		this.properties.delayFrames = 0;
+	}
+	
+	if(this.properties.trig == 1) {
+		
+		if(this.properties.delayFrames == 225) {
+			var gameBooterCode = ''
+			gameBooterCode = gameBooterCode + 'GameObject -u LoaderButtonUpdate;'
+	
+			gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
+			gameBooterCode = gameBooterCode + 'GameObject -x 0 -y 0 -a TitleAnimationPackage -ca 0;'
+						
+			this.handler.removeAllObjects();
+			enterObjects(gameBooterCode);
+		}
+		
+		this.properties.delayFrames++;
+		
+	}
 }

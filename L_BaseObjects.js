@@ -139,6 +139,13 @@ function ObjectHandler() {
 	}
 	
 	this.removeAllObjects = function() {
+		
+		for(var objI = 0; objI < this.Objects.length; objI++) {
+			for(var audI = 0; audI < this.Objects[objI].audio.audioFiles.length; audI++) {
+				this.Objects[objI].audio.audioFiles[audI].player.pause();
+			}
+		}
+		
 		this.Objects = [];
 		this.textObjects = [];
 	}
