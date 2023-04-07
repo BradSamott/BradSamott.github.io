@@ -1,5 +1,7 @@
 'use strict'
 
+var ConsoleButtons = document.getElementById("ConsoleButtons");
+
 var rightConsoleButton = document.getElementById("rightConsoleButton");
 var leftConsoleButton = document.getElementById("leftConsoleButton");
 var upConsoleButton = document.getElementById("upConsoleButton");
@@ -9,6 +11,12 @@ var bConsoleButton = document.getElementById("bConsoleButton");
 //rightConsoleButton.onclick = function() {
 //	keys.right = true;
 //}
+
+ConsoleButtons.addEventListener("touchstart", StopDefault);
+
+function StopDefault(evt) {
+	evt.preventDefault();
+}
 
 //RIGHT BUTTON
 rightConsoleButton.onmousedown = function() {
@@ -116,5 +124,26 @@ bConsoleButton.ontouchstart = function() {
 
 bConsoleButton.ontouchend = function() {
 	keys.space = false;
+}
+
+//DOWN BUTTON
+downConsoleButton.onmousedown = function() {
+	keys.down = true;
+}
+
+downConsoleButton.onmouseup = function() {
+	keys.down = false;
+}
+
+downConsoleButton.onmouseleave = function() {
+	keys.down = false;
+}
+
+downConsoleButton.ontouchstart = function() {
+	keys.down = true;
+}
+
+downConsoleButton.ontouchend = function() {
+	keys.down = false;
 }
 
