@@ -105,7 +105,7 @@ function UploadDoomScrollerGame() {
 	//testcode = testcode + 'GameObject -au ./Assets/Music/lifelike-126735.mp3 -pi playTrack -t musicPlayer'
 	testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer'
 	
-	
+	oHandler.resetCamera();
 	oHandler.removeAllObjects();
 	enterObjects(testcode);
 }
@@ -145,6 +145,7 @@ function UploadMimiGame() {
 	gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
 	gameBooterCode = gameBooterCode + 'GameObject -x 0 -y 0 -a TitleAnimationPackage -ca 0;'
 	
+	oHandler.resetCamera();
 	oHandler.removeAllObjects();
 	enterObjects(gameBooterCode);
 }

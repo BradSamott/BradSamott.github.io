@@ -150,6 +150,11 @@ function ObjectHandler() {
 		this.textObjects = [];
 	}
 	
+	this.resetCamera = function() {
+		this.CameraX = 0;
+		this.CameraY = 0;
+	}
+	
 	this.tickObjects = function() {
 		for(var objI = 0; objI < this.Objects.length; objI++) { 
 			if(this.Objects[objI].update != null) {
