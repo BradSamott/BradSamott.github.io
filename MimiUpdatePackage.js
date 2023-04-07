@@ -475,9 +475,8 @@ function StartAudio() {
 
 function CreateShooterChildren() {
 	
-	this.audio.audioFiles[0].player.play();
+	//this.audio.audioFiles[0].player.play();
 	
-	/*
 	//Why do I have to stay here on the ground
 	var ycoord = Math.floor(Math.random() * (566 - 10 + 1) + 10);
 	var objText = "GameObject -x 600 -y "+ycoord+" -t shooter -u TimedTestShooterUpdate -p offset 19 -p ballVel -6 -rp 0 0 9 -pi setupShooter -p yv -7"
@@ -1572,8 +1571,8 @@ function CreateShooterChildren() {
 	this.properties.children.push(GOObjChild1);
 	GOObjChild1.properties.parentObj = this;
 	this.handler.addObject(GOObjChild1);
-	*/
-	//this.audio.audioFiles[0].player.play();
+	
+	this.audio.audioFiles[0].player.play();
 }
 
 function setupShooter() {
