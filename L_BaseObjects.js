@@ -833,7 +833,8 @@ function createGOJsonFromString(args) {
 		else if(argsList[i] == '-a') {
 			if(argsList[i + 1] != null && argsList[i + 1] != '') {
 				try {
-					eval("jsonArg.animations = "+ argsList[i + 1] + ";");
+					//eval("jsonArg.animations = "+ argsList[i + 1] + ";");
+					eval("jsonArg.animations = JSON.parse(JSON.stringify("+ argsList[i + 1] + "));");
 					i++;
 				} catch(e) {
 					console.log('Error: Aniamtion Package does not exist.');

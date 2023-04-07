@@ -136,3 +136,14 @@ var CannonBallAnimationPackage = [
 		Done: false
 	}
 ]
+
+var BoardAnimationPackage = [
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/Board.png', length: 12, width: 36, duration: 3, currFrame: 1, drawOffX: 0, drawOffY: 0},
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]

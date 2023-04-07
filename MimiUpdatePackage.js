@@ -209,6 +209,22 @@ function MimiAirPlayerCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					this.properties.xv = 0;
 					this.properties.yv = -7;
 				}
+			} else if(this.properties.defeated == 1) {
+				if(colObj.tag == 'edge') {
+					if(colObj.properties.edgeType == 'bottom') {
+						this.properties.musicParent.audio.audioFiles[0].player.pause();
+						this.properties.musicParent.audio.audioFiles[0].player.currentTime = 0;
+						
+						var gameBooterCode = ''
+						gameBooterCode = gameBooterCode + 'GameObject -u LoaderButtonUpdate;'
+	
+						gameBooterCode = gameBooterCode + 'TextObject -t "Press Enter to Start" -x 300 -y 200;'
+						gameBooterCode = gameBooterCode + 'GameObject -x 0 -y 0 -a TitleAnimationPackage -ca 0;'
+						
+						this.handler.removeAllObjects();
+						enterObjects(gameBooterCode);
+					}
+				}
 			}
 		} else if(colObj.tag == 'testBall') {
 			console.log('Ball Intersection');
@@ -223,6 +239,13 @@ function MimiDefaults() {
 	if(this.currAnimation == -1) {
 		this.currAnimation = 0;
 	}
+	
+	for(var i = 0; i < this.handler.Objects.length; i++) {
+		
+		if(this.handler.Objects[i].tag == 'musicPlayer') {
+			this.properties.musicParent = this.handler.Objects[i];
+		}
+	}
 }
 
 
@@ -233,7 +256,7 @@ function LoaderButtonUpdate() {
 	if(keys.enter) {
 		var testcode = '';
 	
-	
+		testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi CreateShooterChildren -t musicPlayer;'
 		//-rp 26 -45 3 -rp 25 -22 2
 		testcode = testcode + 'GameObject -v 0 0 -v 50 0 -v 50 50 -v 0 50 -u MimiAirPlayerMovement -cf MimiAirPlayerCollide -t player -x 295 -y 263 -rp 25 25 25 -p slideStateX 2 -p slideStateY 2 ' //player
 		testcode = testcode + '-a MimiAnimationPackage -pi MimiDefaults -p health 3 '
@@ -316,8 +339,6 @@ function LoaderButtonUpdate() {
 		
 		testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -p lastQStatus 0 -su uiLogger -t UI;'
 		
-		testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi CreateShooterChildren -t musicPlayer;'
-		
 		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 600 -y -10;'
 		
 		testcode = testcode + 'GameObject -d -cf reverseShooter -rp 0 0 9 -x 600 -y 586;'
@@ -351,6 +372,16 @@ function reverseShooter(colObj,verIndex,intersection,colVer1,colVer2) {
 function CannonBallUpdate() {
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
+	
+	if(this.properties.wordChild != null) {
+		this.properties.wordChild.position.x = this.position.x - (this.properties.wordChild.textContent.length * 3);
+		this.properties.wordChild.position.y = this.position.y + 5;
+	}
+	
+	if(this.properties.boardChild != null) {
+		this.properties.boardChild.position.x = this.position.x - (this.properties.wordChild.textContent.length * 3) - 2;
+		this.properties.boardChild.position.y = this.position.y - 5;
+	}
 }
 
 function CannonBallCollision(colObj,verIndex,intersection,colVer1,colVer2) {
@@ -360,21 +391,45 @@ function CannonBallCollision(colObj,verIndex,intersection,colVer1,colVer2) {
 			if(this.properties.edgeType == 'left') {
 				if(colObj.properties.edgeType == 'right') {
 					console.log('removed left right');
+					if(this.properties.boardChild != null) {
+						this.handler.removeObject(this.properties.boardChild);
+					}
+					if(this.properties.wordChild != null) {
+						this.handler.removeTextObject(this.properties.wordChild);
+					}
 					this.handler.removeObject(this);
 				}
 			} else if(this.properties.edgeType == 'right') {
 				if(colObj.properties.edgeType == 'left') {
 					console.log('removed right left');
+					if(this.properties.boardChild != null) {
+						this.handler.removeObject(this.properties.boardChild);
+					}
+					if(this.properties.wordChild != null) {
+						this.handler.removeTextObject(this.properties.wordChild);
+					}
 					this.handler.removeObject(this);
 				}
 			} else if(this.properties.edgeType == 'top') {
 				if(colObj.properties.edgeType == 'bottom') {
 					console.log('removed top bottom');
+					if(this.properties.boardChild != null) {
+						this.handler.removeObject(this.properties.boardChild);
+					}
+					if(this.properties.wordChild != null) {
+						this.handler.removeTextObject(this.properties.wordChild);
+					}
 					this.handler.removeObject(this);
 				}
 			} else if(this.properties.edgeType == 'bottom') {
 				if(colObj.properties.edgeType == 'top') {
 					console.log('removed bottom top');
+					if(this.properties.boardChild != null) {
+						this.handler.removeObject(this.properties.boardChild);
+					}
+					if(this.properties.wordChild != null) {
+						this.handler.removeTextObject(this.properties.wordChild);
+					}
 					this.handler.removeObject(this);
 				}
 			}
@@ -1599,7 +1654,8 @@ function TimedTestShooterUpdate() {
 				edgeType = 'right';
 			}
 			
-			var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+';';
+			//var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+' -p word '+this.properties.wordList[this.properties.currShot]+' -pi CannonBallSetup -a CannonBallAnimationPackage -ca 0;';
+			var shotText = 'GameObject -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -cf CannonBallCollision -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+' -p word '+this.properties.wordList[this.properties.currShot]+' -pi CannonBallSetup -a CannonBallAnimationPackage -ca 0;';
 			//var shotText = 'GameObject -d -x '+this.position.x+' -y '+this.position.y+' -t hurtBall -rp 0 0 18 -u CannonBallUpdate -p xv '+this.properties.ballVel+' -p yv 0 -p edgeType '+edgeType+';';
 			//console.log(shotText);
 			enterObjects(shotText);
@@ -1616,6 +1672,21 @@ function TimedTestShooterUpdate() {
 	
 	var newPosition = {x: this.position.x, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
+}
+
+function CannonBallSetup() {
+	var childText = 'TextObject -t '+this.properties.word+' -x -100 -y -100 -c black;'
+	var TOJ = createTOJsonFromString(childText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.wordChild = TOObj;
+	this.handler.addTextObject(TOObj);
+	
+	var childText2 = 'GameObject -a BoardAnimationPackage -ca 0;'
+	var GOJ = createGOJsonFromString(childText2);
+	GOJ.animations[0].keyFrames[0].width = (this.properties.wordChild.textContent.length * 6) + 8
+	var GOObj = createGOFromJSON(GOJ);
+	this.properties.boardChild = GOObj;
+	this.handler.addObject(GOObj);
 }
 
 /********
