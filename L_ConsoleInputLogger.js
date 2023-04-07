@@ -5,8 +5,10 @@ var ConsoleButtons = document.getElementById("ConsoleButtons");
 var rightConsoleButton = document.getElementById("rightConsoleButton");
 var leftConsoleButton = document.getElementById("leftConsoleButton");
 var upConsoleButton = document.getElementById("upConsoleButton");
+var downConsoleButton = document.getElementById("downConsoleButton");
 var aConsoleButton = document.getElementById("aConsoleButton");
 var bConsoleButton = document.getElementById("bConsoleButton");
+var enterConsoleButton = document.getElementById("enterConsoleButton");
 
 //rightConsoleButton.onclick = function() {
 //	keys.right = true;
@@ -145,5 +147,26 @@ downConsoleButton.ontouchstart = function() {
 
 downConsoleButton.ontouchend = function() {
 	keys.down = false;
+}
+
+//ENTER BUTTON
+enterConsoleButton.onmousedown = function() {
+	keys.enter = true;
+}
+
+enterConsoleButton.onmouseup = function() {
+	keys.enter = false;
+}
+
+enterConsoleButton.onmouseleave = function() {
+	keys.enter = false;
+}
+
+enterConsoleButton.ontouchstart = function() {
+	keys.enter = true;
+}
+
+enterConsoleButton.ontouchend = function() {
+	keys.enter = false;
 }
 
