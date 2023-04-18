@@ -981,7 +981,8 @@ function setupFloorRandom() {
 				collideType = 'MrSniffCollide';
 			}
 				
-			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((0-1)*100) )+' -y '+( 1058 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 5 -d -rp 36 36 36 -a bigSniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 72 0 topright -v 72 72 bottomright -v 0 72 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 72 -p xv 3;');
+			//var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((0-1)*100) )+' -y '+( 1058 - ((i-1)*150) )+' -t enemy -u '+enemyType+' -cf '+collideType+' -p health 5 -d -rp 36 36 36 -a bigSniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 72 0 topright -v 72 72 bottomright -v 0 72 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 72 -p xv 3;');
+			var GOJE = createGOJsonFromString('GameObject -x '+( 240 + ((1-1)*100) )+' -y '+( 1058 - ((i-1)*150) )+' -t enemy -u bossSniffsUpdate -cf MrSniffCollide -p health 5 -d -rp 36 36 36 -a bigSniffsAnimationPackage -ca 0 -p trig floor'+i+' -v 0 0 topleft -v 72 0 topright -v 72 72 bottomright -v 0 72 bottomleft -p gravity 0.6 -pi createPlatformVectorAndHitBox -p height 72 -p xv 0 -p mode 0;');
 			var GOObjE = createGOFromJSON(GOJE);
 			//this.handler.addObject(GOObjE);
 			GOObj0.properties.children[1] = GOObjE;
