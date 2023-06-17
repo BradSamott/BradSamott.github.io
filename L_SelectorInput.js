@@ -104,6 +104,9 @@ function UploadDoomScrollerGame() {
 	testcode = testcode + 'GameObject -p lastPStatus 0 -p lastRightStatus 0 -p lastSpaceStatus 0 -su uiLogger;'
 	//testcode = testcode + 'GameObject -au ./Assets/Music/lifelike-126735.mp3 -pi playTrack -t musicPlayer'
 	testcode = testcode + 'GameObject -au ./Assets/Music/Mimis_Delivery_Service.mp3 -pi playTrack -t musicPlayer'
+	testcode = testcode + 'GameObject -pi addClickOption;'
+	testcode = testcode + 'GameObject -x 0 -y 1000 -d -v 0 0 -v 50 0 -v 50 50 -v 0 50 -p l 50 -p w 50 -u testButtonUpdate;'
+	testcode = testcode + 'GameObject -x 0 -y 100 -d -v 0 0 -v 50 0 -v 50 50 -v 0 50 -p l 50 -p w 50 -u testButtonUpdate2;'
 	
 	oHandler.resetCamera();
 	oHandler.removeAllObjects();
@@ -150,4 +153,23 @@ function UploadMimiGame() {
 	oHandler.resetCamera();
 	oHandler.removeAllObjects();
 	enterObjects(gameBooterCode);
+}
+
+function UploadQuestleGame() {
+	GameTitle.innerHTML = "Questle";
+	oHandler.resetCamera();
+	oHandler.removeAllObjects();
+	
+	var gameBooterCode = '';
+	
+	//gameBooterCode = 'Run StartLevel';
+	
+	//enterObjects(gameBooterCode);
+	
+	//StartLevel(1);
+	
+	StartLevelSelect();
+	
+	//StartBattle();
+	
 }

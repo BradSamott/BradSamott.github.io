@@ -993,6 +993,13 @@ function createGOJsonFromString(args) {
 	return jsonArg;
 }
 
+function createGOFromString(args) {
+	var GOJ = createGOJsonFromString(args);
+	var GOObj = createGOFromJSON(GOJ);
+	
+	return GOObj;
+}
+
 function createTOFromJSON(jArg) {
 	
 	var x = 0;
@@ -1099,6 +1106,13 @@ function createTOJsonFromString(args) {
 	}
 	
 	return jsonArg;
+}
+
+function createTOFromString(args) {
+	var TOJ = createTOJsonFromString(args);
+	var TOObj = createTOFromJSON(TOJ);
+	
+	return TOObj;
 }
 
 function testMain() {

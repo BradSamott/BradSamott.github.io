@@ -151,3 +151,33 @@ function bossSniffsUpdate() {
 		this.properties.jumpVector.properties.hit = 0;
 	}
 }
+
+function testButtonUpdate() {
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+		console.log({ localX: this.handler.cBuff[i].x, localY: this.handler.cBuff[i].y} );
+		console.log({ absX: this.handler.cBuff[i].x + this.handler.CameraX, absY: this.handler.cBuff[i].y + this.handler.CameraY} );
+		
+		if(this.handler.cBuff[i].x + this.handler.CameraX >= this.position.x && this.handler.cBuff[i].x + this.handler.CameraX <= this.position.x + this.properties.w) {
+			if(this.handler.cBuff[i].y + this.handler.CameraY >= this.position.y && this.handler.cBuff[i].y + this.handler.CameraY <= this.position.y + this.properties.l) {
+				console.log('Pressed');
+			}
+		}
+	}
+}
+
+function testButtonUpdate2() {
+	
+	var newPosition = {x: this.handler.CameraX, y: this.handler.CameraY + 100};
+	this.setPosition(newPosition);
+	
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+		console.log({ localX: this.handler.cBuff[i].x, localY: this.handler.cBuff[i].y} );
+		console.log({ absX: this.handler.cBuff[i].x + this.handler.CameraX, absY: this.handler.cBuff[i].y + this.handler.CameraY} );
+		
+		if(this.handler.cBuff[i].x + this.handler.CameraX >= this.position.x && this.handler.cBuff[i].x + this.handler.CameraX <= this.position.x + this.properties.w) {
+			if(this.handler.cBuff[i].y + this.handler.CameraY >= this.position.y && this.handler.cBuff[i].y + this.handler.CameraY <= this.position.y + this.properties.l) {
+				console.log('Pressed');
+			}
+		}
+	}
+}
