@@ -21,7 +21,27 @@ var keys = {
 	s: false,
 	d: false,
 	enter: false,
-	q: false
+	q: false,
+	b: false,
+	c: false,
+	e: false,
+	f: false,
+	g: false,
+	h: false,
+	i: false,
+	j: false,
+	k: false,
+	l: false,
+	m: false,
+	n: false,
+	o: false,
+	r: false,
+	t: false,
+	u: false,
+	v: false,
+	x: false,
+	y: false,
+	z: false
 };
 
 // This function will be called when a key on the keyboard is pressed
@@ -85,6 +105,86 @@ function keydown(e) {
 	if(e.keyCode == 81) {
 		keys.q = true;
 	}
+	
+	if(e.keyCode == 66) {
+		keys.b = true;
+	}
+
+	if(e.keyCode == 67) {
+		keys.c = true;
+	}
+
+	if(e.keyCode == 69) {
+		keys.e = true;
+	}
+
+	if(e.keyCode == 70) {
+		keys.f = true;
+	}
+
+	if(e.keyCode == 71) {
+		keys.g = true;
+	}
+
+	if(e.keyCode == 72) {
+		keys.h = true;
+	}
+
+	if(e.keyCode == 73) {
+		keys.i = true;
+	}
+
+	if(e.keyCode == 74) {
+		keys.j = true;
+	}
+
+	if(e.keyCode == 75) {
+		keys.k = true;
+	}
+
+	if(e.keyCode == 76) {
+		keys.l = true;
+	}
+
+	if(e.keyCode == 77) {
+		keys.m = true;
+	}
+
+	if(e.keyCode == 78) {
+		keys.n = true;
+	}
+
+	if(e.keyCode == 79) {
+		keys.o = true;
+	}
+
+	if(e.keyCode == 82) {
+		keys.r = true;
+	}
+
+	if(e.keyCode == 84) {
+		keys.t = true;
+	}
+
+	if(e.keyCode == 85) {
+		keys.u = true;
+	}
+
+	if(e.keyCode == 86) {
+		keys.v = true;
+	}
+
+	if(e.keyCode == 88) {
+		keys.x = true;
+	}
+
+	if(e.keyCode == 89) {
+		keys.y = true;
+	}
+
+	if(e.keyCode == 90) {
+		keys.z = true;
+	}
 }
 	
 // This function is called when the pressed key is released
@@ -147,5 +247,85 @@ function keyup(e) {
 	//q
 	if(e.keyCode == 81) {
 		keys.q = false;
+	}
+	
+	if(e.keyCode == 66) {
+		keys.b = false;
+	}
+
+	if(e.keyCode == 67) {
+		keys.c = false;
+	}
+
+	if(e.keyCode == 69) {
+		keys.e = false;
+	}
+
+	if(e.keyCode == 70) {
+		keys.f = false;
+	}
+
+	if(e.keyCode == 71) {
+		keys.g = false;
+	}
+
+	if(e.keyCode == 72) {
+		keys.h = false;
+	}
+
+	if(e.keyCode == 73) {
+		keys.i = false;
+	}
+
+	if(e.keyCode == 74) {
+		keys.j = false;
+	}
+
+	if(e.keyCode == 75) {
+		keys.k = false;
+	}
+
+	if(e.keyCode == 76) {
+		keys.l = false;
+	}
+
+	if(e.keyCode == 77) {
+		keys.m = false;
+	}
+
+	if(e.keyCode == 78) {
+		keys.n = false;
+	}
+
+	if(e.keyCode == 79) {
+		keys.o = false;
+	}
+
+	if(e.keyCode == 82) {
+		keys.r = false;
+	}
+
+	if(e.keyCode == 84) {
+		keys.t = false;
+	}
+
+	if(e.keyCode == 85) {
+		keys.u = false;
+	}
+
+	if(e.keyCode == 86) {
+		keys.v = false;
+	}
+
+	if(e.keyCode == 88) {
+		keys.x = false;
+	}
+
+	if(e.keyCode == 89) {
+		keys.y = false;
+	}
+
+	if(e.keyCode == 90) {
+		keys.z = false;
 	}
 }

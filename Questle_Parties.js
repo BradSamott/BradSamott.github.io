@@ -119,11 +119,54 @@ var EnemyBaseCharacters = {
 				MaxUses: 25
 			}
 		]
+	},
+	B: {
+		Atk: 3,
+		Def: 3,
+		MagAtk: 1,
+		MagDef: 2,
+		Spd: 3,
+		MaxHP: 50,
+		
+		Moves: [
+			{
+				Name: 'Attack',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 999
+			},
+			{
+				Name: 'Haymaker',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 25
+			}
+		]
 	}
 }
 
 var EnemyGrowths = {
 	A: {
+		GrowthList: [
+			{
+				Atk: 0,
+				Def: 0,
+				MagAtk: 0,
+				MagDef: 0,
+				Spd: 0,
+				MaxHP: 0
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			}
+		]
+	},
+	B: {
 		GrowthList: [
 			{
 				Atk: 0,

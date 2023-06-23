@@ -268,6 +268,8 @@ function ExitToKeyBoard() {
 		}
 		QuestleGlobals.WordToBePushed = null;
 	}
+	
+	QuestleGlobals.CurrTraps = [];
 }
 
 function menuUpdate() {
@@ -388,6 +390,8 @@ function menuUpdate() {
 					for(var eI = 0; eI < this.properties.enemies.length; eI++) {
 						if(this.properties.enemies[eI].properties.Attributes.currHP > 0) {
 							AllDead = false;
+						} else {
+							QuestleGlobals.CurrLevelData.traps[QuestleGlobals.CurrTraps[eI]].Sprung = true;
 						}
 					}
 					
@@ -532,14 +536,14 @@ function enemyUpdate() {
 	
 	if(this.properties.recovered == 0) {
 		this.properties.parentObj.properties.control = false;
-		this.currAnimation = 8;
+		this.currAnimation = LetterAnimationStates.Hurt;
 		this.properties.recoveryFrames++;
 		
 		if(this.properties.recoveryFrames == 30) {
 			this.properties.recovered = 1;
 			this.properties.parentObj.properties.control = true;
 			this.properties.recoveryFrames = 0;
-			this.currAnimation = 0;
+			this.currAnimation = LetterAnimationStates.Normal;
 		}
 	}
 	

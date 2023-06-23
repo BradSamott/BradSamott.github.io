@@ -212,12 +212,15 @@ function EnterUpdate() {
 						
 						console.log(QuestleGlobals.MenuObject.properties.battleActive);
 						for(var lI = 0; lI < LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps.length; lI++) {
-							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot1Child.properties.letter) {
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot1Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.traps[lI].Sprung) {
 								console.log('Trapped');
 								QuestleGlobals.MenuObject.position.y = 0;
 								QuestleGlobals.MenuObject.properties.battleActive = 1;
 								
-								var GOObjE1 = createGOFromString('GameObject -x 350 -y -100 -d -a PlatformerAnimationPackage -ca 0 -p intro 0 -p introFrames 0 -u enemyUpdate -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
+								var animpackageName = this.properties.parentWordChecker.properties.Slot1Child.properties.letter.toLowerCase() + 'AnimationPackage';
+								
+								var GOObjE1 = createGOFromString('GameObject -x 350 -y -100 -d -a '+animpackageName+' -ca 0 -p intro 0 -p introFrames 0 -u enemyUpdate -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
 								GOObjE1.properties.recovered = 1;
 								GOObjE1.properties.recoveryFrames = 0;
 								GOObjE1.properties.parentObj = QuestleGlobals.MenuObject;
@@ -233,60 +236,87 @@ function EnterUpdate() {
 								oHandler.addTextObject(TOJE1);
 								GOObjE1.properties.healthCounter = TOJE1;
 								QuestleGlobals.MenuObject.properties.enemies.push(GOObjE1);
+								QuestleGlobals.CurrTraps.push(lI);
 								oHandler.addObject(GOObjE1);
 								
 							}
 							
-							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot2Child.properties.letter) {
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot2Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.traps[lI].Sprung) {
 								console.log('Trapped');
 								QuestleGlobals.MenuObject.position.y = 0;
 								QuestleGlobals.MenuObject.properties.battleActive = 1;
 								
-								var GOObjE2 = createGOFromString('GameObject -x 350 -y -100 -d -a PlatformerAnimationPackage -ca 0 -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
+								var animpackageName = this.properties.parentWordChecker.properties.Slot2Child.properties.letter.toLowerCase() + 'AnimationPackage';
+								
+								var GOObjE2 = createGOFromString('GameObject -x 400 -y -100 -d -a '+animpackageName+' -ca 0 -p intro 0 -p introFrames 0 -u enemyUpdate -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
+								GOObjE2.properties.recovered = 1;
+								GOObjE2.properties.recoveryFrames = 0;
+								GOObjE2.properties.parentObj = QuestleGlobals.MenuObject;
 								console.log(JSON.parse(JSON.stringify(EnemyBaseCharacters[LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter])));
 								GOObjE2.properties.Attributes = JSON.parse(JSON.stringify(EnemyBaseCharacters[LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter]));
 								GOObjE2.properties.Attributes.Level = LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Level;
 								ApplyEnemyGrowth(GOObjE2.properties.Attributes,LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter);
 								console.log(GOObjE2.properties.Attributes);
 								GOObjE2.properties.Attributes.currHP = GOObjE2.properties.Attributes.MaxHP;
+								var TOJE2 = createTOFromString('TextObject -x 0 -y 0 -t test;');
+								TOJE2.textContent = '' + GOObjE2.properties.Attributes.currHP + '/' + GOObjE2.properties.Attributes.MaxHP;
+								console.log(TOJE2.textContent);
+								oHandler.addTextObject(TOJE2);
+								GOObjE2.properties.healthCounter = TOJE2;
 								QuestleGlobals.MenuObject.properties.enemies.push(GOObjE2);
+								QuestleGlobals.CurrTraps.push(lI);
 								oHandler.addObject(GOObjE2);
 								
 							}
 							
-							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot3Child.properties.letter) {
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter == this.properties.parentWordChecker.properties.Slot3Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.traps[lI].Sprung) {
 								console.log('Trapped');
 								QuestleGlobals.MenuObject.position.y = 0;
 								QuestleGlobals.MenuObject.properties.battleActive = 1;
 								
-								var GOObjE3 = createGOFromString('GameObject -x 350 -y -100 -d -a PlatformerAnimationPackage -ca 0 -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
+								var animpackageName = this.properties.parentWordChecker.properties.Slot3Child.properties.letter.toLowerCase() + 'AnimationPackage';
+								
+								var GOObjE3 = createGOFromString('GameObject -x 450 -y -100 -d -a '+animpackageName+' -ca 0 -p intro 0 -p introFrames 0 -u enemyUpdate -p hp 10 -p name '+LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter+';');
+								GOObjE3.properties.recovered = 1;
+								GOObjE3.properties.recoveryFrames = 0;
+								GOObjE3.properties.parentObj = QuestleGlobals.MenuObject;
 								console.log(JSON.parse(JSON.stringify(EnemyBaseCharacters[LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter])));
 								GOObjE3.properties.Attributes = JSON.parse(JSON.stringify(EnemyBaseCharacters[LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter]));
 								GOObjE3.properties.Attributes.Level = LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Level;
 								ApplyEnemyGrowth(GOObjE3.properties.Attributes,LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter);
 								console.log(GOObjE3.properties.Attributes);
 								GOObjE3.properties.Attributes.currHP = GOObjE3.properties.Attributes.MaxHP;
+								var TOJE3 = createTOFromString('TextObject -x 0 -y 0 -t test;');
+								TOJE3.textContent = '' + GOObjE3.properties.Attributes.currHP + '/' + GOObjE3.properties.Attributes.MaxHP;
+								console.log(TOJE3.textContent);
+								oHandler.addTextObject(TOJE3);
+								GOObjE3.properties.healthCounter = TOJE3;
 								QuestleGlobals.MenuObject.properties.enemies.push(GOObjE3);
+								QuestleGlobals.CurrTraps.push(lI);
 								oHandler.addObject(GOObjE3);
 								
 							}
 							
-							console.log(QuestleGlobals.MenuObject.properties.battleActive);
-							if(QuestleGlobals.MenuObject.properties.battleActive == 1) {
-								EnemySelectSetup();
-								GenerateTurnOrder();
-								QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[0];
+							
+						}
+						
+						console.log(QuestleGlobals.MenuObject.properties.battleActive);
+						if(QuestleGlobals.MenuObject.properties.battleActive == 1) {
+							EnemySelectSetup();
+							GenerateTurnOrder();
+							QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[0];
 								
-								QuestleGlobals.WordToBePushed = newWordA;
-								this.properties.parentWordChecker.properties.Slot1Child.properties.letter = '';
-								this.properties.parentWordChecker.properties.Slot2Child.properties.letter = '';
-								this.properties.parentWordChecker.properties.Slot3Child.properties.letter = '';
-								this.properties.parentWordChecker.properties.Active = false;
-								this.properties.parentWordChecker.properties.Slot1Child.position.y = -100;
-								this.properties.parentWordChecker.properties.Slot2Child.position.y = -100;
-								this.properties.parentWordChecker.properties.Slot3Child.position.y = -100;
-								return;
-							}
+							QuestleGlobals.WordToBePushed = newWordA;
+							this.properties.parentWordChecker.properties.Slot1Child.properties.letter = '';
+							this.properties.parentWordChecker.properties.Slot2Child.properties.letter = '';
+							this.properties.parentWordChecker.properties.Slot3Child.properties.letter = '';
+							this.properties.parentWordChecker.properties.Active = false;
+							this.properties.parentWordChecker.properties.Slot1Child.position.y = -100;
+							this.properties.parentWordChecker.properties.Slot2Child.position.y = -100;
+							this.properties.parentWordChecker.properties.Slot3Child.position.y = -100;
+							return;
 						}
 						
 						this.properties.parentWordChecker.properties.wordList.properties.words.push(newWordA);

@@ -1,5 +1,295 @@
 'use strict'
 
+function setupkeyBoardPhy() {
+	this.properties.aDown = false;
+	this.properties.bDown = false;
+	this.properties.cDown = false;
+	this.properties.dDown = false;
+	this.properties.eDown = false;
+	this.properties.fDown = false;
+	this.properties.gDown = false;
+	this.properties.hDown = false;
+	this.properties.iDown = false;
+	this.properties.jDown = false;
+	this.properties.kDown = false;
+	this.properties.lDown = false;
+	this.properties.mDown = false;
+	this.properties.nDown = false;
+	this.properties.oDown = false;
+	this.properties.pDown = false;
+	this.properties.qDown = false;
+	this.properties.rDown = false;
+	this.properties.sDown = false;
+	this.properties.tDown = false;
+	this.properties.uDown = false;
+	this.properties.vDown = false;
+	this.properties.wDown = false;
+	this.properties.xDown = false;
+	this.properties.yDown = false;
+	this.properties.zDown = false;
+	this.properties.enterDown = false;
+}
+
+function keyBoardPhyUpdate() {
+	
+	if(this.properties.parentWordChecker.properties.Active) {
+		
+		var usedLetter = '';
+		
+		if(keys.a && !this.properties.aDown) {
+			usedLetter = 'A';
+			this.properties.aDown = true;
+		}
+
+		else if(keys.b && !this.properties.bDown) {
+			usedLetter = 'B';
+			this.properties.bDown = true;
+		}
+
+		else if(keys.c && !this.properties.cDown) {
+			usedLetter = 'C';
+			this.properties.cDown = true;
+		}
+
+		else if(keys.d && !this.properties.dDown) {
+			usedLetter = 'D';
+			this.properties.dDown = true;
+		}
+		
+		else if(keys.e && !this.properties.eDown) {
+			usedLetter = 'E';
+			this.properties.eDown = true;
+		}
+		
+		else if(keys.f && !this.properties.fDown) {
+			usedLetter = 'F';
+			this.properties.fDown = true;
+		}
+		
+		else if(keys.g && !this.properties.gDown) {
+			usedLetter = 'G';
+			this.properties.gDown = true;
+		}
+		
+		else if(keys.h && !this.properties.hDown) {
+			usedLetter = 'H';
+			this.properties.hDown = true;
+		}
+		
+		else if(keys.i && !this.properties.iDown) {
+			usedLetter = 'I';
+			this.properties.iDown = true;
+		}
+		
+		else if(keys.j && !this.properties.jDown) {
+			usedLetter = 'J';
+			this.properties.jDown = true;
+		}
+		
+		else if(keys.k && !this.properties.kDown) {
+			usedLetter = 'K';
+			this.properties.kDown = true;
+		}
+		
+		else if(keys.l && !this.properties.lDown) {
+			usedLetter = 'L';
+			this.properties.lDown = true;
+		}
+		
+		else if(keys.m && !this.properties.mDown) {
+			usedLetter = 'M';
+			this.properties.mDown = true;
+		}
+		
+		else if(keys.n && !this.properties.nDown) {
+			usedLetter = 'N';
+			this.properties.nDown = true;
+		}
+		
+		else if(keys.o && !this.properties.oDown) {
+			usedLetter = 'O';
+			this.properties.oDown = true;
+		}
+		
+		else if(keys.p && !this.properties.pDown) {
+			usedLetter = 'P';
+			this.properties.pDown = true;
+		}
+		
+		else if(keys.q && !this.properties.qDown) {
+			usedLetter = 'Q';
+			this.properties.qDown = true;
+		}
+		
+		else if(keys.r && !this.properties.rDown) {
+			usedLetter = 'R';
+			this.properties.rDown = true;
+		}
+		
+		else if(keys.s && !this.properties.sDown) {
+			usedLetter = 'S';
+			this.properties.sDown = true;
+		}
+		
+		else if(keys.t && !this.properties.tDown) {
+			usedLetter = 'T';
+			this.properties.tDown = true;
+		}
+		
+		else if(keys.u && !this.properties.uDown) {
+			usedLetter = 'U';
+			this.properties.uDown = true;
+		}
+		
+		else if(keys.v && !this.properties.vDown) {
+			usedLetter = 'V';
+			this.properties.vDown = true;
+		}
+		
+		else if(keys.w && !this.properties.wDown) {
+			usedLetter = 'W';
+			this.properties.wDown = true;
+		}
+		
+		else if(keys.x && !this.properties.xDown) {
+			usedLetter = 'X';
+			this.properties.xDown = true;
+		}
+		
+		else if(keys.y && !this.properties.yDown) {
+			usedLetter = 'Y';
+			this.properties.yDown = true;
+		}
+		
+		else if(keys.z && !this.properties.zDown) {
+			usedLetter = 'Z';
+			this.properties.zDown = true;
+		}
+
+		else if(keys.enter && !this.properties.enterDown) {
+			this.properties.enterDown = true;
+		}
+		
+		if(usedLetter != '') {
+			if(this.properties.parentWordChecker.properties.Slot1Child.properties.letter == '') {
+				this.properties.parentWordChecker.properties.Slot1Child.properties.letter = usedLetter;
+			} else if(this.properties.parentWordChecker.properties.Slot2Child.properties.letter == '') {
+				this.properties.parentWordChecker.properties.Slot2Child.properties.letter = usedLetter;
+			} else if(this.properties.parentWordChecker.properties.Slot3Child.properties.letter == '') {
+				this.properties.parentWordChecker.properties.Slot3Child.properties.letter = usedLetter;
+			}
+		}
+	}
+	
+	if(!keys.a) {
+		this.properties.aDown = false;
+	}
+
+	if(!keys.b) {
+		this.properties.bDown = false;
+	}
+
+	if(!keys.c) {
+		this.properties.cDown = false;
+	}
+
+	if(!keys.d) {
+		this.properties.dDown = false;
+	}
+	
+	if(!keys.e) {
+		this.properties.eDown = false;
+	}
+	
+	if(!keys.f) {
+		this.properties.fDown = false;
+	}
+	
+	if(!keys.g) {
+		this.properties.gDown = false;
+	}
+	
+	if(!keys.h) {
+		this.properties.hDown = false;
+	}
+	
+	if(!keys.i) {
+		this.properties.iDown = false;
+	}
+	
+	if(!keys.j) {
+		this.properties.jDown = false;
+	}
+	
+	if(!keys.k) {
+		this.properties.kDown = false;
+	}
+	
+	if(!keys.l) {
+		this.properties.lDown = false;
+	}
+	
+	if(!keys.m) {
+		this.properties.mDown = false;
+	}
+	
+	if(!keys.n) {
+		this.properties.nDown = false;
+	}
+	
+	if(!keys.o) {
+		this.properties.oDown = false;
+	}
+	
+	if(!keys.p) {
+		this.properties.pDown = false;
+	}
+	
+	if(!keys.q) {
+		this.properties.qDown = false;
+	}
+	
+	if(!keys.r) {
+		this.properties.rDown = false;
+	}
+	
+	if(!keys.s) {
+		this.properties.sDown = false;
+	}
+	
+	if(!keys.t) {
+		this.properties.tDown = false;
+	}
+	
+	if(!keys.u) {
+		this.properties.uDown = false;
+	}
+	
+	if(!keys.v) {
+		this.properties.vDown = false;
+	}
+	
+	if(!keys.w) {
+		this.properties.wDown = false;
+	}
+	
+	if(!keys.x) {
+		this.properties.xDown = false;
+	}
+	
+	if(!keys.y) {
+		this.properties.yDown = false;
+	}
+	
+	if(!keys.z) {
+		this.properties.zDown = false;
+	}
+
+	if(!keys.enter) {
+		this.properties.enterDown = false;
+	}
+}
+
 function setupWordChecker() {
 	var Slot1 = 'GameObject -x 0 -y 0 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -u SlotUpdate -pi setupSlot';
 	var GOJ1 = createGOJsonFromString(Slot1);
@@ -28,6 +318,13 @@ function setupWordChecker() {
 	this.properties.wordList = GOObjL;
 	GOObjL.properties.letter = '';
 	this.handler.addObject(GOObjL);
+	
+	var keyBoardPhy = 'GameObject -x 0 -y 0 -u keyBoardPhyUpdate -pi setupkeyBoardPhy'
+	var GOJK = createGOJsonFromString(keyBoardPhy);
+	var GOObjK = createGOFromJSON(GOJK);
+	this.properties.keyBoardPhy = GOObjK;
+	GOObjK.properties.parentWordChecker = this;
+	this.handler.addObject(GOObjK);
 	
 	this.properties.Active = true;
 	
@@ -60,7 +357,7 @@ function SlotUpdate() {
 	
 	this.properties.wordChild.textContent = this.properties.letter;
 }
-
+/*
 var LevelSetups = {
 	Levels: [{
 		answer: 'KEY',
@@ -74,6 +371,15 @@ var LevelSetups = {
 			{Letter: 'B', Level: 2}
 		]
 	}]
+}
+*/
+
+function InitializeLevelData(Level) {
+	QuestleGlobals.CurrLevelData = JSON.parse(JSON.stringify(LevelSetups.Levels[Level]));
+	for(var i = 0; i < QuestleGlobals.CurrLevelData.traps.length; i++) {
+		QuestleGlobals.CurrLevelData.traps[i].Sprung = false;
+	}
+	QuestleGlobals.CurrTraps = [];
 }
 
 function StartLevel(LevelNum,CurrHandler) {
@@ -124,6 +430,7 @@ function StartLevel(LevelNum,CurrHandler) {
 	var GOObjM = createGOFromString('GameObject -t menu -x 0 -y 700 -v 0 0 -v 300 0 -v 300 300 -v 0 300 -d -u menuUpdate -p currLayer 0 -p currSel 0 -p battleActive 0;');
 	QuestleGlobals.MenuObject = GOObjM;
 	InitalizeMenu();
+	InitializeLevelData(LevelNum);
 	
 	oHandler.addObject(GOObjM);
 	
