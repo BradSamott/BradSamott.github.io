@@ -10,13 +10,13 @@ var MenuLayerMap = {
 }
 
 function InitalizeMenu() {
-	var TOObj = createTOFromString('TextObject -x -100 -y 0 -t Attack;');
+	var TOObj = createTOFromString('TextObject -x -100 -y 0 -t Attack -c black;');
 	oHandler.addTextObject(TOObj);
 	
-	var TOObj2 = createTOFromString('TextObject -x -100 -y 0 -t Item;');
+	var TOObj2 = createTOFromString('TextObject -x -100 -y 0 -t Item -c black;');
 	oHandler.addTextObject(TOObj2);
 
-	var TOObj3 = createTOFromString('TextObject -x -100 -y 0 -t Defend;');
+	var TOObj3 = createTOFromString('TextObject -x -100 -y 0 -t Defend -c black;');
 	oHandler.addTextObject(TOObj3);
 
 	var GOObjP = createGOFromString('GameObject -x -100 -y 0 -v 0 0 -v 10 5 -v 0 10 -d');
@@ -50,7 +50,7 @@ function InitalizeMenu() {
 	QuestleGlobals.turnDone = false;
 	QuestleGlobals.turnRotation = 0;
 	
-	var DialogQObj = createTOFromString('TextObject -x -100 -y 0 -t Temp;');
+	var DialogQObj = createTOFromString('TextObject -x -100 -y 0 -t Temp -c black;');
 	oHandler.addTextObject(DialogQObj);
 	QuestleGlobals.MenuObject.properties.currDialogQ = DialogQObj;
 	
@@ -66,13 +66,27 @@ function InitalizeMenu() {
 function populatePlayers() {
 	for(var i = 0; i < CurrParty.length; i++) {
 		if(PartyCharacters[CurrParty[i]] != null) {
-			var GOObjP = createGOFromString('GameObject -x 350 -y -100 -d -a PlatformerAnimationPackage -ca 0 -p hp 10 -p name Knight;');
+			var GOObjP = createGOFromString('GameObject -x '+((i+1) * 150)+' -y 340 -d -a PlatformerAnimationPackage -ca 0 -p hp 10 -p name Knight -u playerUpdate;');
 			console.log(JSON.parse(JSON.stringify(PartyCharacters[CurrParty[i]])));
 			GOObjP.properties.Attributes = JSON.parse(JSON.stringify(PartyCharacters[CurrParty[i]]));
 			ApplyPlayerGrowth(GOObjP.properties.Attributes,CurrParty[i]);
 			console.log(GOObjP.properties.Attributes);
 			GOObjP.properties.Attributes.currHP = GOObjP.properties.Attributes.MaxHP;
+			GOObjP.properties.Type = CurrParty[i];
 			QuestleGlobals.MenuObject.properties.players.push(GOObjP);
+			
+			var TOJP = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
+			TOJP.textContent = '' + GOObjP.properties.Attributes.currHP + '/' + GOObjP.properties.Attributes.MaxHP;
+			console.log(TOJP.textContent);
+			oHandler.addTextObject(TOJP);
+			GOObjP.properties.healthCounter = TOJP;
+			
+			var TOJPL = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
+			TOJPL.textContent = '' + GOObjP.properties.Attributes.Level;
+			console.log(TOJPL.textContent);
+			oHandler.addTextObject(TOJPL);
+			GOObjP.properties.levelCounter = TOJPL;
+			
 			oHandler.addObject(GOObjP);
 		}
 	}
@@ -86,7 +100,7 @@ function ListPlayerAttacks() {
 	
 	if(QuestleGlobals.MenuObject.properties.players[0] != null) {
 		for(var i = 0; i < QuestleGlobals.MenuObject.properties.players[0].properties.Attributes.Moves.length; i++) {	
-			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t '+QuestleGlobals.MenuObject.properties.players[0].properties.Attributes.Moves[i].Name+';');
+			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t "'+QuestleGlobals.MenuObject.properties.players[0].properties.Attributes.Moves[i].Name+'" -c black;');
 			oHandler.addTextObject(TOObj);
 			var newOpt = {title: TOObj, selectFunction: MoveSelect}
 			QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect0].push(newOpt);
@@ -95,7 +109,7 @@ function ListPlayerAttacks() {
 	
 	if(QuestleGlobals.MenuObject.properties.players[1] != null) {
 		for(var i = 0; i < QuestleGlobals.MenuObject.properties.players[1].properties.Attributes.Moves.length; i++) {	
-			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t '+QuestleGlobals.MenuObject.properties.players[1].properties.Attributes.Moves[i].Name+';');
+			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t "'+QuestleGlobals.MenuObject.properties.players[1].properties.Attributes.Moves[i].Name+'" -c black;');
 			oHandler.addTextObject(TOObj);
 			var newOpt = {title: TOObj, selectFunction: MoveSelect}
 			QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect1].push(newOpt);
@@ -104,7 +118,7 @@ function ListPlayerAttacks() {
 	
 	if(QuestleGlobals.MenuObject.properties.players[2] != null) {
 		for(var i = 0; i < QuestleGlobals.MenuObject.properties.players[2].properties.Attributes.Moves.length; i++) {	
-			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t '+QuestleGlobals.MenuObject.properties.players[2].properties.Attributes.Moves[i].Name+';');
+			var TOObj = createTOFromString('TextObject -x -100 -y 0 -t "'+QuestleGlobals.MenuObject.properties.players[2].properties.Attributes.Moves[i].Name+'" -c black;');
 			oHandler.addTextObject(TOObj);
 			var newOpt = {title: TOObj, selectFunction: MoveSelect}
 			QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect2].push(newOpt);
@@ -115,7 +129,7 @@ function ListPlayerAttacks() {
 function CreateEnemySelection() {
 	if(this.properties.enemies != null) {
 		for(var i = 0; i < this.properties.enemies.length; i++) {
-			var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+this.properties.enemies[i].properties.name+';');
+			var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+this.properties.enemies[i].properties.name+' -c black;');
 			oHandler.addTextObject(TestTObj0);
 			
 			var newEnemy = {title: TestTObj0, selectFunction: getAttacked, localPointers: {target: this.properties.enemies[i]}}
@@ -162,7 +176,7 @@ function getAttacked() {
 
 function menuSetup() {
 	for(var i = 0; i < this.properties.enemies.length; i++) {
-		var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+this.properties.enemies[i].properties.name+';');
+		var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+this.properties.enemies[i].properties.name+' -c black;');
 		oHandler.addTextObject(TestTObj0);
 		
 		var newEnemy = {title: TestTObj0, selectFunction: getAttacked, localPointers: {target: this.properties.enemies[i]}}
@@ -172,7 +186,7 @@ function menuSetup() {
 
 function EnemySelectSetup() {
 	for(var i = 0; i < QuestleGlobals.MenuObject.properties.enemies.length; i++) {
-		var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+QuestleGlobals.MenuObject.properties.enemies[i].properties.name+';');
+		var TestTObj0 = createTOFromString('TextObject -x -100 -y 0 -t '+QuestleGlobals.MenuObject.properties.enemies[i].properties.name+' -c black;');
 		oHandler.addTextObject(TestTObj0);
 		
 		var newEnemy = {title: TestTObj0, selectFunction: getAttacked, localPointers: {target: QuestleGlobals.MenuObject.properties.enemies[i]}}
@@ -202,6 +216,7 @@ function GenerateTurnOrder() {
 }
 
 function EnemyAttackPhase() {
+	console.log('Enemy Attacking');
 	QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[QuestleGlobals.turnRotation].index];
 	
 	QuestleGlobals.currMove = Math.floor(Math.random() * QuestleGlobals.CurrAttacker.properties.Attributes.Moves.length);
@@ -220,7 +235,8 @@ function EnemyAttackPhase() {
 				 - Math.floor(currTarget.properties.Attributes.MagDef / 4);
 	}
 	
-	QuestleGlobals.MenuObject.properties.DialogQ.push('Enemy Uses '+QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Name+'');
+	//QuestleGlobals.MenuObject.properties.DialogQ.push('Enemy Uses '+QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Name+'');
+	QuestleGlobals.MenuObject.properties.DialogQ.push(QuestleGlobals.CurrAttacker.properties.name+' Uses '+QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Name+'');
 	QuestleGlobals.MenuObject.properties.EventQ.push(null);
 	
 	QuestleGlobals.MenuObject.properties.DialogQ.push('Player Takes '+DmgAmt+' Damage');
@@ -229,9 +245,35 @@ function EnemyAttackPhase() {
 	QuestleGlobals.turnDone = true;
 }
 
+function SetPlayerLevel(Player) {
+	if(Player.properties.Attributes.Exp >= 1 && Player.properties.Attributes.Exp <= 3) {
+		Player.properties.Attributes.Level = 2;
+		var tempPlayer = JSON.parse(JSON.stringify(PartyCharacters[Player.properties.Type]));
+		tempPlayer.Level = Player.properties.Attributes.Level;
+		ApplyPlayerGrowth(tempPlayer,Player.properties.Type);
+		Player.properties.Attributes.Atk = tempPlayer.Atk;
+		Player.properties.Attributes.Def = tempPlayer.Def;
+		Player.properties.Attributes.MagAtk = tempPlayer.MagAtk;
+		Player.properties.Attributes.MagDef = tempPlayer.MagDef;
+		Player.properties.Attributes.Spd = tempPlayer.Spd;
+		Player.properties.Attributes.MaxHP = tempPlayer.MaxHP;
+	}
+}
+
 function ExitToKeyBoard() {
 	QuestleGlobals.MenuObject.position.y = -700;
 	QuestleGlobals.MenuObject.properties.battleActive = 0;
+	
+	for(var eI = 0; eI < QuestleGlobals.MenuObject.properties.enemies.length; eI++) {
+		for(var pI = 0; pI < QuestleGlobals.MenuObject.properties.players.length; pI++) {
+			QuestleGlobals.MenuObject.properties.players[pI].properties.Attributes.Exp = QuestleGlobals.MenuObject.properties.players[pI].properties.Attributes.Exp + 1;
+			SetPlayerLevel(QuestleGlobals.MenuObject.properties.players[pI]);
+		}
+		
+		oHandler.removeTextObject(QuestleGlobals.MenuObject.properties.enemies[eI].properties.healthCounter);
+		oHandler.removeTextObject(QuestleGlobals.MenuObject.properties.enemies[eI].properties.levelCounter);
+		oHandler.removeObject(QuestleGlobals.MenuObject.properties.enemies[eI]);
+	}
 	
 	QuestleGlobals.MenuObject.properties.enemies = [];
 	
@@ -272,6 +314,11 @@ function ExitToKeyBoard() {
 	QuestleGlobals.CurrTraps = [];
 }
 
+function LossExitToLevelSelect() {
+	QuestleGlobals.MenuObject.handler.removeAllObjects();
+	BackToLevelSelect();
+}
+
 function menuUpdate() {
 	
 	if(this.properties.battleActive == 1) {
@@ -289,7 +336,7 @@ function menuUpdate() {
 		
 		var SelGroup = Math.floor(cSel / 4);
 		
-		if(this.properties.control && this.properties.DialogQ.length == 0) {
+		if(this.properties.control && this.properties.DialogQ.length == 0 && this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'P') { //Dialog done and players turn
 		
 			//console.log(cLayer);
 			if(this.properties.options[cLayer][(SelGroup * 4) + 0] != null) {
@@ -304,12 +351,12 @@ function menuUpdate() {
 			
 			if(this.properties.options[cLayer][(SelGroup * 4) + 2] != null) {
 				this.properties.options[cLayer][(SelGroup * 4) + 2].title.position.x = this.position.x + 10;
-				this.properties.options[cLayer][(SelGroup * 4) + 2].title.position.y = this.position.y + 210;
+				this.properties.options[cLayer][(SelGroup * 4) + 2].title.position.y = this.position.y + 50;
 			}
 			
 			if(this.properties.options[cLayer][(SelGroup * 4) + 3] != null) {
 				this.properties.options[cLayer][(SelGroup * 4) + 3].title.position.x = this.position.x + 210;
-				this.properties.options[cLayer][(SelGroup * 4) + 3].title.position.y = this.position.y + 210;
+				this.properties.options[cLayer][(SelGroup * 4) + 3].title.position.y = this.position.y + 50;
 			}
 			
 			if(cSel % 4 == 0) {
@@ -320,10 +367,10 @@ function menuUpdate() {
 				this.properties.pointerChild.position.y = this.position.y + 10;
 			} else if(cSel % 4 == 2) {
 				this.properties.pointerChild.position.x = this.position.x + 10;
-				this.properties.pointerChild.position.y = this.position.y + 210;
+				this.properties.pointerChild.position.y = this.position.y + 50;
 			} else if(cSel % 4 == 3) {
 				this.properties.pointerChild.position.x = this.position.x + 210;
-				this.properties.pointerChild.position.y = this.position.y + 210;
+				this.properties.pointerChild.position.y = this.position.y + 50;
 			}
 			
 			if(keys.enter && !this.properties.enterDown) {
@@ -372,6 +419,31 @@ function menuUpdate() {
 				}
 				this.properties.downDown = true;
 			}
+		} else if(this.properties.control && this.properties.DialogQ.length == 0 && this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'E') { //enemy turn concluded but did not add dialog
+			this.properties.DialogQ = [];
+			this.properties.EventQ = [];
+			this.properties.DialogPos = 0;
+			if(QuestleGlobals.turnDone) {
+				console.log('Turn Done');
+				QuestleGlobals.turnDone = false;
+				QuestleGlobals.turnRotation++;
+				if(QuestleGlobals.turnRotation >= this.properties.turnOrder.length) {
+					QuestleGlobals.turnRotation = 0;
+				}
+				console.log(QuestleGlobals.turnRotation);
+				if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'P') {
+					console.log('Player ' + QuestleGlobals.turnRotation);
+					QuestleGlobals.CurrAttacker = this.properties.players[this.properties.turnOrder[QuestleGlobals.turnRotation].index];
+				} else if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'E') {
+					console.log('Enemy ' + QuestleGlobals.turnRotation);
+					if(QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[QuestleGlobals.turnRotation].index].properties.Attributes.currHP > 0) {
+						EnemyAttackPhase();
+					} else {
+						QuestleGlobals.turnDone = true;
+					}
+				}
+						
+			}
 		} else if(this.properties.control && this.properties.DialogPos < this.properties.DialogQ.length) {
 			this.properties.currDialogQ.textContent = this.properties.DialogQ[this.properties.DialogPos];
 			
@@ -383,7 +455,15 @@ function menuUpdate() {
 					console.log('battle event');
 					this.properties.EventQ[this.properties.DialogPos].battleEvent();
 					if(this.properties.battleActive == 0) {
+						shiftKeys('up');
 						return;
+					}
+					
+					var AllPlayersDead = true;
+					for(var pI = 0; pI < this.properties.players.length; pI++) {
+						if(this.properties.players[pI].properties.Attributes.currHP > 0) {
+							AllPlayersDead = false;
+						}
 					}
 					
 					var AllDead = true;
@@ -395,7 +475,11 @@ function menuUpdate() {
 						}
 					}
 					
-					if(AllDead) {
+					if(AllPlayersDead) {
+						QuestleGlobals.MenuObject.properties.DialogQ.push('Game Over');
+						//QuestleGlobals.MenuObject.properties.EventQ.push(null);
+						QuestleGlobals.MenuObject.properties.EventQ.push({battleEvent: LossExitToLevelSelect});
+					} else if(AllDead) {
 						QuestleGlobals.MenuObject.properties.DialogQ.push('You Win');
 						//QuestleGlobals.MenuObject.properties.EventQ.push(null);
 						QuestleGlobals.MenuObject.properties.EventQ.push({battleEvent: ExitToKeyBoard});
@@ -415,11 +499,15 @@ function menuUpdate() {
 						}
 						console.log(QuestleGlobals.turnRotation);
 						if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'P') {
-							console.log('Player');
+							console.log('Player ' + QuestleGlobals.turnRotation);
 							QuestleGlobals.CurrAttacker = this.properties.players[this.properties.turnOrder[QuestleGlobals.turnRotation].index];
 						} else if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'E') {
-							console.log('Enemy');
-							EnemyAttackPhase();
+							console.log('Enemy ' + QuestleGlobals.turnRotation);
+							if(QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[QuestleGlobals.turnRotation].index].properties.Attributes.currHP > 0) {
+								EnemyAttackPhase();
+							} else {
+								QuestleGlobals.turnDone = true;
+							}
 						}
 						
 					}
@@ -479,7 +567,16 @@ function AttackSelect() {
 				oHandler.Objects[i].properties.options[cLayer][3].title.position.y = 0;
 			}
 			
-			oHandler.Objects[i].properties.currLayer = 1;
+			if(QuestleGlobals.CurrAttacker == QuestleGlobals.MenuObject.properties.players[0]) {
+				oHandler.Objects[i].properties.currLayer = MenuLayerMap.MoveSelect0;
+			} else if(QuestleGlobals.CurrAttacker == QuestleGlobals.MenuObject.properties.players[1]) {
+				oHandler.Objects[i].properties.currLayer = MenuLayerMap.MoveSelect1;
+			} else if(QuestleGlobals.CurrAttacker == QuestleGlobals.MenuObject.properties.players[2]) {
+				oHandler.Objects[i].properties.currLayer = MenuLayerMap.MoveSelect2;
+			} else {
+				oHandler.Objects[i].properties.currLayer = 1;
+			}
+			
 		}
 	}
 }
@@ -551,6 +648,23 @@ function enemyUpdate() {
 	
 	this.properties.healthCounter.position.x = this.position.x;
 	this.properties.healthCounter.position.y = this.position.y - 10;
+	
+	this.properties.levelCounter.textContent = 'LV: ' + this.properties.Attributes.Level
+	
+	this.properties.levelCounter.position.x = this.position.x;
+	this.properties.levelCounter.position.y = this.position.y + 110;
+}
+
+function playerUpdate() {
+	this.properties.healthCounter.textContent = '' + this.properties.Attributes.currHP + '/' + this.properties.Attributes.MaxHP
+	
+	this.properties.healthCounter.position.x = this.position.x;
+	this.properties.healthCounter.position.y = this.position.y - 10;
+	
+	this.properties.levelCounter.textContent = 'LV: ' + this.properties.Attributes.Level;
+	
+	this.properties.levelCounter.position.x = this.position.x;
+	this.properties.levelCounter.position.y = this.position.y + 60;
 }
 
 function StartBattle() {

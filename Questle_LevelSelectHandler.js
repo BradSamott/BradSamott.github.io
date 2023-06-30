@@ -343,7 +343,8 @@ function WordCheckerUpdate() {
 }
 
 function setupSlot() {
-	var TextText = 'TextObject -x 0 -y 0 -t '+this.properties.letter+';';
+	//var TextText = 'TextObject -x 0 -y 0 -t '+this.properties.letter+' -c black;';
+	var TextText = 'TextObject -x 0 -y 0 -t TEST -c black;';
 	
 	var TOJ = createTOJsonFromString(TextText);
 	var TOObj = createTOFromJSON(TOJ);
@@ -427,7 +428,7 @@ function StartLevel(LevelNum,CurrHandler) {
 	
 	enterObjects(LevelText);
 	
-	var GOObjM = createGOFromString('GameObject -t menu -x 0 -y 700 -v 0 0 -v 300 0 -v 300 300 -v 0 300 -d -u menuUpdate -p currLayer 0 -p currSel 0 -p battleActive 0;');
+	var GOObjM = createGOFromString('GameObject -t menu -x 21 -y 700 -v 0 0 -v 600 0 -v 600 180 -v 0 180 -d -u menuUpdate -p currLayer 0 -p currSel 0 -p battleActive 0;');
 	QuestleGlobals.MenuObject = GOObjM;
 	InitalizeMenu();
 	InitializeLevelData(LevelNum);
@@ -472,6 +473,9 @@ function ReturnToLevelSelectUpdate() {
 }
 
 function StartLevelSelect() {
+	var backgroundCanvas = document.getElementById("canvasBG");
+	backgroundCanvas.style = "background-color: white;"
+	
 	var SelText = 'GameObject -x 21 -y 296 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 0 -u LevelOptionUpdate;';
 	SelText = SelText + 'GameObject -x 81 -y 296 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 1 -u LevelOptionUpdate;';
 	

@@ -13,7 +13,8 @@ var LevelSetups = {
 		answer: 'AND',
 		traps: [
 			{Letter: 'B', Level: 1},
-			{Letter: 'A', Level: 1}
+			{Letter: 'A', Level: 2},
+			{Letter: 'C', Level: 1}
 		]
 	}]
 }

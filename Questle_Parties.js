@@ -33,6 +33,12 @@ var PartyBaseCharacters = {
 				BasePower: 4,
 				Attr: 'Atk',
 				MaxUses: 999
+			},
+			{
+				Name: 'Light Bolt',
+				BasePower: 4,
+				Attr: 'MagAtk',
+				MaxUses: 25
 			}
 		]
 	}
@@ -47,6 +53,7 @@ var PartyCharacters = {
 		Spd: 4,
 		MaxHP: 50,
 		Level: 1,
+		Exp: 0,
 		
 		Moves: [
 			{
@@ -57,13 +64,66 @@ var PartyCharacters = {
 			}
 		]
 		
+	},
+	Mage: {
+		Atk: 1,
+		Def: 2,
+		MagAtk: 4,
+		MagDef: 4,
+		Spd: 4,
+		MaxHP: 50,
+		Level: 1,
+		Exp: 0,
+		
+		Moves: [
+			{
+				Name: 'Attack',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 999
+			},
+			{
+				Name: 'Light Bolt',
+				BasePower: 4,
+				Attr: 'MagAtk',
+				MaxUses: 25
+			}
+		]
 	}
 }
 
-var CurrParty = ['Knight'];
+var CurrParty = ['Knight','Mage'];
 
 var PlayerGrowths = {
 	Knight: {
+		GrowthList: [
+			{
+				Atk: 0,
+				Def: 0,
+				MagAtk: 0,
+				MagDef: 0,
+				Spd: 0,
+				MaxHP: 0
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			}
+		]
+	},
+	Mage: {
 		GrowthList: [
 			{
 				Atk: 0,
@@ -142,6 +202,29 @@ var EnemyBaseCharacters = {
 				MaxUses: 25
 			}
 		]
+	},
+	C: {
+		Atk: 3,
+		Def: 3,
+		MagAtk: 1,
+		MagDef: 2,
+		Spd: 3,
+		MaxHP: 50,
+		
+		Moves: [
+			{
+				Name: 'Attack',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 999
+			},
+			{
+				Name: 'Haymaker',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 25
+			}
+		]
 	}
 }
 
@@ -167,6 +250,26 @@ var EnemyGrowths = {
 		]
 	},
 	B: {
+		GrowthList: [
+			{
+				Atk: 0,
+				Def: 0,
+				MagAtk: 0,
+				MagDef: 0,
+				Spd: 0,
+				MaxHP: 0
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			}
+		]
+	},
+	C: {
 		GrowthList: [
 			{
 				Atk: 0,
