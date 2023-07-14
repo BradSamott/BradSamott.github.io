@@ -252,6 +252,7 @@ function EnterUpdate() {
 								ApplyEnemyGrowth(GOObjE1.properties.Attributes,LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter);
 								console.log(GOObjE1.properties.Attributes);
 								GOObjE1.properties.Attributes.currHP = GOObjE1.properties.Attributes.MaxHP;
+								GOObjE1.properties.buffList = [];
 								
 								var TOJE1 = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
 								TOJE1.textContent = '' + GOObjE1.properties.Attributes.currHP + '/' + GOObjE1.properties.Attributes.MaxHP;
@@ -289,6 +290,7 @@ function EnterUpdate() {
 								ApplyEnemyGrowth(GOObjE2.properties.Attributes,LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter);
 								console.log(GOObjE2.properties.Attributes);
 								GOObjE2.properties.Attributes.currHP = GOObjE2.properties.Attributes.MaxHP;
+								GOObjE2.properties.buffList = [];
 								
 								var TOJE2 = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
 								TOJE2.textContent = '' + GOObjE2.properties.Attributes.currHP + '/' + GOObjE2.properties.Attributes.MaxHP;
@@ -326,6 +328,7 @@ function EnterUpdate() {
 								ApplyEnemyGrowth(GOObjE3.properties.Attributes,LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].traps[lI].Letter);
 								console.log(GOObjE3.properties.Attributes);
 								GOObjE3.properties.Attributes.currHP = GOObjE3.properties.Attributes.MaxHP;
+								GOObjE3.properties.buffList = [];
 								
 								var TOJE3 = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
 								TOJE3.textContent = '' + GOObjE3.properties.Attributes.currHP + '/' + GOObjE3.properties.Attributes.MaxHP;
@@ -353,7 +356,17 @@ function EnterUpdate() {
 							shiftKeys('down');
 							EnemySelectSetup();
 							GenerateTurnOrder();
-							QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[0];
+							
+							QuestleGlobals.turnRotation = 0;
+							console.log(QuestleGlobals.MenuObject.properties.turnOrder[0].type);
+							if(QuestleGlobals.MenuObject.properties.turnOrder[0].type == 'E') {
+								//QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[0].index];
+								EnemyAttackPhase();
+							} else if(QuestleGlobals.MenuObject.properties.turnOrder[0].type == 'P') {
+								//console.log(QuestleGlobals.MenuObject.properties.turnOrder[0].index);
+								QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[QuestleGlobals.MenuObject.properties.turnOrder[0].index];
+							}
+							//QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[0];
 								
 							QuestleGlobals.WordToBePushed = newWordA;
 							this.properties.parentWordChecker.properties.Slot1Child.properties.letter = '';

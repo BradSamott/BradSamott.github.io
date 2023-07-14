@@ -24,7 +24,11 @@ function InitalizeMenu() {
 	QuestleGlobals.MenuObject.properties.pointerChild = GOObjP;
 	
 	QuestleGlobals.MenuObject.properties.options = [
-		[{title: TOObj, selectFunction: AttackSelect, localPointers: {test1: 'tester'}},{title: TOObj2},{title: TOObj3}],
+		[
+			{title: TOObj, selectFunction: AttackSelect, localPointers: {test1: 'tester'}},
+			{title: TOObj2, selectFunction: ItemMenuSelect, localPointers: {test1: 'tester'}},
+			{title: TOObj3, selectFunction: PlayerDefend}
+		],
 		[],
 		[],
 		[],
@@ -61,6 +65,7 @@ function InitalizeMenu() {
 	QuestleGlobals.MenuObject.properties.battleActive = 0
 
 	ListPlayerAttacks();
+	ListItemOptions();
 }
 
 function populatePlayers() {
@@ -73,6 +78,7 @@ function populatePlayers() {
 			console.log(GOObjP.properties.Attributes);
 			GOObjP.properties.Attributes.currHP = GOObjP.properties.Attributes.MaxHP;
 			GOObjP.properties.Type = CurrParty[i];
+			GOObjP.properties.buffList = [];
 			QuestleGlobals.MenuObject.properties.players.push(GOObjP);
 			
 			var TOJP = createTOFromString('TextObject -x 0 -y 0 -t test -c black;');
@@ -124,6 +130,45 @@ function ListPlayerAttacks() {
 			QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect2].push(newOpt);
 		}
 	}
+	
+	var TOObjB0 = createTOFromString('TextObject -x -100 -y 0 -t "Back" -c black;');
+	oHandler.addTextObject(TOObjB0);
+	var newOpt0 = {title: TOObjB0, selectFunction: ReturnToActionSelection}
+	QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect0].push(newOpt0);
+	
+	var TOObjB1 = createTOFromString('TextObject -x -100 -y 0 -t "Back" -c black;');
+	oHandler.addTextObject(TOObjB1);
+	var newOpt1 = {title: TOObjB1, selectFunction: ReturnToActionSelection}
+	QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect1].push(newOpt1);
+	
+	var TOObjB2 = createTOFromString('TextObject -x -100 -y 0 -t "Back" -c black;');
+	oHandler.addTextObject(TOObjB2);
+	var newOpt2 = {title: TOObjB2, selectFunction: ReturnToActionSelection}
+	QuestleGlobals.MenuObject.properties.options[MenuLayerMap.MoveSelect2].push(newOpt2);
+}
+
+function ListItemOptions() {
+	QuestleGlobals.MenuObject.properties.options[MenuLayerMap.ItemSelect] = [];
+	
+	for(var i = 0; i < partyItems.length; i++) {
+		console.log('Adding Item');
+		var TOObj = createTOFromString('TextObject -x -100 -y 0 -t "'+ItemOptions[partyItems[i]].Name+'" -c black;');
+		oHandler.addTextObject(TOObj);
+		var newOpt = {title: TOObj, selectFunction: ItemOptions[partyItems[i]].ItemAction, localPointers: {itemIndex: i}}
+		QuestleGlobals.MenuObject.properties.options[MenuLayerMap.ItemSelect].push(newOpt);
+	}
+	
+	var TOObjB = createTOFromString('TextObject -x -100 -y 0 -t "Back" -c black;');
+	oHandler.addTextObject(TOObjB);
+	var newOpt = {title: TOObjB, selectFunction: ReturnToActionSelection}
+	QuestleGlobals.MenuObject.properties.options[MenuLayerMap.ItemSelect].push(newOpt);
+}
+
+function ReturnToActionSelection() {
+	MenuTransition();
+	
+	QuestleGlobals.MenuObject.properties.currLayer = MenuLayerMap.ActionSelect;
+	QuestleGlobals.MenuObject.properties.currSel = 0;
 }
 
 function CreateEnemySelection() {
@@ -149,18 +194,59 @@ function TakeDamage() {
 	console.log(this.target.properties.Attributes.currHP);
 }
 
+function RestoreHealth() {
+	this.target.properties.Attributes.currHP = this.target.properties.Attributes.currHP + this.amount;
+	if(this.target.properties.Attributes.currHP > this.target.properties.Attributes.MaxHP) {
+		this.target.properties.Attributes.currHP = this.target.properties.Attributes.MaxHP;
+	}
+}
+
+function CheckStaleBuffs(GameObj) {
+	for(var i = GameObj.properties.buffList.length - 1; i >= 0; i--) {
+		GameObj.properties.buffList[i].RoundsLeft--;
+		if(GameObj.properties.buffList[i].RoundsLeft <= 0) {
+			GameObj.properties.buffList.splice(i, 1);
+		}
+	}
+}
+
 function getAttacked() {
+	
+	CheckStaleBuffs(QuestleGlobals.CurrAttacker);
 	
 	var DmgAmt = 0;
 	
+	var AtkBuff = 0;
+	var MagAtkBuff = 0;
+	for(var i = 0; i < QuestleGlobals.CurrAttacker.properties.buffList.length; i++) {
+		if(QuestleGlobals.CurrAttacker.properties.buffList[i].Type == 'Atk') {
+			AtkBuff = AtkBuff + QuestleGlobals.CurrAttacker.properties.buffList[i].Amount;
+		} else if(QuestleGlobals.CurrAttacker.properties.buffList[i].Type == 'MagAtk') {
+			MagAtkBuff = MagAtkBuff + QuestleGlobals.CurrAttacker.properties.buffList[i].Amount;
+		}
+	}
+	
+	var DefBuff = 0;
+	var MagDefBuff = 0;
+	console.log(this.localPointers.target.properties.buffList);
+	for(var i = 0; i < this.localPointers.target.properties.buffList.length; i++) {
+		console.log(this.localPointers.target.properties.buffList[i]);
+		if(this.localPointers.target.properties.buffList[i].Type == 'Def') {
+			console.log('Def Buffed');
+			DefBuff = DefBuff + this.localPointers.target.properties.buffList[i].Amount;
+		} else if(this.localPointers.target.properties.buffList[i].Type == 'MagDef') {
+			MagDefBuff = MagDefBuff + this.localPointers.target.properties.buffList[i].Amount;
+		}
+	}
+	
 	if(QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Attr == 'Atk') {
 		DmgAmt = QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].BasePower 
-				 + Math.floor(QuestleGlobals.CurrAttacker.properties.Attributes.Atk / 2)
-				 - Math.floor(this.localPointers.target.properties.Attributes.Def / 4);
+				 + Math.floor((QuestleGlobals.CurrAttacker.properties.Attributes.Atk + AtkBuff) / 2)
+				 - Math.floor((this.localPointers.target.properties.Attributes.Def + DefBuff)/ 4);
 	} else if(QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Attr == 'MagAtk') {
 		DmgAmt = QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].BasePower 
-				 + Math.floor(QuestleGlobals.CurrAttacker.properties.Attributes.MagAtk / 2)
-				 - Math.floor(this.localPointers.target.properties.Attributes.MagDef / 4);
+				 + Math.floor((QuestleGlobals.CurrAttacker.properties.Attributes.MagAtk + MagAtkBuff) / 2)
+				 - Math.floor((this.localPointers.target.properties.Attributes.MagDef + MagDefBuff) / 4);
 	}
 	
 	QuestleGlobals.MenuObject.properties.DialogQ.push('Enemy Takes '+DmgAmt+' Damage');
@@ -203,6 +289,15 @@ function GenerateTurnOrder() {
 			speed: QuestleGlobals.MenuObject.properties.players[i].properties.Attributes.Spd
 		}
 		QuestleGlobals.MenuObject.properties.turnOrder.push(newOrderJ);
+		for(var j = QuestleGlobals.MenuObject.properties.turnOrder.length - 2; j >= 0; j--) {
+			if(QuestleGlobals.MenuObject.properties.turnOrder[j + 1].speed > QuestleGlobals.MenuObject.properties.turnOrder[j].speed) {
+				var temp = QuestleGlobals.MenuObject.properties.turnOrder[j];
+				QuestleGlobals.MenuObject.properties.turnOrder[j] = QuestleGlobals.MenuObject.properties.turnOrder[j + 1];
+				QuestleGlobals.MenuObject.properties.turnOrder[j + 1] = temp;
+			} else {
+				break;
+			}
+		}
 	}
 	for(var i = 0; i < QuestleGlobals.MenuObject.properties.enemies.length; i++) {
 		var newOrderJ = {
@@ -211,6 +306,15 @@ function GenerateTurnOrder() {
 			speed: QuestleGlobals.MenuObject.properties.enemies[i].properties.Attributes.Spd
 		}
 		QuestleGlobals.MenuObject.properties.turnOrder.push(newOrderJ);
+		for(var j = QuestleGlobals.MenuObject.properties.turnOrder.length - 2; j >= 0; j--) {
+			if(QuestleGlobals.MenuObject.properties.turnOrder[j + 1].speed > QuestleGlobals.MenuObject.properties.turnOrder[j].speed) {
+				var temp = QuestleGlobals.MenuObject.properties.turnOrder[j];
+				QuestleGlobals.MenuObject.properties.turnOrder[j] = QuestleGlobals.MenuObject.properties.turnOrder[j + 1];
+				QuestleGlobals.MenuObject.properties.turnOrder[j + 1] = temp;
+			} else {
+				break;
+			}
+		}
 	}
 	console.log(QuestleGlobals.MenuObject.properties.turnOrder);
 }
@@ -225,14 +329,38 @@ function EnemyAttackPhase() {
 	
 	var DmgAmt = 0;
 	
+	var AtkBuff = 0;
+	var MagAtkBuff = 0;
+	for(var i = 0; i < QuestleGlobals.CurrAttacker.properties.buffList.length; i++) {
+		if(QuestleGlobals.CurrAttacker.properties.buffList[i].Type == 'Atk') {
+			AtkBuff = AtkBuff + QuestleGlobals.CurrAttacker.properties.buffList[i].Amount;
+		} else if(QuestleGlobals.CurrAttacker.properties.buffList[i].Type == 'MagAtk') {
+			MagAtkBuff = MagAtkBuff + QuestleGlobals.CurrAttacker.properties.buffList[i].Amount;
+		}
+	}
+	
+	var DefBuff = 0;
+	var MagDefBuff = 0;
+	console.log(currTarget.properties.buffList);
+	for(var i = 0; i < currTarget.properties.buffList.length; i++) {
+		console.log(currTarget.properties.buffList[i]);
+		if(currTarget.properties.buffList[i].Type == 'Def') {
+			console.log('Def Buffed');
+			DefBuff = DefBuff + currTarget.properties.buffList[i].Amount;
+		} else if(currTarget.properties.buffList[i].Type == 'MagDef') {
+			console.log('Mag Def Buffed');
+			MagDefBuff = MagDefBuff + currTarget.properties.buffList[i].Amount;
+		}
+	}
+	
 	if(QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Attr == 'Atk') {
 		DmgAmt = QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].BasePower 
-	             + Math.floor(QuestleGlobals.CurrAttacker.properties.Attributes.Atk / 2)
-		         - Math.floor(currTarget.properties.Attributes.Def / 4);
+	             + Math.floor((QuestleGlobals.CurrAttacker.properties.Attributes.Atk + AtkBuff) / 2)
+		         - Math.floor((currTarget.properties.Attributes.Def + DefBuff) / 4);
 	} else if(QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Attr == 'MagAtk') {
 		DmgAmt = QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].BasePower 
-				 + Math.floor(QuestleGlobals.CurrAttacker.properties.Attributes.MagAtk / 2)
-				 - Math.floor(currTarget.properties.Attributes.MagDef / 4);
+				 + Math.floor((QuestleGlobals.CurrAttacker.properties.Attributes.MagAtk + MagAtkBuff) / 2)
+				 - Math.floor((currTarget.properties.Attributes.MagDef + MagDefBuff) / 4);
 	}
 	
 	//QuestleGlobals.MenuObject.properties.DialogQ.push('Enemy Uses '+QuestleGlobals.CurrAttacker.properties.Attributes.Moves[QuestleGlobals.currMove].Name+'');
@@ -300,9 +428,9 @@ function ExitToKeyBoard() {
 		if(QuestleGlobals.WordToBePushed[0].color == 'green' && QuestleGlobals.WordToBePushed[1].color == 'green' && QuestleGlobals.WordToBePushed[1].color == 'green') {
 			var SelText = 'GameObject -x 500 -y 96 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -u ReturnToLevelSelectUpdate;';
 
-			for(var i = 0; i < this.handler.Objects.length; i++) {
-				if(this.handler.Objects[i].tag == 'KeyButton') {
-					storeVertices(this.handler.Objects[i]);
+			for(var i = 0; i < oHandler.Objects.length; i++) {
+				if(oHandler.Objects[i].tag == 'KeyButton') {
+					storeVertices(oHandler.Objects[i]);
 				}
 			}
 
@@ -581,6 +709,24 @@ function AttackSelect() {
 	}
 }
 
+function PlayerDefend() {
+	
+	CheckStaleBuffs(QuestleGlobals.CurrAttacker);
+	
+	QuestleGlobals.CurrAttacker.properties.buffList.push({Type: 'Def', Amount: 3, RoundsLeft: 1});
+	QuestleGlobals.CurrAttacker.properties.buffList.push({Type: 'MagDef', Amount: 3, RoundsLeft: 1});
+	
+	QuestleGlobals.MenuObject.properties.DialogQ.push('Player Defends');
+	QuestleGlobals.MenuObject.properties.EventQ.push(null);
+	
+	QuestleGlobals.turnDone = true;
+	
+	MenuTransition();
+	
+	QuestleGlobals.MenuObject.properties.currLayer = 0;
+	QuestleGlobals.MenuObject.properties.currSel = 0;
+}
+
 function MenuTransition() {
 	var cLayer = QuestleGlobals.MenuObject.properties.currLayer;
 	var cSel = QuestleGlobals.MenuObject.properties.currSel;
@@ -615,6 +761,14 @@ function MoveSelect() {
 	MenuTransition();
 	
 	QuestleGlobals.MenuObject.properties.currLayer = MenuLayerMap.EnemySelect;
+	QuestleGlobals.MenuObject.properties.currSel = 0;
+}
+
+function ItemMenuSelect() {
+	
+	MenuTransition();
+	
+	QuestleGlobals.MenuObject.properties.currLayer = MenuLayerMap.ItemSelect;
 	QuestleGlobals.MenuObject.properties.currSel = 0;
 }
 

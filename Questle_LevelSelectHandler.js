@@ -446,12 +446,54 @@ function LevelOptionUpdate() {
 			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
 		       && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
-				StartLevel(this.properties.level,this.handler);
-				StartBattle();
+				if(this.properties.level > 0) {
+					if(LevelSetups.Levels[this.properties.level - 1].complete) {
+						QuestleGlobals.currentLevel = this.properties.level;
+						StartLevel(this.properties.level,this.handler);
+						StartBattle();
+						this.handler.cBuff = [];
+						break;
+					}
+				} else {
+					QuestleGlobals.currentLevel = this.properties.level;
+					StartLevel(this.properties.level,this.handler);
+					StartBattle();
+					this.handler.cBuff = [];
+					break;
+				}
 			}
 		}
 		
 	}
+}
+
+function LevelOptionSetup() {
+	var TOJE1H = createTOFromString('TextObject -x '+(this.position.x+5)+' -y '+(this.position.y+10)+' -t test -c black;');
+	TOJE1H.textContent = 'Stage: ' + (this.properties.level + 1);
+	oHandler.addTextObject(TOJE1H);
+	this.properties.stageDisplay = TOJE1H;
+	
+	var TOJCS = createTOFromString('TextObject -x '+(this.position.x+5)+' -y '+(this.position.y+21)+' -t test -c black;');
+	var csText = '';
+	if(LevelSetups.Levels[this.properties.level].complete) {
+		csText = 'cleared';
+	} else {
+		csText = 'uncleared';
+	}
+	TOJCS.textContent = csText;
+	oHandler.addTextObject(TOJCS);
+	this.properties.stageDisplay = TOJCS;
+	
+	var lText = ''
+	if(this.properties.level > 0) {
+		if(!LevelSetups.Levels[this.properties.level - 1].complete) {
+			lText = 'Locked'
+		}
+	}
+	var TOJL = createTOFromString('TextObject -x '+(this.position.x+5)+' -y '+(this.position.y+32)+' -t test -c black;');
+	TOJL.textContent = lText;
+	oHandler.addTextObject(TOJL);
+	this.properties.stageDisplay = TOJL;
 }
 
 function ReturnToLevelSelectUpdate() {
@@ -464,6 +506,7 @@ function ReturnToLevelSelectUpdate() {
 		       && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				this.handler.removeAllObjects();
+				LevelSetups.Levels[QuestleGlobals.currentLevel].complete = true;
 				BackToLevelSelect();
 				
 			}
@@ -476,8 +519,9 @@ function StartLevelSelect() {
 	var backgroundCanvas = document.getElementById("canvasBG");
 	backgroundCanvas.style = "background-color: white;"
 	
-	var SelText = 'GameObject -x 21 -y 296 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 0 -u LevelOptionUpdate;';
-	SelText = SelText + 'GameObject -x 81 -y 296 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 1 -u LevelOptionUpdate;';
+	var SelText = 'GameObject -x 21 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 0 -u LevelOptionUpdate -pi LevelOptionSetup;';
+	SelText = SelText + 'GameObject -x 200 -y 196 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 1 -u LevelOptionUpdate -pi LevelOptionSetup;';
+	SelText = SelText + 'GameObject -x 400 -y 10 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 2 -u LevelOptionUpdate -pi LevelOptionSetup;';
 	
 	SelText = SelText + 'GameObject -u showClickPosition -pi addClickOption;';
 	
@@ -485,8 +529,9 @@ function StartLevelSelect() {
 }
 
 function BackToLevelSelect() {
-	var SelText = 'GameObject -x 21 -y 296 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 0 -u LevelOptionUpdate;';
-	SelText = SelText + 'GameObject -x 81 -y 296 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 1 -u LevelOptionUpdate;';
+	var SelText = 'GameObject -x 21 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 0 -u LevelOptionUpdate -pi LevelOptionSetup;';
+	SelText = SelText + 'GameObject -x 200 -y 196 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 1 -u LevelOptionUpdate -pi LevelOptionSetup;';
+	SelText = SelText + 'GameObject -x 400 -y 10 -v 0 -v 60 0 -v 60 60 -v 0 60 -d -p level 2 -u LevelOptionUpdate -pi LevelOptionSetup;';
 	
 	enterObjects(SelText);
 }

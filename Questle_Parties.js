@@ -7,7 +7,7 @@ var PartyBaseCharacters = {
 		MagAtk: 2,
 		MagDef: 3,
 		Spd: 4,
-		MaxHP: 50,
+		MaxHP: 25,
 		
 		Moves: [
 			{
@@ -25,7 +25,7 @@ var PartyBaseCharacters = {
 		MagAtk: 4,
 		MagDef: 4,
 		Spd: 4,
-		MaxHP: 50,
+		MaxHP: 25,
 		
 		Moves: [
 			{
@@ -51,7 +51,7 @@ var PartyCharacters = {
 		MagAtk: 2,
 		MagDef: 3,
 		Spd: 4,
-		MaxHP: 50,
+		MaxHP: 25,
 		Level: 1,
 		Exp: 0,
 		
@@ -71,7 +71,7 @@ var PartyCharacters = {
 		MagAtk: 4,
 		MagDef: 4,
 		Spd: 4,
-		MaxHP: 50,
+		MaxHP: 25,
 		Level: 1,
 		Exp: 0,
 		
@@ -163,7 +163,7 @@ var EnemyBaseCharacters = {
 		MagAtk: 3,
 		MagDef: 3,
 		Spd: 3,
-		MaxHP: 50,
+		MaxHP: 15,
 		
 		Moves: [
 			{
@@ -186,7 +186,7 @@ var EnemyBaseCharacters = {
 		MagAtk: 1,
 		MagDef: 2,
 		Spd: 3,
-		MaxHP: 50,
+		MaxHP: 20,
 		
 		Moves: [
 			{
@@ -208,8 +208,31 @@ var EnemyBaseCharacters = {
 		Def: 3,
 		MagAtk: 1,
 		MagDef: 2,
-		Spd: 3,
-		MaxHP: 50,
+		Spd: 5,
+		MaxHP: 20,
+		
+		Moves: [
+			{
+				Name: 'Attack',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 999
+			},
+			{
+				Name: 'Haymaker',
+				BasePower: 4,
+				Attr: 'Atk',
+				MaxUses: 25
+			}
+		]
+	},
+	D: {
+		Atk: 3,
+		Def: 3,
+		MagAtk: 1,
+		MagDef: 2,
+		Spd: 5,
+		MaxHP: 20,
 		
 		Moves: [
 			{
@@ -246,6 +269,14 @@ var EnemyGrowths = {
 				MagDef: 1,
 				Spd: 1,
 				MaxHP: 5
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
 			}
 		]
 	},
@@ -266,6 +297,14 @@ var EnemyGrowths = {
 				MagDef: 1,
 				Spd: 1,
 				MaxHP: 5
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
 			}
 		]
 	},
@@ -278,6 +317,42 @@ var EnemyGrowths = {
 				MagDef: 0,
 				Spd: 0,
 				MaxHP: 0
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
+			}
+		]
+	},
+	D: {
+		GrowthList: [
+			{
+				Atk: 0,
+				Def: 0,
+				MagAtk: 0,
+				MagDef: 0,
+				Spd: 0,
+				MaxHP: 0
+			},
+			{
+				Atk: 1,
+				Def: 1,
+				MagAtk: 1,
+				MagDef: 1,
+				Spd: 1,
+				MaxHP: 5
 			},
 			{
 				Atk: 1,
