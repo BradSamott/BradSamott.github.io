@@ -2,6 +2,7 @@
 
 var PartyBaseCharacters = {
 	Knight: {
+		Title: 'Knight',
 		Atk: 4,
 		Def: 4,
 		MagAtk: 2,
@@ -20,6 +21,7 @@ var PartyBaseCharacters = {
 		
 	},
 	Mage: {
+		Title: 'Mage',
 		Atk: 1,
 		Def: 2,
 		MagAtk: 4,
@@ -46,6 +48,7 @@ var PartyBaseCharacters = {
 
 var PartyCharacters = {
 	Knight: {
+		Title: 'Knight',
 		Atk: 4,
 		Def: 4,
 		MagAtk: 2,
@@ -66,6 +69,7 @@ var PartyCharacters = {
 		
 	},
 	Mage: {
+		Title: 'Mage',
 		Atk: 1,
 		Def: 2,
 		MagAtk: 4,

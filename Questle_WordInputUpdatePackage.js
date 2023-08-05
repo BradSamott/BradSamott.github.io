@@ -351,6 +351,40 @@ function EnterUpdate() {
 							
 						}
 						
+						console.log(partyItems);
+						for(var lI = 0; lI < LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests.length; lI++) {
+							var springChest = false;
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].Letter == this.properties.parentWordChecker.properties.Slot1Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.chests[lI].Sprung) {
+								console.log('Chest Found');
+								springChest = true;
+								
+								partyItems.push(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].ItemIndex);
+							}
+							
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].Letter == this.properties.parentWordChecker.properties.Slot2Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.chests[lI].Sprung) {
+								console.log('Chest Found');
+								springChest = true;
+								
+								partyItems.push(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].ItemIndex);
+							}
+							
+							if(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].Letter == this.properties.parentWordChecker.properties.Slot3Child.properties.letter
+							   && !QuestleGlobals.CurrLevelData.chests[lI].Sprung) {
+								console.log('Chest Found');
+								springChest = true;
+								
+								partyItems.push(LevelSetups.Levels[this.properties.parentWordChecker.properties.LevelNum].chests[lI].ItemIndex);
+							}
+							
+							if(springChest) {
+								QuestleGlobals.CurrLevelData.chests[lI].Sprung = true;
+								ListItemOptions();
+							}
+						}
+						console.log(partyItems);
+						
 						console.log(QuestleGlobals.MenuObject.properties.battleActive);
 						if(QuestleGlobals.MenuObject.properties.battleActive == 1) {
 							shiftKeys('down');
@@ -365,6 +399,8 @@ function EnterUpdate() {
 							} else if(QuestleGlobals.MenuObject.properties.turnOrder[0].type == 'P') {
 								//console.log(QuestleGlobals.MenuObject.properties.turnOrder[0].index);
 								QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[QuestleGlobals.MenuObject.properties.turnOrder[0].index];
+								QuestleGlobals.MenuObject.properties.currPlayerText.textContent = QuestleGlobals.CurrAttacker.properties.Attributes.Title;
+								QuestleGlobals.MenuObject.properties.currPlayerText.position.x = 50;
 							}
 							//QuestleGlobals.CurrAttacker = QuestleGlobals.MenuObject.properties.players[0];
 								

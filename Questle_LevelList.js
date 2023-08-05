@@ -9,6 +9,9 @@ var LevelSetups = {
 		traps: [
 			{Letter: 'A', Level: 1}
 		],
+		chests: [
+			{Letter: 'C', ItemIndex: 0}
+		],
 		complete: false
 	},
 	{
@@ -18,6 +21,7 @@ var LevelSetups = {
 			{Letter: 'A', Level: 2},
 			{Letter: 'C', Level: 1}
 		],
+		chests: [],
 		complete: false
 	},
 	{
@@ -27,6 +31,7 @@ var LevelSetups = {
 			{Letter: 'A', Level: 2},
 			{Letter: 'D', Level: 2}
 		],
+		chests: [],
 		complete: false
 	}
 	]

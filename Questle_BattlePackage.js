@@ -58,6 +58,10 @@ function InitalizeMenu() {
 	oHandler.addTextObject(DialogQObj);
 	QuestleGlobals.MenuObject.properties.currDialogQ = DialogQObj;
 	
+	var currPlayerQObj = createTOFromString('TextObject -x -100 -y 375 -t Temp -c black;');
+	oHandler.addTextObject(currPlayerQObj);
+	QuestleGlobals.MenuObject.properties.currPlayerText = currPlayerQObj;
+	
 	QuestleGlobals.MenuObject.properties.DialogQ = [];
 	QuestleGlobals.MenuObject.properties.DialogPos = 0;
 	QuestleGlobals.MenuObject.properties.EventQ = [];
@@ -325,7 +329,27 @@ function EnemyAttackPhase() {
 	
 	QuestleGlobals.currMove = Math.floor(Math.random() * QuestleGlobals.CurrAttacker.properties.Attributes.Moves.length);
 	
-	var currTarget = QuestleGlobals.MenuObject.properties.players[0];
+	var TargetOptions = [];
+	if(QuestleGlobals.MenuObject.properties.players[0] != null) {
+		if(QuestleGlobals.MenuObject.properties.players[0].properties.Attributes.currHP > 0) {
+			TargetOptions.push(QuestleGlobals.MenuObject.properties.players[0]);
+		}
+	}
+	if(QuestleGlobals.MenuObject.properties.players[1] != null) {
+		if(QuestleGlobals.MenuObject.properties.players[1].properties.Attributes.currHP > 0) {
+			TargetOptions.push(QuestleGlobals.MenuObject.properties.players[1]);
+		}
+	}
+	if(QuestleGlobals.MenuObject.properties.players[2] != null) {
+		if(QuestleGlobals.MenuObject.properties.players[2].properties.Attributes.currHP > 0) {
+			TargetOptions.push(QuestleGlobals.MenuObject.properties.players[2]);
+		}
+	}
+	console.log("TO: " + TargetOptions.length);
+	var TargetIndex = Math.floor(Math.random() * TargetOptions.length);
+	
+	//var currTarget = QuestleGlobals.MenuObject.properties.players[TargetIndex];
+	var currTarget = TargetOptions[TargetIndex];
 	
 	var DmgAmt = 0;
 	
@@ -562,8 +586,12 @@ function menuUpdate() {
 				if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'P') {
 					console.log('Player ' + QuestleGlobals.turnRotation);
 					QuestleGlobals.CurrAttacker = this.properties.players[this.properties.turnOrder[QuestleGlobals.turnRotation].index];
+					QuestleGlobals.MenuObject.properties.currPlayerText.textContent = QuestleGlobals.CurrAttacker.properties.Attributes.Title;
+					QuestleGlobals.MenuObject.properties.currPlayerText.position.x = 50;
 				} else if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'E') {
 					console.log('Enemy ' + QuestleGlobals.turnRotation);
+					QuestleGlobals.MenuObject.properties.currPlayerText.textContent = '';
+					QuestleGlobals.MenuObject.properties.currPlayerText.position.x = -100;
 					if(QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[QuestleGlobals.turnRotation].index].properties.Attributes.currHP > 0) {
 						EnemyAttackPhase();
 					} else {
@@ -629,8 +657,12 @@ function menuUpdate() {
 						if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'P') {
 							console.log('Player ' + QuestleGlobals.turnRotation);
 							QuestleGlobals.CurrAttacker = this.properties.players[this.properties.turnOrder[QuestleGlobals.turnRotation].index];
+							QuestleGlobals.MenuObject.properties.currPlayerText.textContent = QuestleGlobals.CurrAttacker.properties.Attributes.Title;
+							QuestleGlobals.MenuObject.properties.currPlayerText.position.x = 50;
 						} else if(this.properties.turnOrder[QuestleGlobals.turnRotation].type == 'E') {
 							console.log('Enemy ' + QuestleGlobals.turnRotation);
+							QuestleGlobals.MenuObject.properties.currPlayerText.textContent = '';
+							QuestleGlobals.MenuObject.properties.currPlayerText.position.x = -100;
 							if(QuestleGlobals.MenuObject.properties.enemies[QuestleGlobals.MenuObject.properties.turnOrder[QuestleGlobals.turnRotation].index].properties.Attributes.currHP > 0) {
 								EnemyAttackPhase();
 							} else {
