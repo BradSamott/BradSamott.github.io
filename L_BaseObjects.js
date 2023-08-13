@@ -93,6 +93,7 @@ function ObjectHandler() {
 	this.AreaHeight = 576;
 	this.CameraX = 0;
 	this.CameraY = 0;
+	this.CameraZoom = 1;
 	this.cBuff = [];
 	
 	this.addObject = function(object) {
@@ -419,6 +420,13 @@ function ObjectHandler() {
 					var yPos = this.Objects[objI].position.y;
 				}
 			}
+			
+			var zoomOffsetX = (xPos - 320) * (this.CameraZoom - 1);
+			var zoomOffsetY = (yPos - 288) * (this.CameraZoom - 1);
+			
+			xPos = xPos + zoomOffsetX;
+			yPos = yPos + zoomOffsetY;
+			
 			var cWidth = 0;
 			var cLength = 0;
 			var drawOffsetX = 0;
@@ -426,13 +434,13 @@ function ObjectHandler() {
 			if(this.Objects[objI].animations.length == 0 || this.Objects[objI].currAnimation < 0 || this.Objects[objI].currAnimation >= this.Objects[objI].animations.length) {
 				img = new Image();
 				img.src = this.Objects[objI].defaultFrame;
-				cLength = this.Objects[objI].defaultLength;
-				cWidth = this.Objects[objI].defaultWidth;
+				cLength = this.Objects[objI].defaultLength * this.CameraZoom;
+				cWidth = this.Objects[objI].defaultWidth * this.CameraZoom;
 			} else {
 				//img.src = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].keyFrame;
 				img = this.Objects[objI].renderImgs[this.Objects[objI].currAnimation][this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame];
-				cLength = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].length;
-				cWidth = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].width;
+				cLength = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].length  * this.CameraZoom;
+				cWidth = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].width  * this.CameraZoom;
 				
 				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX != null) {
 					drawOffsetX = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX;
@@ -478,22 +486,59 @@ function ObjectHandler() {
 					PlayArea.stroke();
 					*/
 					
-					PlayArea.beginPath();
-					PlayArea.moveTo(this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[verI].offY - this.CameraY);
+					var startX = this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX - this.CameraX;
+					var startY = this.Objects[objI].position.y + this.Objects[objI].vertices[verI].offY - this.CameraY;
 					
+					var zoomOffsetXS = (startX - 320) * (this.CameraZoom - 1);
+					var zoomOffsetYS = (startY - 288) * (this.CameraZoom - 1);
+					
+					startX = startX + zoomOffsetXS;
+					startY = startY + zoomOffsetYS;
+					
+					PlayArea.beginPath();
+					//PlayArea.moveTo(this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[verI].offY - this.CameraY);
+					PlayArea.moveTo(startX, startY);
+					
+					var endX = 0;
+					var endY = 0;
 					if(this.Objects[objI].vertices.length - 1 == verI) {
-						PlayArea.lineTo(this.Objects[objI].position.x + this.Objects[objI].vertices[0].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[0].offY - this.CameraY);
+						//PlayArea.lineTo(this.Objects[objI].position.x + this.Objects[objI].vertices[0].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[0].offY - this.CameraY);
+						endX = this.Objects[objI].position.x + this.Objects[objI].vertices[0].offX - this.CameraX;
+						endY = this.Objects[objI].position.y + this.Objects[objI].vertices[0].offY - this.CameraY;
 					} else {
-						PlayArea.lineTo(this.Objects[objI].position.x + this.Objects[objI].vertices[verI + 1].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[verI + 1].offY - this.CameraY);
+						//PlayArea.lineTo(this.Objects[objI].position.x + this.Objects[objI].vertices[verI + 1].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].vertices[verI + 1].offY - this.CameraY);
+						endX = this.Objects[objI].position.x + this.Objects[objI].vertices[verI + 1].offX - this.CameraX;
+						endY = this.Objects[objI].position.y + this.Objects[objI].vertices[verI + 1].offY - this.CameraY;
 					}
+					
+					var zoomOffsetXE = (endX - 320) * (this.CameraZoom - 1);
+					var zoomOffsetYE = (endY - 288) * (this.CameraZoom - 1);
+					
+					endX = endX + zoomOffsetXE;
+					endY = endY + zoomOffsetYE;
+					
+					PlayArea.lineTo(endX, endY);
 					
 					PlayArea.stroke();
 				}
 				
 				for(var radI = 0; radI < this.Objects[objI].radialPoints.length; radI++) {
 					//console.log('Drawing Radial');
+					
+					var radX = this.Objects[objI].position.x + this.Objects[objI].radialPoints[radI].offX - this.CameraX;
+					var radY = this.Objects[objI].position.y + this.Objects[objI].radialPoints[radI].offY - this.CameraY;
+					var cRadius = this.Objects[objI].radialPoints[radI].radius;
+					
+					var zoomOffsetXR = (radX - 320) * (this.CameraZoom - 1);
+					var zoomOffsetYR = (radY - 288) * (this.CameraZoom - 1);
+					
+					radX = radX + zoomOffsetXR;
+					radY = radY + zoomOffsetYR;
+					cRadius = cRadius * this.CameraZoom;
+					
 					PlayArea.beginPath();
-					PlayArea.arc(this.Objects[objI].position.x + this.Objects[objI].radialPoints[radI].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].radialPoints[radI].offY - this.CameraY, this.Objects[objI].radialPoints[radI].radius, 0, 2 * Math.PI, false);
+					//PlayArea.arc(this.Objects[objI].position.x + this.Objects[objI].radialPoints[radI].offX - this.CameraX, this.Objects[objI].position.y + this.Objects[objI].radialPoints[radI].offY - this.CameraY, this.Objects[objI].radialPoints[radI].radius, 0, 2 * Math.PI, false);
+					PlayArea.arc(radX, radY, cRadius, 0, 2 * Math.PI, false);
 					PlayArea.stroke();
 				}
 				

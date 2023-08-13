@@ -1190,6 +1190,16 @@ function platformerPlayerMovement() {
 			createBatHitBox(this);
 		}
 		
+		if(keys.z) {
+			this.handler.CameraZoom = this.handler.CameraZoom + 0.01;
+			console.log('zoom press: ' + this.handler.CameraZoom);
+		}
+		
+		if(keys.x) {
+			this.handler.CameraZoom = this.handler.CameraZoom - 0.01;
+			console.log('zoom press: ' + this.handler.CameraZoom);
+		}
+		
 		if(this.animations[this.currAnimation].Done) {
 			if(this.currAnimation == 6) {
 				this.currAnimation = 0;
