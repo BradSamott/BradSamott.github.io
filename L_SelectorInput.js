@@ -173,3 +173,11 @@ function UploadQuestleGame() {
 	//StartBattle();
 	
 }
+
+function UploadSmallGame0() {
+	GameTitle.innerHTML = "Small Game 0";
+	oHandler.resetCamera();
+	oHandler.removeAllObjects();
+	
+	StartSmallGame0();
+}

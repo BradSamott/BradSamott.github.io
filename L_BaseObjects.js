@@ -66,6 +66,17 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 		this.position.y = newPosition.y;
 	}
 	
+	this.appendPosition = function(newPosition) {
+		var tempdeltaX = newPosition.x - this.position.x;
+		var tempdeltaY = newPosition.y - this.position.y;
+		
+		this.delta.dx = this.delta.dx + tempdeltaX;
+		this.delta.dy = this.delta.dy + tempdeltaY;
+		
+		this.position.x = newPosition.x;
+		this.position.y = newPosition.y;
+	}
+	
 	this.handler = null;
 	
 }
