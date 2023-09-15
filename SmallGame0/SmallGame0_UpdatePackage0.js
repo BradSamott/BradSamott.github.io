@@ -1,4 +1,19 @@
 /*
+SEARCH TERMS:
+
+KEYTRACK
+BUTTONSELECT
+SWINGHIT
+PLAYERSG0
+CAMERASG0
+ENEMSG0
+RUNNYDOOR
+ENDGAME
+DOORSG0
+TELEPORTER
+*/
+
+/*
 Global JSON to hold variables that need to be accessible to many objects
 */
 var SmallGame0Globals = {
@@ -28,8 +43,14 @@ var SmallGame0Globals = {
 
 function CheckEnemies() {
 	if(SmallGame0Globals.TotalEnemies <= 0) {
-		console.log('Done');
-		SmallGame0Globals.door.collideFunction = doorCollision_SG0;
+		//console.log('Done');
+		if(SmallGame0Globals.RunnyDoorTriggered) {
+			SmallGame0Globals.door.collideFunction = runnyDoorEnemyCollision_SG0;
+			SmallGame0Globals.door.update = runnyDoorEnemyUpdate_SG0;
+			SmallGame0Globals.door.properties.running = 1;
+		} else {
+			SmallGame0Globals.door.properties.opened = 1;
+		}
 	}
 }
 
@@ -40,7 +61,8 @@ function StartSmallGame0() {
 	var SelText = 'GameObject -x 220 -y 400';
 	SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
 	SelText = SelText + ' -u StartButtonUpdate'
-	//SelText = SelText + ' -pi setupPlayer'
+	SelText = SelText + ' -p wordLabel Start'
+	SelText = SelText + ' -pi setupButton_SG0'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
@@ -57,7 +79,7 @@ function StartSmallGameLevel() {
 	}
 	
 	//player object
-	var SelText = 'GameObject -x 400 -y 750';
+	var SelText = 'GameObject -x 400 -y 836';
 	SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
 	SelText = SelText + ' -rp 18 15 18'
 	SelText = SelText + ' -t player'
@@ -82,11 +104,11 @@ function StartSmallGameLevel() {
 	
 	var TotalEnem = (SmallGame0Globals.CurrentLevel + 1) * 3;
 	SmallGame0Globals.TotalEnemies = TotalEnem;
-	console.log('Enemies: ' + TotalEnem);
+	//console.log('Enemies: ' + TotalEnem);
 	
 	for(var i = 0; i < TotalEnem; i++) {
 		var optionE = Math.floor(Math.random() * 2) + 1;
-		console.log('Option: ' + optionE);
+		//console.log('Option: ' + optionE);
 		var xCoord = Math.floor(Math.random() * 876) + 25;
 		var yCoord = Math.floor(Math.random() * 801) + 50;
 		if(optionE == 1) {
@@ -115,7 +137,7 @@ function StartSmallGameLevel() {
 			SelText = SelText + ' -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54'
 			SelText = SelText + ' -p BatReady 1'
 			SelText = SelText + ' -u enem2Movement_SG0'
-			SelText = SelText + ' -cf enemCollision_SG0'
+			SelText = SelText + ' -cf enem2Collision_SG0'
 			SelText = SelText + ' -pi setupEnem'
 			SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
 			SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
@@ -127,12 +149,18 @@ function StartSmallGameLevel() {
 	}
 	
 	//Door object
-	SelText = SelText + 'GameObject -x 488 -y 846';
+	SelText = SelText + 'GameObject -x 488 -y 700';
 	SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
-	SelText = SelText + ' -t door'
-	SelText = SelText + ' -pi setupDoor'
 	SelText = SelText + ' -rp 18 15 18'
-	//SelText = SelText + ' -cf doorCollision_SG0'
+	SelText = SelText + ' -t door'
+	SelText = SelText + ' -p xv 0 -p yv 0'
+	SelText = SelText + ' -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54'
+	SelText = SelText + ' -p BatReady 1'
+	SelText = SelText + ' -p opened 0 -p running 0'
+	SelText = SelText + ' -pi setupDoor'
+	
+	SelText = SelText + ' -u nonRunnyDoorEnemyUpdate_SG0'
+	SelText = SelText + ' -cf runnyDoorEnemyCollision_SG0'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
@@ -181,6 +209,23 @@ function StartSmallGameLevel() {
 		SelText = SelText + ' -cf teleporterCollision_SG0'
 		SelText = SelText + ' -p downFrames -1'
 		SelText = SelText + ' -pi setupTeleporter'
+		SelText = SelText + ' -d'
+		SelText = SelText + ';'
+	}
+	
+	//Cannons
+	if(SmallGame0Globals.DropsTriggered) {
+		SelText = SelText + 'GameObject -x 65 -y 450 -rp 0 0 18'
+		SelText = SelText + ' -u CannonUpdate_SG0'
+		SelText = SelText + ' -p delayFrames 1'
+		SelText = SelText + ' -p ballVel 6'
+		SelText = SelText + ' -d'
+		SelText = SelText + ';'
+		
+		SelText = SelText + 'GameObject -x 960 -y 450 -rp 0 0 18'
+		SelText = SelText + ' -u CannonUpdate_SG0'
+		SelText = SelText + ' -p delayFrames 1'
+		SelText = SelText + ' -p ballVel 6'
 		SelText = SelText + ' -d'
 		SelText = SelText + ';'
 	}
@@ -251,6 +296,11 @@ function StartButtonUpdate() {
 	
 	var triggered = false;
 	
+	//console.log(this.properties.wordChild);
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -264,7 +314,7 @@ function StartButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					this.handler.removeAllObjects();
@@ -298,6 +348,9 @@ function StartButtonUpdate() {
 function doubleJumpButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -311,7 +364,7 @@ function doubleJumpButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.DoubleJumpTriggered) {
@@ -331,6 +384,9 @@ function doubleJumpButtonUpdate() {
 function skyEyeButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -344,7 +400,7 @@ function skyEyeButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.SkyEyeTriggered) {
@@ -364,6 +420,9 @@ function skyEyeButtonUpdate() {
 function comboButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -377,7 +436,7 @@ function comboButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.ComboTriggered) {
@@ -397,6 +456,9 @@ function comboButtonUpdate() {
 function runnyDoorButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -410,7 +472,7 @@ function runnyDoorButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.RunnyDoorTriggered) {
@@ -430,6 +492,9 @@ function runnyDoorButtonUpdate() {
 function teleporterButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -443,7 +508,7 @@ function teleporterButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.TeleporterTriggered) {
@@ -463,6 +528,9 @@ function teleporterButtonUpdate() {
 function dropsButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -476,7 +544,7 @@ function dropsButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					if(!SmallGame0Globals.DropsTriggered) {
@@ -496,6 +564,9 @@ function dropsButtonUpdate() {
 function NextLevelButtonUpdate() {
 	var triggered = false;
 	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
 	if(this.vertices.length < 4) {
 		return;
 	}
@@ -509,7 +580,7 @@ function NextLevelButtonUpdate() {
 			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
 				
 				if(triggered == false) {
-					console.log('pressed');
+					//console.log('pressed');
 					triggered = true;
 					
 					var perkDJSelected = false;
@@ -520,18 +591,18 @@ function NextLevelButtonUpdate() {
 					var calamityTSelected = false;
 					var calamityDSelected = false;
 					
-					console.log('DoubleJumpSelected: ' + SmallGame0Globals.DoubleJumpSelected);
-					console.log('DoubleJumpTriggered: ' + SmallGame0Globals.DoubleJumpTriggered);
-					console.log('SkyEyeSelected: ' + SmallGame0Globals.SkyEyeSelected);
-					console.log('SkyEyeTriggered: ' + SmallGame0Globals.SkyEyeTriggered);
-					console.log('ComboSelected: ' + SmallGame0Globals.ComboSelected);
-					console.log('ComboTriggered: ' + SmallGame0Globals.ComboTriggered);
-					console.log('RunnyDoorSelected: ' + SmallGame0Globals.RunnyDoorSelected);
-					console.log('RunnyDoorTriggered: ' + SmallGame0Globals.RunnyDoorTriggered);
-					console.log('TeleporterSelected: ' + SmallGame0Globals.TeleporterSelected);
-					console.log('TeleporterTriggered: ' + SmallGame0Globals.TeleporterTriggered);
-					console.log('DropsSelected: ' + SmallGame0Globals.DropsSelected);
-					console.log('DropsTriggered: ' + SmallGame0Globals.DropsTriggered);
+					//console.log('DoubleJumpSelected: ' + SmallGame0Globals.DoubleJumpSelected);
+					//console.log('DoubleJumpTriggered: ' + SmallGame0Globals.DoubleJumpTriggered);
+					//console.log('SkyEyeSelected: ' + SmallGame0Globals.SkyEyeSelected);
+					//console.log('SkyEyeTriggered: ' + SmallGame0Globals.SkyEyeTriggered);
+					//console.log('ComboSelected: ' + SmallGame0Globals.ComboSelected);
+					//console.log('ComboTriggered: ' + SmallGame0Globals.ComboTriggered);
+					//console.log('RunnyDoorSelected: ' + SmallGame0Globals.RunnyDoorSelected);
+					//console.log('RunnyDoorTriggered: ' + SmallGame0Globals.RunnyDoorTriggered);
+					//console.log('TeleporterSelected: ' + SmallGame0Globals.TeleporterSelected);
+					//console.log('TeleporterTriggered: ' + SmallGame0Globals.TeleporterTriggered);
+					//console.log('DropsSelected: ' + SmallGame0Globals.DropsSelected);
+					//console.log('DropsTriggered: ' + SmallGame0Globals.DropsTriggered);
 					
 					if(SmallGame0Globals.DoubleJumpSelected && !SmallGame0Globals.DoubleJumpTriggered) {
 						//SmallGame0Globals.DoubleJumpTriggered = true;
@@ -716,7 +787,7 @@ function createBatHitBox_SG0(PlayerObj) {
 		startOffset = 72;
 	}
 	
-	console.log(startOffset);
+	//console.log(startOffset);
 	
 	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + startOffset) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate_SG0 -d -t playerHitBox -p HitBoxActive 1';
 	var GOJ = createGOJsonFromString(creatinString);
@@ -736,7 +807,7 @@ function createBatHitBoxR_SG0(PlayerObj) {
 		startOffset = 72;
 	}
 	
-	console.log(startOffset);
+	//console.log(startOffset);
 	
 	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + startOffset) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleRUpdate_SG0 -d -t playerHitBox -p HitBoxActive 1';
 	var GOJ = createGOJsonFromString(creatinString);
@@ -927,6 +998,18 @@ function controlledMovement_SG0(gameObj) {
 	}
 }
 
+function setupButton_SG0() {
+
+	var TextText = 'TextObject -x 0 -y 0 -t "'+this.properties.wordLabel+'" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.wordChild = TOObj;
+	console.log(this.properties.wordChild);
+	this.handler.addTextObject(TOObj);
+	
+}
+
 /*
 Generic Function for wall collisions
 */
@@ -1021,10 +1104,11 @@ function PlatformCollisionBehavior_SG0(gameObj,colObj,verIndex,intersection,colV
 }
 
 function GetHitBehavior_SG0(gameObj,colObj,verIndex,intersection,colVer1,colVer2) {
+	//console.log('HIT');
 	if(gameObj.properties.iFrames == -1 && colObj.properties.HitBoxActive == 1) {
-		console.log('From Health: ' + gameObj.properties.health);
+		//console.log('From Health: ' + gameObj.properties.health);
 		gameObj.properties.health--;
-		console.log('To Health: ' + gameObj.properties.health);
+		//console.log('To Health: ' + gameObj.properties.health);
 				
 		if(gameObj.properties.health == 0) {
 			console.log('Death');
@@ -1078,7 +1162,7 @@ function movingPlatformBehavior() {
 
 function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
-		
+		//console.log(colObj.tag);
 		if(colObj.tag == 'wall') {
 			
 			if (colObj.position.y - this.properties.parentObj.position.y <= this.properties.parentObj.properties.height + 1) {
@@ -1216,6 +1300,7 @@ function playerMovement_SG0() {
 }
 
 function playerCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	
 	if(colObj.tag != null) {
 		if(colObj.tag == 'wall') {
 			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
@@ -1226,6 +1311,7 @@ function playerCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'ladder') {
 			
 		} else if(colObj.tag == 'enemy') {
+			console.log(colObj.tag);
 			GetHitBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 			if(this.properties.health <= 0) {
 				endLevel(false);
@@ -1380,7 +1466,7 @@ function enemMovement_SG0() {
 	if(this.properties.iFrames != -1) {
 		this.properties.iFrames++;
 	}
-	if(this.properties.iFrames == 60) {
+	if(this.properties.iFrames == 30) {
 		this.properties.iFrames = -1;
 	}
 }
@@ -1476,7 +1562,7 @@ function enem2Movement_SG0() {
 	if(this.properties.iFrames != -1) {
 		this.properties.iFrames++;
 	}
-	if(this.properties.iFrames == 60) {
+	if(this.properties.iFrames == 30) {
 		this.properties.iFrames = -1;
 	}
 }
@@ -1484,7 +1570,38 @@ function enem2Movement_SG0() {
 function enemCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		if(colObj.tag == 'wall') {
-			console.log('wall: ' + this.vertices[verIndex].label);
+			//console.log('wall: ' + this.vertices[verIndex].label);
+			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			if(this.currAnimation == PlatformerAnimationStates.RunRight && (colObj.position.x + colObj.vertices[colVer1].offX) == (colObj.position.x + colObj.vertices[colVer2].offX) ) {
+				this.currAnimation = PlatformerAnimationStates.RunLeft;
+			} else if(this.currAnimation == PlatformerAnimationStates.RunLeft && (colObj.position.x + colObj.vertices[colVer1].offX) == (colObj.position.x + colObj.vertices[colVer2].offX) ) {
+				this.currAnimation = PlatformerAnimationStates.RunRight;
+			}
+		} else if(colObj.tag == 'testBall') {
+			
+		} else if(colObj.tag == 'platform') {
+			PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+		} else if(colObj.tag == 'ladder') {
+			
+		} else if(colObj.tag == 'playerHitBox') {
+			GetHitBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			if(this.properties.health <= 0) {
+				SmallGame0Globals.TotalEnemies--;
+				this.handler.removeObject(this.properties.jumpVector);
+				this.handler.removeObject(this);
+				SmallGame0Globals.score++;
+				CheckEnemies();
+			}
+		} else if(colObj.tag == 'player') {
+			this.properties.EscapeFrames = 0;
+		}
+	}
+}
+
+function enem2Collision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'wall') {
+			//console.log('wall: ' + this.vertices[verIndex].label);
 			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 			if(this.currAnimation == PlatformerAnimationStates.RunRight) {
 				this.currAnimation = PlatformerAnimationStates.RunLeft;
@@ -1494,7 +1611,7 @@ function enemCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'testBall') {
 			
 		} else if(colObj.tag == 'platform') {
-			PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			//PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'ladder') {
 			
 		} else if(colObj.tag == 'playerHitBox') {
@@ -1527,6 +1644,177 @@ end
 */
 
 /*
+RUNNYDOOR
+start
+*/
+
+function nonRunnyDoorEnemyUpdate_SG0() {
+	if(this.properties == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.position.x == null) {
+		//console.log('No x Prop');
+		return;
+	}
+	
+	if(this.position.y == null) {
+		//console.log('No y Prop');
+		return;
+	}
+	
+	if(this.properties.xv == null) {
+		//console.log('No xv Prop');
+		return;
+	}
+	
+	if(this.properties.yv == null) {
+		//console.log('No yv Prop');
+		return;
+	}
+	
+	if(this.properties.gravity == null) {
+		//console.log('No gravity Prop');
+		return;
+	}
+	
+	this.properties.yv = this.properties.yv + this.properties.gravity
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
+		
+	if(this.properties.jumpVector != null) {
+		//console.log('Door jump vector');
+		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.jumpVector.setPosition(newjumpVectorPosition);
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
+	}
+	
+	this.properties.xv = 0;
+}
+
+function runnyDoorEnemyUpdate_SG0() {
+	if(this.properties == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.position.x == null) {
+		//console.log('No x Prop');
+		return;
+	}
+	
+	if(this.position.y == null) {
+		//console.log('No y Prop');
+		return;
+	}
+	
+	if(this.properties.xv == null) {
+		//console.log('No xv Prop');
+		return;
+	}
+	
+	if(this.properties.yv == null) {
+		//console.log('No yv Prop');
+		return;
+	}
+	
+	if(this.properties.gravity == null) {
+		//console.log('No gravity Prop');
+		return;
+	}
+	
+	//controlledMovement_SG0(this);
+	//console.log(this.currAnimation);
+	if(this.currAnimation == 0) {
+		this.properties.xv = 8;
+		this.currAnimation = PlatformerAnimationStates.RunRight;
+	} else if(this.currAnimation == 1) {
+		this.properties.xv = -8;
+		this.currAnimation = PlatformerAnimationStates.RunLeft;
+	} else if(this.currAnimation == PlatformerAnimationStates.RunRight) {
+		this.properties.xv = 8;
+		this.currAnimation = PlatformerAnimationStates.RunRight;
+	} else if(this.currAnimation == PlatformerAnimationStates.RunLeft) {
+		this.properties.xv = -8;
+		this.currAnimation = PlatformerAnimationStates.RunLeft;
+	} else {
+		this.properties.xv = 8;
+		this.currAnimation = PlatformerAnimationStates.RunRight;
+	}
+
+	/*
+	if(this.properties.climbing == 0) {
+		this.properties.yv = this.properties.yv + this.properties.gravity
+	} else {
+		this.properties.yv = this.properties.yv;
+	}
+	*/
+	
+	this.properties.yv = this.properties.yv + this.properties.gravity;
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
+		
+	if(this.properties.jumpVector != null) {
+		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.jumpVector.setPosition(newjumpVectorPosition);
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
+	}
+		
+	this.properties.xv = 0;
+		
+	if(this.properties.climbing == 1) {
+		this.properties.yv = 0;
+	}
+	
+	if(this.properties.iFrames != -1) {
+		this.properties.iFrames++;
+	}
+	if(this.properties.iFrames == 60) {
+		this.properties.iFrames = -1;
+	}
+}
+
+function runnyDoorEnemyCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'wall') {
+			//console.log('wall: ' + this.vertices[verIndex].label);
+			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			if(this.currAnimation == PlatformerAnimationStates.RunRight) {
+				this.currAnimation = PlatformerAnimationStates.RunLeft;
+			} else if(this.currAnimation == PlatformerAnimationStates.RunLeft) {
+				this.currAnimation = PlatformerAnimationStates.RunRight;
+			}
+		} else if(colObj.tag == 'testBall') {
+			
+		} else if(colObj.tag == 'platform') {
+			//PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+		} else if(colObj.tag == 'ladder') {
+			
+		} else if(colObj.tag == 'playerHitBox') {
+			if(this.properties.running == 1) {
+				this.update = nonRunnyDoorEnemyUpdate_SG0;
+				this.properties.opened = 1;
+			}
+		} else if(colObj.tag == 'player') {
+			//console.log('Player!');
+			if(this.properties.opened == 1) {
+				endLevel(true);
+			}
+		}
+	}
+}
+
+/*
+RUNNYDOOR
+end
+*/
+
+/*
 ENDGAME
 start
 */
@@ -1545,6 +1833,8 @@ function endLevel(success) {
 			//retry button
 			SelText = SelText + 'GameObject -x 220 -y 400';
 			SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel Restart'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u StartButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1552,6 +1842,8 @@ function endLevel(success) {
 			//next level button
 			SelText = SelText + 'GameObject -x 220 -y 400';
 			SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "Continue"'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u NextLevelButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1559,6 +1851,8 @@ function endLevel(success) {
 			//double jump button
 			SelText = SelText + 'GameObject -x 210 -y 100';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "Double Jump"'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u doubleJumpButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1566,6 +1860,8 @@ function endLevel(success) {
 			//sky eye button
 			SelText = SelText + 'GameObject -x 360 -y 100';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "Sky Eye"'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u skyEyeButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1573,6 +1869,8 @@ function endLevel(success) {
 			//combo button
 			SelText = SelText + 'GameObject -x 510 -y 100';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel Combo'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u comboButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1580,6 +1878,8 @@ function endLevel(success) {
 			//runny door button
 			SelText = SelText + 'GameObject -x 210 -y 200';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "Runny Door"'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u runnyDoorButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1587,6 +1887,8 @@ function endLevel(success) {
 			//teleporter button
 			SelText = SelText + 'GameObject -x 360 -y 200';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel Teleporters'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u teleporterButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1594,6 +1896,8 @@ function endLevel(success) {
 			//drops button
 			SelText = SelText + 'GameObject -x 510 -y 200';
 			SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel Cannons'
+			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u dropsButtonUpdate'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
@@ -1603,6 +1907,8 @@ function endLevel(success) {
 		//retry button
 		SelText = SelText + 'GameObject -x 220 -y 400';
 		SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+		SelText = SelText + ' -p wordLabel Retry'
+		SelText = SelText + ' -pi setupButton_SG0'
 		SelText = SelText + ' -u StartButtonUpdate'
 		SelText = SelText + ' -d'
 		SelText = SelText + ';'
@@ -1634,7 +1940,7 @@ function doorCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'playerHitBox') {
 			
 		} else if(colObj.tag == 'player') {
-			console.log('Player!');
+			//console.log('Player!');
 			endLevel(true);
 		}
 	}
@@ -1643,6 +1949,12 @@ function doorCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 function setupDoor() {
 	SmallGame0Globals.door = this;
 	SmallGame0Globals.handler = this.handler;
+	
+	var GOJ = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf platformerVectorCollide -nc platformerVectorNoCollide -p hit 0");
+	var GOObj = createGOFromJSON(GOJ);
+	this.properties.jumpVector = GOObj;
+	GOObj.properties.parentObj = this;
+	oHandler.addObject(GOObj);
 }
 
 /*
@@ -1651,7 +1963,7 @@ end
 */
 
 /*
-teleporter
+TELEPORTER
 start
 */
 
@@ -1709,6 +2021,58 @@ function setupTeleporter() {
 }
 
 /*
-teleporter
+TELEPORTER
+end
+*/
+
+/*
+CANNON
+start
+*/
+function CannonBallUpdate_SG0() {
+	if(this.position.x < -125 || this.position.x > 1125 || this.position.y < -100 || this.position.x > 1100) {
+		this.handler.removeObject(this);
+	}
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
+	
+	if(this.properties.wordChild != null) {
+		this.properties.wordChild.position.x = this.position.x - (this.properties.wordChild.textContent.length * 3);
+		this.properties.wordChild.position.y = this.position.y + 5;
+	}
+	
+	if(this.properties.boardChild != null) {
+		this.properties.boardChild.position.x = this.position.x - (this.properties.wordChild.textContent.length * 3) - 2;
+		this.properties.boardChild.position.y = this.position.y - 5;
+	}
+}
+
+function CannonUpdate_SG0() {
+		
+	//console.log(this.properties.delayFrames);
+	if(this.properties.delayFrames % 180 == 0) {
+		var dx = SmallGame0Globals.player.position.x - this.position.x + 25;
+		var dy = SmallGame0Globals.player.position.y - this.position.y + 25;
+		var hyp = Math.sqrt( (dx*dx) + (dy*dy) );
+			
+		var SelText = '';
+		SelText = SelText + 'GameObject -x '+this.position.x+' -y '+this.position.y+'';
+		SelText = SelText + ' -t enemy'
+		SelText = SelText + ' -rp 0 0 18'
+		SelText = SelText + ' -u CannonBallUpdate_SG0'
+		SelText = SelText + ' -p HitBoxActive 1'
+		SelText = SelText + ' -p xv '+((dx/hyp) * this.properties.ballVel)+''
+		SelText = SelText + ' -p yv '+((dy/hyp) * this.properties.ballVel)+''
+		SelText = SelText + ' -d'
+		SelText = SelText + ';'
+			
+		enterObjects(SelText);
+	}
+		
+	this.properties.delayFrames++;
+}
+/*
+CANNON
 end
 */

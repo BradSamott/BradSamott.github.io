@@ -23,7 +23,8 @@ function StopDefault(evt) {
 */
 
 //RIGHT BUTTON
-rightConsoleButton.onmousedown = function() {
+rightConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.right = true;
 }
 
@@ -35,11 +36,13 @@ rightConsoleButton.onmouseleave = function() {
 	keys.right = false;
 }
 
-rightConsoleButton.ontouchstart = function() {
+rightConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.right = true;
 }
 
-rightConsoleButton.ontouchend = function() {
+rightConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.right = false;
 }
 

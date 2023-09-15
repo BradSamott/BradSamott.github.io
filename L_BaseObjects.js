@@ -454,11 +454,11 @@ function ObjectHandler() {
 				cWidth = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].width  * this.CameraZoom;
 				
 				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX != null) {
-					drawOffsetX = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX;
+					drawOffsetX = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX * this.CameraZoom;
 				}
 				
 				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY != null) {
-					drawOffsetY = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY;
+					drawOffsetY = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY * this.CameraZoom;
 				}
 				
 				this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame++;
