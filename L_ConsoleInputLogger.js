@@ -22,6 +22,27 @@ function StopDefault(evt) {
 }
 */
 
+//WHOLE CONSOLE Area
+ConsoleButtons.onmousedown = function(e) {
+	e.preventDefault();
+}
+
+ConsoleButtons.onmouseup = function(e) {
+	e.preventDefault();
+}
+
+ConsoleButtons.onmouseleave = function(e) {
+	e.preventDefault();
+}
+
+ConsoleButtons.ontouchstart = function(e) {
+	e.preventDefault();
+}
+
+ConsoleButtons.ontouchend = function(e) {
+	e.preventDefault();
+}
+
 //RIGHT BUTTON
 rightConsoleButton.onmousedown = function(e) {
 	e.preventDefault();
