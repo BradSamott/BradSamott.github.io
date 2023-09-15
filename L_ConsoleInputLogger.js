@@ -28,11 +28,13 @@ rightConsoleButton.onmousedown = function(e) {
 	keys.right = true;
 }
 
-rightConsoleButton.onmouseup = function() {
+rightConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.right = false;
 }
 
-rightConsoleButton.onmouseleave = function() {
+rightConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.right = false;
 }
 
@@ -48,130 +50,160 @@ rightConsoleButton.ontouchend = function(e) {
 
 
 //LEFT BUTTON
-leftConsoleButton.onmousedown = function() {
+leftConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.left = true;
 }
 
-leftConsoleButton.onmouseup = function() {
+leftConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.left = false;
 }
 
-leftConsoleButton.onmouseleave = function() {
+leftConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.left = false;
 }
 
-leftConsoleButton.ontouchstart = function() {
+leftConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.left = true;
 }
 
-leftConsoleButton.ontouchend = function() {
+leftConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.left = false;
 }
 
 
 //UP BUTTON
-upConsoleButton.onmousedown = function() {
+upConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.up = true;
 }
 
-upConsoleButton.onmouseup = function() {
+upConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
-upConsoleButton.onmouseleave = function() {
+upConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
-upConsoleButton.ontouchstart = function() {
+upConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.up = true;
 }
 
-upConsoleButton.ontouchend = function() {
+upConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
 
 //A BUTTON
-aConsoleButton.onmousedown = function() {
+aConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.up = true;
 }
 
-aConsoleButton.onmouseup = function() {
+aConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
-aConsoleButton.onmouseleave = function() {
+aConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
-aConsoleButton.ontouchstart = function() {
+aConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.up = true;
 }
 
-aConsoleButton.ontouchend = function() {
+aConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.up = false;
 }
 
 //B BUTTON
-bConsoleButton.onmousedown = function() {
+bConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.space = true;
 }
 
-bConsoleButton.onmouseup = function() {
+bConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.space = false;
 }
 
-bConsoleButton.onmouseleave = function() {
+bConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.space = false;
 }
 
-bConsoleButton.ontouchstart = function() {
+bConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.space = true;
 }
 
-bConsoleButton.ontouchend = function() {
+bConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.space = false;
 }
 
 //DOWN BUTTON
-downConsoleButton.onmousedown = function() {
+downConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.down = true;
 }
 
-downConsoleButton.onmouseup = function() {
+downConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.down = false;
 }
 
-downConsoleButton.onmouseleave = function() {
+downConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.down = false;
 }
 
-downConsoleButton.ontouchstart = function() {
+downConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.down = true;
 }
 
-downConsoleButton.ontouchend = function() {
+downConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.down = false;
 }
 
 //ENTER BUTTON
-enterConsoleButton.onmousedown = function() {
+enterConsoleButton.onmousedown = function(e) {
+	e.preventDefault();
 	keys.enter = true;
 }
 
-enterConsoleButton.onmouseup = function() {
+enterConsoleButton.onmouseup = function(e) {
+	e.preventDefault();
 	keys.enter = false;
 }
 
-enterConsoleButton.onmouseleave = function() {
+enterConsoleButton.onmouseleave = function(e) {
+	e.preventDefault();
 	keys.enter = false;
 }
 
-enterConsoleButton.ontouchstart = function() {
+enterConsoleButton.ontouchstart = function(e) {
+	e.preventDefault();
 	keys.enter = true;
 }
 
-enterConsoleButton.ontouchend = function() {
+enterConsoleButton.ontouchend = function(e) {
+	e.preventDefault();
 	keys.enter = false;
 }
 
