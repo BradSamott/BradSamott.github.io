@@ -7,6 +7,7 @@ SWINGHIT
 PLAYERSG0
 CAMERASG0
 ENEMSG0
+REAPER
 RUNNYDOOR
 ENDGAME
 DOORSG0
@@ -38,7 +39,10 @@ var SmallGame0Globals = {
 	DropsTriggered: false,
 	
 	//LEVEL
-	CurrentLevel: 0
+	CurrentLevel: 0,
+	
+	//SCORE
+	score: 0
 }
 
 function CheckEnemies() {
@@ -143,6 +147,7 @@ function StartSmallGameLevel() {
 			SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
 			SelText = SelText + ' -p HitBoxActive 1'
 			SelText = SelText + ' -p EscapeFrames -1'
+			SelText = SelText + ' -p maxSpeed 2'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
 		}
@@ -230,7 +235,33 @@ function StartSmallGameLevel() {
 		SelText = SelText + ';'
 	}
 	
-	SmallGame0Globals.score = 0;
+	//coins
+	for(var i = 0; i < 18; i++) {
+		var xCoord = Math.floor(Math.random() * 876) + 25;
+		var yCoord = Math.floor(Math.random() * 801) + 50;
+		SelText = SelText + 'GameObject -x '+xCoord+' -y '+yCoord+' -p x2 985 -p y2 65 -rp 0 0 6 -t coin'
+		SelText = SelText + ' -d'
+		SelText = SelText + ';'
+	}
+	
+	//reaper
+	SelText = SelText + 'GameObject -x -1000 -y -1000';
+	SelText = SelText + ' -v 0 0 topleft -v 108 0 topright -v 108 162 bottomright -v 0 162 bottomleft'
+	SelText = SelText + ' -rp 54 45 54'
+	SelText = SelText + ' -t reaper'
+	SelText = SelText + ' -p xv 0 -p yv 0'
+	SelText = SelText + ' -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 162'
+	SelText = SelText + ' -p BatReady 1'
+	SelText = SelText + ' -u enem2Movement_SG0'
+	SelText = SelText + ' -cf reaperCollision_SG0'
+	SelText = SelText + ' -pi setupEnem'
+	SelText = SelText + ' -a ReaperAnimationPackage -ca 0'
+	SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
+	SelText = SelText + ' -p HitBoxActive 1'
+	SelText = SelText + ' -p EscapeFrames -1'
+	SelText = SelText + ' -p maxSpeed 1'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
 	
 	enterObjects(SelText);
 }
@@ -334,6 +365,7 @@ function StartButtonUpdate() {
 					SmallGame0Globals.DropsTriggered = false;
 					
 					SmallGame0Globals.CurrentLevel = 0;
+					SmallGame0Globals.score = 0;
 					
 					StartSmallGameLevel();
 				}
@@ -1304,20 +1336,27 @@ function playerCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		if(colObj.tag == 'wall') {
 			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
-		} else if(colObj.tag == 'testBall') {
-			
+		} else if(colObj.tag == 'coin') {
+			this.handler.removeObject(colObj);
+			SmallGame0Globals.score++;
 		} else if(colObj.tag == 'platform') {
 			PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'ladder') {
 			
 		} else if(colObj.tag == 'enemy') {
-			console.log(colObj.tag);
-			GetHitBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
-			if(this.properties.health <= 0) {
-				endLevel(false);
+			if(verIndex == null) {
+				console.log(colObj.tag);
+				GetHitBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+				if(this.properties.health <= 0) {
+					endLevel(false);
+				}
 			}
 		} else if(colObj.tag == 'enemyHitBox') {
 			
+		} else if(colObj.tag == 'reaper') {
+			if(verIndex == null) {
+				endLevel(false);
+			}
 		}
 	}
 }
@@ -1506,29 +1545,29 @@ function enem2Movement_SG0() {
 		//controlledMovement_SG0(this);
 		if(this.properties.EscapeFrames == -1) {
 			if(this.position.x < SmallGame0Globals.player.position.x) {
-				this.properties.xv = 2;
+				this.properties.xv = this.properties.maxSpeed;
 			} else if(this.position.x > SmallGame0Globals.player.position.x) {
-				this.properties.xv = -2;
+				this.properties.xv = this.properties.maxSpeed * -1;
 			} else {
 				this.properties.xv = 0;
 			}
 			
 			if(this.position.y < SmallGame0Globals.player.position.y) {
-				this.properties.yv = 2;
+				this.properties.yv = this.properties.maxSpeed;
 			} else if(this.position.y > SmallGame0Globals.player.position.y) {
-				this.properties.yv = -2;
+				this.properties.yv = this.properties.maxSpeed * -1;
 			} else {
 				this.properties.yv = 0;
 			}
 		} else {
 			if(this.position.x < SmallGame0Globals.player.position.x) {
-				this.properties.xv = -2;
+				this.properties.xv = this.properties.maxSpeed * -1;
 			} else if(this.position.x > SmallGame0Globals.player.position.x) {
-				this.properties.xv = 2;
+				this.properties.xv = this.properties.maxSpeed;
 			} else {
-				this.properties.xv = 2;
+				this.properties.xv = this.properties.maxSpeed;
 			}
-			this.properties.yv = -2;
+			this.properties.yv = this.properties.maxSpeed * -1;
 			
 			this.properties.EscapeFrames++;
 			if(this.properties.EscapeFrames == 60) {
@@ -1640,6 +1679,34 @@ function setupEnem() {
 }
 /*
 ENEMSG0
+end
+*/
+
+/*
+REAPER
+start
+*/
+function reaperCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'wall') {
+			
+		} else if(colObj.tag == 'testBall') {
+			
+		} else if(colObj.tag == 'platform') {
+			
+		} else if(colObj.tag == 'ladder') {
+			
+		} else if(colObj.tag == 'playerHitBox') {
+			
+		} else if(colObj.tag == 'player') {
+			if(verIndex == null) {
+				this.properties.EscapeFrames = 0;
+			}
+		}
+	}
+}
+/*
+REAPER
 end
 */
 
@@ -1827,6 +1894,13 @@ function endLevel(success) {
 	SmallGame0Globals.handler.CameraZoom = 1;
 	
 	var SelText = '';
+	
+	SelText = SelText + 'GameObject -x 20 -y 20';
+	SelText = SelText + ' -v 0 0 topleft -v 150 0 topright -v 150 200 bottomright -v 0 200 bottomleft'
+	SelText = SelText + ' -u SetupShowerUpdate'
+	SelText = SelText + ' -pi SetupShowerSetup'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
 	
 	if(success) {
 		if(SmallGame0Globals.CurrentLevel == 3) {
@@ -2074,5 +2148,162 @@ function CannonUpdate_SG0() {
 }
 /*
 CANNON
+end
+*/
+
+/*
+SETUPSHOWER
+start
+*/
+
+function SetupShowerSetup() {
+	//Perk
+	var PerkText = 'TextObject -x 0 -y 0 -t "Perks:" -c black;';
+	
+	var TOJP = createTOJsonFromString(PerkText);
+	var TOObjP = createTOFromJSON(TOJP);
+	this.properties.perkChild = TOObjP;
+	this.handler.addTextObject(TOObjP);
+	
+	//Calamity
+	var CalamityText = 'TextObject -x 0 -y 0 -t "Calamities:" -c black;';
+	
+	var TOJC = createTOJsonFromString(CalamityText);
+	var TOObjC = createTOFromJSON(TOJC);
+	this.properties.calamityChild = TOObjC;
+	this.handler.addTextObject(TOObjC);
+	
+	
+	//Double Jump
+	var DJText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJDJ = createTOJsonFromString(DJText);
+	var TOObjDJ = createTOFromJSON(TOJDJ);
+	this.properties.doubleJumpChild = TOObjDJ;
+	this.handler.addTextObject(TOObjDJ);
+	
+	//Sky Eye
+	var SEText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJSE = createTOJsonFromString(SEText);
+	var TOObjSE = createTOFromJSON(TOJSE);
+	this.properties.skyEyeChild = TOObjSE;
+	this.handler.addTextObject(TOObjSE);
+	
+	//Combo
+	var COText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJCO = createTOJsonFromString(COText);
+	var TOObjCO = createTOFromJSON(TOJCO);
+	this.properties.comboChild = TOObjCO;
+	this.handler.addTextObject(TOObjCO);
+	
+	
+	//Runny Door
+	var RDText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJRD = createTOJsonFromString(RDText);
+	var TOObjRD = createTOFromJSON(TOJRD);
+	this.properties.runnyDoorChild = TOObjRD;
+	this.handler.addTextObject(TOObjRD);
+	
+	//Teleporters
+	var TEText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJTE = createTOJsonFromString(TEText);
+	var TOObjTE = createTOFromJSON(TOJTE);
+	this.properties.teleporterChild = TOObjTE;
+	this.handler.addTextObject(TOObjTE);
+	
+	//Cannons
+	var CAText = 'TextObject -x 0 -y 0 -t "----------" -c black;';
+	
+	var TOJCA = createTOJsonFromString(CAText);
+	var TOObjCA = createTOFromJSON(TOJCA);
+	this.properties.cannonChild = TOObjCA;
+	this.handler.addTextObject(TOObjCA);
+	
+	//Score
+	var ScoreText = 'TextObject -x 0 -y 0 -t "Score: 0" -c black;';
+	
+	var TOJScore = createTOJsonFromString(ScoreText);
+	var TOObjScore = createTOFromJSON(TOJScore);
+	this.properties.scoreChild = TOObjScore;
+	this.handler.addTextObject(TOObjScore);
+}
+
+function SetupShowerUpdate() {
+	//Perk
+	this.properties.perkChild.position.x = this.position.x + 10;
+	this.properties.perkChild.position.y = this.position.y + 10; 
+	
+	//Calamity
+	this.properties.calamityChild.position.x = this.position.x + 10;
+	this.properties.calamityChild.position.y = this.position.y + 50; 
+	
+	
+	//Double Jump
+	if(SmallGame0Globals.DoubleJumpSelected || SmallGame0Globals.DoubleJumpTriggered) {
+		this.properties.doubleJumpChild.textContent = 'Double Jump';
+	} else {
+		this.properties.doubleJumpChild.textContent = '----------';
+	}
+	this.properties.doubleJumpChild.position.x = this.position.x + 70;
+	this.properties.doubleJumpChild.position.y = this.position.y + 10; 
+	
+	//Sky Eye
+	if(SmallGame0Globals.SkyEyeSelected || SmallGame0Globals.SkyEyeTriggered) {
+		this.properties.skyEyeChild.textContent = 'Sky Eye';
+	} else {
+		this.properties.skyEyeChild.textContent = '----------';
+	}
+	this.properties.skyEyeChild.position.x = this.position.x + 70;
+	this.properties.skyEyeChild.position.y = this.position.y + 20; 
+	
+	//Combo
+	if(SmallGame0Globals.ComboSelected || SmallGame0Globals.ComboTriggered) {
+		this.properties.comboChild.textContent = 'Combo';
+	} else {
+		this.properties.comboChild.textContent = '----------';
+	}
+	this.properties.comboChild.position.x = this.position.x + 70;
+	this.properties.comboChild.position.y = this.position.y + 30; 
+	
+	
+	//Runny Door
+	if(SmallGame0Globals.RunnyDoorSelected || SmallGame0Globals.RunnyDoorTriggered) {
+		this.properties.runnyDoorChild.textContent = 'Runny Door';
+	} else {
+		this.properties.runnyDoorChild.textContent = '----------';
+	}
+	this.properties.runnyDoorChild.position.x = this.position.x + 70;
+	this.properties.runnyDoorChild.position.y = this.position.y + 50; 
+	
+	//Teleporters
+	if(SmallGame0Globals.TeleporterSelected || SmallGame0Globals.TeleporterTriggered) {
+		this.properties.teleporterChild.textContent = 'Teleporter';
+	} else {
+		this.properties.teleporterChild.textContent = '----------';
+	}
+	this.properties.teleporterChild.position.x = this.position.x + 70;
+	this.properties.teleporterChild.position.y = this.position.y + 60; 
+	
+	//Cannons
+	if(SmallGame0Globals.DropsSelected || SmallGame0Globals.DropsTriggered) {
+		this.properties.cannonChild.textContent = 'Cannons';
+	} else {
+		this.properties.cannonChild.textContent = '----------';
+	}
+	this.properties.cannonChild.position.x = this.position.x + 70;
+	this.properties.cannonChild.position.y = this.position.y + 70; 
+	
+	
+	this.properties.scoreChild.position.x = this.position.x + 10;
+	this.properties.scoreChild.position.y = this.position.y + 100; 
+	this.properties.scoreChild.textContent = "Score: " + SmallGame0Globals.score; 
+}
+
+/*
+SETUPSHOWER
 end
 */
