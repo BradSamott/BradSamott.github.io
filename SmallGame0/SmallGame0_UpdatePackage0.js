@@ -114,7 +114,7 @@ function StartSmallGameLevel() {
 		var optionE = Math.floor(Math.random() * 2) + 1;
 		//console.log('Option: ' + optionE);
 		var xCoord = Math.floor(Math.random() * 876) + 25;
-		var yCoord = Math.floor(Math.random() * 801) + 50;
+		var yCoord = Math.floor(Math.random() * 701) + 50;
 		if(optionE == 1) {
 			//enemObject
 			SelText = SelText + 'GameObject -x '+xCoord+' -y '+yCoord+'';
@@ -151,6 +151,14 @@ function StartSmallGameLevel() {
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
 		}
+		
+		SelText = SelText + 'GameObject -x '+(xCoord - 10)+' -y '+(yCoord - 10)+'';
+		SelText = SelText + ' -v 0 0 topleft -v 56 0 topright -v 56 74 bottomright -v 0 74 bottomleft'
+		SelText = SelText + ' -t wall'
+		SelText = SelText + ' -p waitFrames 0'
+		SelText = SelText + ' -u waitWall_SG0'
+		SelText = SelText + ' -d'
+		SelText = SelText + ';'
 	}
 	
 	//Door object
@@ -245,7 +253,7 @@ function StartSmallGameLevel() {
 	}
 	
 	//reaper
-	SelText = SelText + 'GameObject -x -1000 -y -1000';
+	SelText = SelText + 'GameObject -x -1100 -y -1100';
 	SelText = SelText + ' -v 0 0 topleft -v 108 0 topright -v 108 162 bottomright -v 0 162 bottomleft'
 	SelText = SelText + ' -rp 54 45 54'
 	SelText = SelText + ' -t reaper'
@@ -1207,6 +1215,11 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 					this.properties.parentObj.properties.jumpable = 0;
 					this.properties.parentObj.properties.gravity = 0.6;
 				}
+				
+				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps) {
+					//console.log('fixing');
+					this.properties.parentObj.properties.jumps--;
+				}
 			}
 			
 		} else if(colObj.tag == 'platform') {
@@ -1229,9 +1242,15 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 				
 				this.properties.hit = 1;
 			} else {
+				//console.log('No');
 				if(this.properties.hit != 1) {
 					this.properties.parentObj.properties.jumpable = 0;
 					this.properties.parentObj.properties.gravity = 0.6;
+				}
+				
+				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps) {
+					//console.log('fixing');
+					this.properties.parentObj.properties.jumps--;
 				}
 			}
 			
@@ -2305,5 +2324,22 @@ function SetupShowerUpdate() {
 
 /*
 SETUPSHOWER
+end
+*/
+
+/*
+WAITWALL
+start
+*/
+
+function waitWall_SG0() {
+	this.properties.waitFrames++;
+	if(this.properties.waitFrames == 90) {
+		this.handler.removeObject(this);
+	}
+}
+
+/*
+WAITWALL
 end
 */
