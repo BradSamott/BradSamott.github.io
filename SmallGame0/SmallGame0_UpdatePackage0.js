@@ -2227,9 +2227,9 @@ function KeyUpdate_SG0() {
 						if(SmallGame0Globals.user.charAt(3) != '_') {
 							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,3) + '_';
 						} else if(SmallGame0Globals.user.charAt(2) != '_') {
-							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,2) + '_' + SmallGame0Globals.user.substring(2,SmallGame0Globals.length);
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,2) + '_' + SmallGame0Globals.user.substring(3,SmallGame0Globals.length);
 						} else if(SmallGame0Globals.user.charAt(1) != '_') {
-							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,1) + '_' + SmallGame0Globals.user.substring(3,SmallGame0Globals.length);
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,1) + '_' + SmallGame0Globals.user.substring(2,SmallGame0Globals.length);
 						} else if(SmallGame0Globals.user.charAt(0) != '_') {
 							SmallGame0Globals.user = '_' + SmallGame0Globals.user.substring(1,SmallGame0Globals.length);
 						}
