@@ -42,7 +42,10 @@ var SmallGame0Globals = {
 	CurrentLevel: 0,
 	
 	//SCORE
-	score: 0
+	score: 0,
+	
+	//USERNAME
+	user: '____'
 }
 
 function CheckEnemies() {
@@ -66,6 +69,14 @@ function StartSmallGame0() {
 	SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
 	SelText = SelText + ' -u StartButtonUpdate'
 	SelText = SelText + ' -p wordLabel Start'
+	SelText = SelText + ' -pi setupButton_SG0'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	SelText = SelText + 'GameObject -x 270 -y 470';
+	SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 54 bottomright -v 0 54 bottomleft'
+	SelText = SelText + ' -u ScoreButtonUpdate'
+	SelText = SelText + ' -p wordLabel Scores'
 	SelText = SelText + ' -pi setupButton_SG0'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
@@ -253,6 +264,7 @@ function StartSmallGameLevel() {
 	}
 	
 	//reaper
+	
 	SelText = SelText + 'GameObject -x -1100 -y -1100';
 	SelText = SelText + ' -v 0 0 topleft -v 108 0 topright -v 108 162 bottomright -v 0 162 bottomleft'
 	SelText = SelText + ' -rp 54 45 54'
@@ -270,6 +282,7 @@ function StartSmallGameLevel() {
 	SelText = SelText + ' -p maxSpeed 1'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
+	
 	
 	enterObjects(SelText);
 }
@@ -383,6 +396,128 @@ function StartButtonUpdate() {
 		
 	}	
 
+}
+
+function ScoreButtonUpdate() {
+	
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					this.handler.removeAllObjects();
+					
+					var SelText = '';
+					
+					SelText = SelText + 'GameObject -x 100 -y 100';
+					SelText = SelText + ' -v 0 0 topleft -v 108 0 topright -v 108 300 bottomright -v 0 300 bottomleft'
+					SelText = SelText + ' -u ScoreboardUpdate'
+					SelText = SelText + ' -pi setupScoreboard'
+					SelText = SelText + ' -p scoresOn 0'
+					SelText = SelText + ' -d'
+					SelText = SelText + ';'
+					
+					SelText = SelText + 'GameObject -x 300 -y 100';
+					SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 50 bottomright -v 0 50 bottomleft'
+					SelText = SelText + ' -u BackButtonUpdate'
+					SelText = SelText + ' -p wordLabel Back'
+					SelText = SelText + ' -pi setupButton_SG0'
+					SelText = SelText + ' -d'
+					SelText = SelText + ';'
+					
+					enterObjects(SelText);
+				}
+				
+			}
+		}
+		
+	}	
+
+}
+
+function ScoreboardUpdate() {
+	//this.properties.wordChild.position.x = this.position.x + 10;
+	//this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(ScoreGlobals.scoreJSON != null && this.properties.scoresOn == 0) {
+		
+		var i = 1;
+		for (var key in ScoreGlobals.scoreJSON){
+			
+			var TextText = 'TextObject -x '+(this.position.x+10)+' -y '+(this.position.y+(20*i))+' -c black -t "'+ key + ': ' + ScoreGlobals.scoreJSON[key] +'"';
+	
+			var TOJ = createTOJsonFromString(TextText);
+			var TOObj = createTOFromJSON(TOJ);
+			this.properties.wordChild = TOObj;
+			
+			this.handler.addTextObject(TOObj);
+			i++;
+		}
+		this.properties.scoresOn = 1;
+	}
+}
+
+function setupScoreboard() {
+	/*
+	var TextText = 'TextObject -x 0 -y 0 -t "" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.wordChild = TOObj;
+	
+	this.handler.addTextObject(TOObj);
+	*/
+	
+	GetScores('SmallGame0');
+}
+
+function BackButtonUpdate() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					this.handler.removeAllObjects();
+					
+					StartSmallGame0();
+				}
+				
+			}
+		}
+		
+	}	
 }
 
 function doubleJumpButtonUpdate() {
@@ -1216,8 +1351,8 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 					this.properties.parentObj.properties.gravity = 0.6;
 				}
 				
-				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps) {
-					//console.log('fixing');
+				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps && this.properties.hit != 1) {
+					console.log('fixing');
 					this.properties.parentObj.properties.jumps--;
 				}
 			}
@@ -1248,8 +1383,8 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 					this.properties.parentObj.properties.gravity = 0.6;
 				}
 				
-				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps) {
-					//console.log('fixing');
+				if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps && this.properties.hit != 1) {
+					console.log('fixing');
 					this.properties.parentObj.properties.jumps--;
 				}
 			}
@@ -1261,6 +1396,11 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 function platformerVectorNoCollide_SG0() {
 	this.properties.parentObj.properties.jumpable = 0;
 	this.properties.parentObj.properties.gravity = 0.6;
+	
+	if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps) {
+		//console.log('fixing');
+		this.properties.parentObj.properties.jumps--;
+	}
 }
 
 /*
@@ -1682,7 +1822,9 @@ function enem2Collision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 				CheckEnemies();
 			}
 		} else if(colObj.tag == 'player') {
-			this.properties.EscapeFrames = 0;
+			if(verIndex == null) {
+				this.properties.EscapeFrames = 0;
+			}
 		}
 	}
 }
@@ -1923,14 +2065,7 @@ function endLevel(success) {
 	
 	if(success) {
 		if(SmallGame0Globals.CurrentLevel == 3) {
-			//retry button
-			SelText = SelText + 'GameObject -x 220 -y 400';
-			SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
-			SelText = SelText + ' -p wordLabel Restart'
-			SelText = SelText + ' -pi setupButton_SG0'
-			SelText = SelText + ' -u StartButtonUpdate'
-			SelText = SelText + ' -d'
-			SelText = SelText + ';'
+			enterEndScreen();
 		} else {
 			//next level button
 			SelText = SelText + 'GameObject -x 220 -y 400';
@@ -1997,23 +2132,191 @@ function endLevel(success) {
 			
 		}
 	} else {
-		//retry button
-		SelText = SelText + 'GameObject -x 220 -y 400';
-		SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
-		SelText = SelText + ' -p wordLabel Retry'
-		SelText = SelText + ' -pi setupButton_SG0'
-		SelText = SelText + ' -u StartButtonUpdate'
-		SelText = SelText + ' -d'
-		SelText = SelText + ';'
+		enterEndScreen();
 	}
 	
 	enterObjects(SelText);
+}
+
+function enterEndScreen() {
+	
+	var SelText = '';
+	
+	//retry button
+	SelText = SelText + 'GameObject -x 220 -y 100';
+	SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+	SelText = SelText + ' -p wordLabel Retry'
+	SelText = SelText + ' -pi setupButton_SG0'
+	SelText = SelText + ' -u StartButtonUpdate'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+		
+	//submit score button
+	SelText = SelText + 'GameObject -x 220 -y 200';
+	SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+	SelText = SelText + ' -p wordLabel Submit'
+	SelText = SelText + ' -p submitted 0'
+	SelText = SelText + ' -p scoreOn 0'
+	SelText = SelText + ' -pi setupButton_SG0'
+	SelText = SelText + ' -u SubmitButtonUpdate'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	//user name viewer
+	SelText = SelText + 'GameObject -x 220 -y 300';
+	SelText = SelText + ' -pi setupUserViewer'
+	SelText = SelText + ' -u UserViewerUpdate'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	SelText = SelText + 'GameObject -x 21 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel Q -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 81 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel W -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 141 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel E -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 201 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel R -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 261 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel T -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 321 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel Y -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 381 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel U -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 441 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel I -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 501 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel O -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 561 -y 396 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel P -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	
+	SelText = SelText + 'GameObject -x 51 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel A -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 111 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel S -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 171 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel D -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 231 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel F -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 291 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel G -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 351 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel H -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 411 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel J -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 471 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel K -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 531 -y 456 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel L -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	
+	SelText = SelText + 'GameObject -x 81 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel Z -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 141 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel X -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 201 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel C -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 261 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel V -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 321 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel B -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 381 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel N -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	SelText = SelText + 'GameObject -x 441 -y 516 -v 0 0 -v 60 0 -v 60 60 -v 0 60 -d -p wordLabel M -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	
+	SelText = SelText + 'GameObject -x 0 -y 516 -v 0 0 -v 80 0 -v 80 60 -v 0 60 -d -p wordLabel Back -u KeyUpdate_SG0 -pi setupButton_SG0 -t KeyButton;';
+	
+	enterObjects(SelText);
+}
+
+function KeyUpdate_SG0() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					if(this.properties.wordLabel == 'Back') {
+						if(SmallGame0Globals.user.charAt(3) != '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,3) + '_';
+						} else if(SmallGame0Globals.user.charAt(2) != '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,2) + '_' + SmallGame0Globals.user.substring(2,SmallGame0Globals.length);
+						} else if(SmallGame0Globals.user.charAt(1) != '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,1) + '_' + SmallGame0Globals.user.substring(3,SmallGame0Globals.length);
+						} else if(SmallGame0Globals.user.charAt(0) != '_') {
+							SmallGame0Globals.user = '_' + SmallGame0Globals.user.substring(1,SmallGame0Globals.length);
+						}
+					} else {
+						if(SmallGame0Globals.user.charAt(0) == '_') {
+							SmallGame0Globals.user = this.properties.wordLabel + SmallGame0Globals.user.substring(1,SmallGame0Globals.length);
+						} else if(SmallGame0Globals.user.charAt(1) == '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,1) + this.properties.wordLabel + SmallGame0Globals.user.substring(2,SmallGame0Globals.length);
+						} else if(SmallGame0Globals.user.charAt(2) == '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,2) + this.properties.wordLabel + SmallGame0Globals.user.substring(3,SmallGame0Globals.length);
+						} else if(SmallGame0Globals.user.charAt(3) == '_') {
+							SmallGame0Globals.user = SmallGame0Globals.user.substring(0,3) + this.properties.wordLabel;
+						}
+					}
+				}
+				
+			}
+		}
+		
+	}	
+}
+
+function setupUserViewer() {
+	var TextText = 'TextObject -x 0 -y 0 -t "'+SmallGame0Globals.user+'" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.wordChild = TOObj;
+	this.handler.addTextObject(TOObj);
+}
+
+function UserViewerUpdate() {
+	this.properties.wordChild.position.x = this.position.x;
+	this.properties.wordChild.position.y = this.position.y;
+	
+	this.properties.wordChild.textContent = SmallGame0Globals.user;
 }
 
 /*
 ENDGAME
 end
 */
+
+function SubmitButtonUpdate() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+	
+	if(this.properties.submitted == 0) {
+		for(var i = 0; i < this.handler.cBuff.length; i++) {
+		
+			if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+			   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+			{
+				if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+				   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+					
+					if(triggered == false) {
+						//console.log('pressed');
+						triggered = true;
+						
+						this.properties.submitted = 1;
+						
+						PostScores('SmallGame0',SmallGame0Globals.score,SmallGame0Globals.user);
+					}
+					
+				}
+			}
+			
+		}
+	}
+	
+	if(ScoreGlobals.postScoreJSON != null && this.properties.scoreOn == 0) {
+		this.properties.scoreOn = 1;
+		
+		if(ScoreGlobals.postScoreJSON.Status == 'Succeeded') {
+			this.properties.wordChild.textContent = 'Score Submited';
+		} else {
+			this.properties.wordChild.textContent = 'Submit Error';
+		}
+	}
+}
 
 /*
 DOORSG0
