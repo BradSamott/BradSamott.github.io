@@ -135,7 +135,8 @@ var PlatformerAnimationStates = {
 	HurtLeft: 9,
 	Climb: 10,
 	Swing2Right: 11,
-	Swing2Left: 12
+	Swing2Left: 12,
+	DuckingRight: 13
 }
 
 var AntiAnimationPackage = [
@@ -402,6 +403,16 @@ var PlatformerAnimationPackage = [
 		],
 		currKeyFrame: 0,
 		Loops: false,
+		Done: false
+	},
+	
+	//Ducking Right 13
+	{
+		keyFrames: [
+			{keyFrame: './Assets/HeadRefFinal.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
 		Done: false
 	}
 ]

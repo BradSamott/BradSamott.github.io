@@ -1,5 +1,6 @@
 console.log("Test Print");
 console.log("Test Print: From New PC");
+console.log("Test from js");
 
 /*
 var testcode = 'GameObject -p lastPStatus 0 -su uiLogger;'
