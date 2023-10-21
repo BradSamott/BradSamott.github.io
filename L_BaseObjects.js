@@ -6,7 +6,7 @@ Hold basic data such as position, tag, an update function
 to be ran and a late update to be run after.
 Also has a list of vertices used to keep track of the shape.
 */
-function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth, debugMode, properties, canvas, context, audio, init, postInit, nilCollideFunction) {
+function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth, debugMode, properties, canvas, context, audio, init, postInit, nilCollideFunction, xRenderFactor, yRenderFactor) {
 	this.position = {x, y};
 	this.delta = {dx: 0, dy: 0};
 
@@ -55,6 +55,9 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	
 	this.nilCollideFunction = nilCollideFunction;
 	
+	this.xRenderFactor = xRenderFactor;
+	this.yRenderFactor = yRenderFactor;
+	
 	this.getPosition = function() {return this.position}
 	this.getTag = function() {return this.tag}
 	
@@ -81,7 +84,7 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	
 }
 
-function TextObject(x, y, size, font, color, textContent, properties) {
+function TextObject(x, y, size, font, color, textContent, properties, fixedPosition) {
 	this.position = {x, y};
 	
 	this.size = size;
@@ -89,6 +92,7 @@ function TextObject(x, y, size, font, color, textContent, properties) {
 	this.color = color;
 	this.textContent = textContent;
 	this.properties = properties;
+	this.fixedPosition = fixedPosition;
 }
 
 /*
@@ -426,7 +430,7 @@ function ObjectHandler() {
 			var xPos = this.Objects[objI].position.x - this.CameraX;
 			var yPos = this.Objects[objI].position.y - this.CameraY;
 			if(this.Objects[objI].animations[this.Objects[objI].currAnimation] != null) {
-			if(this.Objects[objI].animations[this.Objects[objI].currAnimation].fixedAnimation == true) {
+				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].fixedAnimation == true) {
 					var xPos = this.Objects[objI].position.x;
 					var yPos = this.Objects[objI].position.y;
 				}
@@ -442,42 +446,84 @@ function ObjectHandler() {
 			var cLength = 0;
 			var drawOffsetX = 0;
 			var drawOffsetY = 0;
-			if(this.Objects[objI].animations.length == 0 || this.Objects[objI].currAnimation < 0 || this.Objects[objI].currAnimation >= this.Objects[objI].animations.length) {
-				img = new Image();
-				img.src = this.Objects[objI].defaultFrame;
-				cLength = this.Objects[objI].defaultLength * this.CameraZoom;
-				cWidth = this.Objects[objI].defaultWidth * this.CameraZoom;
-			} else {
-				//img.src = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].keyFrame;
-				img = this.Objects[objI].renderImgs[this.Objects[objI].currAnimation][this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame];
-				cLength = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].length  * this.CameraZoom;
-				cWidth = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].width  * this.CameraZoom;
-				
-				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX != null) {
-					drawOffsetX = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX * this.CameraZoom;
-				}
-				
-				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY != null) {
-					drawOffsetY = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY * this.CameraZoom;
-				}
-				
-				this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame++;
-				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame > this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].duration) {
-					this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame = 1;
-					this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame++;
-				}
-				
-				if(this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame >= this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames.length) {
-					if(this.Objects[objI].animations[this.Objects[objI].currAnimation].Loops) {
-						this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame = 0;
-					} else {
-						this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame--;
-						this.Objects[objI].animations[this.Objects[objI].currAnimation].Done = true;
+			
+			var textured = false;
+			
+			if(this.Objects[objI].animations[0] != null) {
+				if(this.Objects[objI].animations[0].texture) {
+					
+					textured = true;
+					var MaxI = Math.ceil(this.Objects[objI].properties.width / this.Objects[objI].animations[0].keyFrames[0].width);
+					var MaxJ = Math.ceil(this.Objects[objI].properties.height / this.Objects[objI].animations[0].keyFrames[0].length);
+					img = this.Objects[objI].renderImgs[0][this.Objects[objI].animations[0].currKeyFrame];
+
+					for(var i = 0; i <= MaxI; i++) {
+						for(var j = 0; j <= MaxJ; j++) {
+							
+							drawOffsetX = this.Objects[objI].animations[0].keyFrames[0].width * i;
+							drawOffsetY = this.Objects[objI].animations[0].keyFrames[0].length * j;
+							
+							var widthDraw;
+							var heightDraw;
+							
+							if(xPos + drawOffsetX + this.Objects[objI].animations[0].keyFrames[0].width > xPos + this.Objects[objI].properties.width) { 
+								widthDraw = this.Objects[objI].animations[0].keyFrames[0].width - ((xPos + drawOffsetX + this.Objects[objI].animations[0].keyFrames[0].width) - (xPos + this.Objects[objI].properties.width))
+							} else {
+								widthDraw = this.Objects[objI].animations[0].keyFrames[0].width;
+							}
+							
+							if(yPos + drawOffsetY + this.Objects[objI].animations[0].keyFrames[0].length > yPos + this.Objects[objI].properties.height) {
+								heightDraw = this.Objects[objI].animations[0].keyFrames[0].length - ((yPos + drawOffsetY + this.Objects[objI].animations[0].keyFrames[0].length) - (yPos + this.Objects[objI].properties.height))
+							} else {
+								heightDraw = this.Objects[objI].animations[0].keyFrames[0].length;
+							}
+							//console.log(widthDraw);
+							//console.log(heightDraw);
+							this.Objects[objI].context.drawImage(img, 0, 0, widthDraw, heightDraw, xPos + drawOffsetX, yPos + drawOffsetY, widthDraw, heightDraw);
+						}
 					}
 				}
 			}
-			//PlayArea.drawImage(img, xPos, yPos, cWidth, cLength);
-			this.Objects[objI].context.drawImage(img, xPos + drawOffsetX, yPos + drawOffsetY, cWidth, cLength);
+			
+			if(!textured) {
+				if(this.Objects[objI].animations.length == 0 || this.Objects[objI].currAnimation < 0 || this.Objects[objI].currAnimation >= this.Objects[objI].animations.length) {
+					img = new Image();
+					img.src = this.Objects[objI].defaultFrame;
+					cLength = this.Objects[objI].defaultLength * this.Objects[objI].xRenderFactor * this.CameraZoom;
+					cWidth = this.Objects[objI].defaultWidth * this.Objects[objI].yRenderFactor * this.CameraZoom;
+				} else {
+					//img.src = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].keyFrame;
+					img = this.Objects[objI].renderImgs[this.Objects[objI].currAnimation][this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame];
+					cLength = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].length * this.Objects[objI].xRenderFactor * this.CameraZoom;
+					cWidth = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].width * this.Objects[objI].yRenderFactor * this.CameraZoom;
+					
+					if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX != null) {
+						drawOffsetX = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffX * this.Objects[objI].xRenderFactor * this.CameraZoom;
+					}
+					
+					if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY != null) {
+						drawOffsetY = this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].drawOffY * this.Objects[objI].yRenderFactor * this.CameraZoom;
+					}
+					
+					this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame++;
+					if(this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame > this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].duration) {
+						this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames[this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame].currFrame = 1;
+						this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame++;
+					}
+					
+					if(this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame >= this.Objects[objI].animations[this.Objects[objI].currAnimation].keyFrames.length) {
+						if(this.Objects[objI].animations[this.Objects[objI].currAnimation].Loops) {
+							this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame = 0;
+						} else {
+							this.Objects[objI].animations[this.Objects[objI].currAnimation].currKeyFrame--;
+							this.Objects[objI].animations[this.Objects[objI].currAnimation].Done = true;
+						}
+					}
+				}
+				//PlayArea.drawImage(img, xPos, yPos, cWidth, cLength);
+				this.Objects[objI].context.drawImage(img, xPos + drawOffsetX, yPos + drawOffsetY, cWidth, cLength);
+			}
+			
 			
 			//this.Objects[objI].context.drawImage(img, xPos + drawOffsetX, yPos + drawOffsetY - 50, cWidth, cLength);
 			
@@ -629,6 +675,8 @@ function createGOFromJSON(jArg,DevFlag) {
 	var init = function() {};
 	var postInit = function() {};
 	var nilCollideFunction = function() {};
+	var xRenderFactor = 1;
+	var yRenderFactor = 1;
 	
 	if(jArg.x != null) {
 		x = jArg.x;
@@ -718,7 +766,15 @@ function createGOFromJSON(jArg,DevFlag) {
 		nilCollideFunction = jArg.nilCollideFunction;
 	}
 	
-	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,postInit,nilCollideFunction);
+	if(jArg.xRenderFactor != null) {
+		xRenderFactor = jArg.xRenderFactor;
+	}
+	
+	if(jArg.yRenderFactor != null) {
+		yRenderFactor = jArg.yRenderFactor;
+	}
+	
+	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,postInit,nilCollideFunction,xRenderFactor,yRenderFactor);
 	
 	return newGameObject;
 }
@@ -1044,6 +1100,22 @@ function createGOJsonFromString(args) {
 				}
 			}
 		}
+		
+		//xRenderFactor
+		else if(argsList[i] == '-xR') {
+			if(!isNaN(argsList[i + 1]) && argsList[i + 1] != null && argsList[i + 1] != '') {
+				jsonArg.xRenderFactor = parseFloat(argsList[i + 1]);
+				i++;
+			}
+		}
+		
+		//yRenderFactor
+		else if(argsList[i] == '-yR') {
+			if(!isNaN(argsList[i + 1]) && argsList[i + 1] != null && argsList[i + 1] != '') {
+				jsonArg.yRenderFactor = parseFloat(argsList[i + 1]);
+				i++;
+			}
+		}
 	}
 	
 	return jsonArg;
@@ -1065,6 +1137,7 @@ function createTOFromJSON(jArg) {
 	var font = 'Arial';
 	var color = 'white';
 	var textContent = '';
+	var fixedPosition = false;
 	var properties = {};
 	
 	if(jArg.x != null) {
@@ -1091,11 +1164,15 @@ function createTOFromJSON(jArg) {
 		textContent = jArg.textContent;
 	}
 	
+	if(jArg.fixedPosition != null) {
+		fixedPosition = true;
+	}
+	
 	if(jArg.properties != null) {
 		properties = jArg.properties;
 	}
 	
-	var newTextObject = new TextObject(x, y, size, font, color, textContent, properties);
+	var newTextObject = new TextObject(x, y, size, font, color, textContent, properties, fixedPosition);
 	
 	return newTextObject;
 }
@@ -1159,6 +1236,10 @@ function createTOJsonFromString(args) {
 			}
 		}
 		
+		//fixed
+		else if(argsList[i] == '-f') {
+			jsonArg.fixedPosition = true;
+		}
 	}
 	
 	return jsonArg;

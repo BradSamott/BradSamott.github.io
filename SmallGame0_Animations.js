@@ -170,3 +170,29 @@ var ReaperAnimationPackage = [
 		Done: false
 	}
 ]
+
+var CannonAnimationPackage = [
+	//Idle Right 0
+	{
+		keyFrames: [
+			{keyFrame: 'http://ec2-44-218-172-188.compute-1.amazonaws.com/images/ExampleImg.png', length: 54, width: 54, duration: 60, currFrame: 1, drawOffX: -27, drawOffY: -27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+	
+]
+
+var wallTexture = [
+
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy.png', length: 54, width: 54, duration: 60, currFrame: 1, drawOffX: -27, drawOffY: -27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false,
+		texture: true
+	}
+]

@@ -46,6 +46,9 @@ var keys = {
 
 // This function will be called when a key on the keyboard is pressed
 function keydown(e) {
+	
+	//console.log(e.keyCode);
+	
     // 37 is the code for the left arrow key
     if(e.keyCode == 37) {
         keys.left = true;

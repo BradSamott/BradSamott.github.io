@@ -41,6 +41,15 @@ var SmallGame0Globals = {
 	//LEVEL
 	CurrentLevel: 0,
 	
+	//DAMAGE
+	PlayerDamage: 1,
+	
+	//health
+	PlayerHealth: 5,
+	
+	//key
+	KeyGot: 0,
+	
 	//SCORE
 	score: 0,
 	
@@ -81,6 +90,14 @@ function StartSmallGame0() {
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
+	SelText = SelText + 'GameObject -x 220 -y 200';
+	SelText = SelText + ' -v 0 0 topleft -v 200 0 topright -v 200 54 bottomright -v 0 54 bottomleft'
+	SelText = SelText + ' -u TutorialButtonUpdate'
+	SelText = SelText + ' -p wordLabel Tutorial'
+	SelText = SelText + ' -pi setupButton_SG0'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
 	SelText = SelText + 'GameObject -pi addClickOption_SG0;'
 	
 	enterObjects(SelText);
@@ -93,8 +110,10 @@ function StartSmallGameLevel() {
 		jumpTotal = 2;
 	}
 	
+	var SelText = '';
+	
 	//player object
-	var SelText = 'GameObject -x 400 -y 836';
+	SelText = SelText + 'GameObject -x 400 -y 836';
 	SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
 	SelText = SelText + ' -rp 18 15 18'
 	SelText = SelText + ' -rp 18 40 10'
@@ -106,10 +125,23 @@ function StartSmallGameLevel() {
 	SelText = SelText + ' -cf playerCollision_SG0'
 	SelText = SelText + ' -pi setupPlayer'
 	SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
-	SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
+	SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health '+SmallGame0Globals.PlayerHealth+' -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
 	SelText = SelText + ' -p jumps '+jumpTotal+''
 	SelText = SelText + ' -p maxJumps '+jumpTotal+''
 	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	SelText = SelText + 'GameObject -x 350 -y 836';
+	SelText = SelText + ' -v 0 0 topleft -v 100 0 topright -v 100 100 bottomright -v 0 100 bottomleft'
+	SelText = SelText + ' -p width 100 -p height 100'
+	SelText = SelText + ' -a wallTexture'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	//Hud
+	SelText = SelText + 'GameObject -x 0 -y 0';
+	SelText = SelText + ' -pi setupHUD'
+	SelText = SelText + ' -lu HUDUpdate'
 	SelText = SelText + ';'
 	
 	//key tracker
@@ -118,6 +150,7 @@ function StartSmallGameLevel() {
 	SelText = SelText + ' -u keyTrackerUpdate'
 	SelText = SelText + ';'
 	
+	//Enemies
 	var TotalEnem = (SmallGame0Globals.CurrentLevel + 1) * 3;
 	SmallGame0Globals.TotalEnemies = TotalEnem;
 	//console.log('Enemies: ' + TotalEnem);
@@ -142,6 +175,7 @@ function StartSmallGameLevel() {
 			SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
 			SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
 			SelText = SelText + ' -p HitBoxActive 1'
+			SelText = SelText + ' -p damage 1'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
 		} else if(optionE == 2) {
@@ -160,6 +194,7 @@ function StartSmallGameLevel() {
 			SelText = SelText + ' -p HitBoxActive 1'
 			SelText = SelText + ' -p EscapeFrames -1'
 			SelText = SelText + ' -p maxSpeed 2'
+			SelText = SelText + ' -p damage 1'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
 		}
@@ -209,11 +244,31 @@ function StartSmallGameLevel() {
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
+	//static platforms
 	for(var i = 0; i < 18; i++) {
 		var xCoord = Math.floor(Math.random() * 876) + 25;
 		var yCoord = Math.floor(Math.random() * 801) + 50;
 		SelText = SelText + 'GameObject -x '+xCoord+' -y '+yCoord+' -v 0 0 top -v 100 0 bottom -t platform -d;'
 	}
+	
+	//vertical moving platforms
+	SelText = SelText + 'GameObject -x 200 -y 450 -p xv 0 -p yv 5 -v 0 0 top -v 100 0 bottom'
+	SelText = SelText + ' -p lowerThreshold 890'
+	SelText = SelText + ' -p upperThreshold 60'
+	SelText = SelText + ' -u movingPlatformBehavior'
+	SelText = SelText + ' -cf movingPlatformCollision'
+	SelText = SelText + ' -t platform'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	SelText = SelText + 'GameObject -x 750 -y 450 -p xv 0 -p yv -5 -v 0 0 top -v 100 0 bottom'
+	SelText = SelText + ' -p lowerThreshold 890'
+	SelText = SelText + ' -p upperThreshold 60'
+	SelText = SelText + ' -u movingPlatformBehavior'
+	SelText = SelText + ' -cf movingPlatformCollision'
+	SelText = SelText + ' -t platform'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
 	
 	//cameraControls_SG0
 	SelText = SelText + 'GameObject -x 0 -y 0 -u cameraControls_SG0 -p lowerBoundX 0 -p upperBoundX 410 -p lowerBoundY 0 -p upperBoundY 424'
@@ -244,6 +299,7 @@ function StartSmallGameLevel() {
 		SelText = SelText + ' -u CannonUpdate_SG0'
 		SelText = SelText + ' -p delayFrames 1'
 		SelText = SelText + ' -p ballVel 6'
+		SelText = SelText + ' -a CannonAnimationPackage -ca 0'
 		SelText = SelText + ' -d'
 		SelText = SelText + ';'
 		
@@ -284,6 +340,15 @@ function StartSmallGameLevel() {
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
+	/*
+	//debuglogger
+	SelText = SelText + 'GameObject';
+	SelText = SelText + ' -su uiLogger'
+	SelText = SelText + ' -p lastRightStatus 0'
+	SelText = SelText + ' -p lastQStatus 0'
+	SelText = SelText + ' -p allDebug 0'
+	SelText = SelText + ';'
+	*/
 	
 	enterObjects(SelText);
 }
@@ -334,13 +399,30 @@ BUTTONSELECT
 start
 */
 
+function storeClick(e) {
+	var mousepos = getMousePos(canvasUserInterface,e);
+	//currentHandler.cBuff.push(mousepos);
+	SmallGame0Globals.currHandler.cBuff.push(mousepos);
+}
+
 function addClickOption_SG0() {
+	/*
 	var currentHandler = this.handler;
+	
+	canvasUserInterface.removeEventListener('click', function(e) {
+		var mousepos = getMousePos(canvasUserInterface,e);
+		currentHandler.cBuff.push(mousepos);
+	},false);
 	
 	canvasUserInterface.addEventListener('click', function(e) {
 		var mousepos = getMousePos(canvasUserInterface,e);
 		currentHandler.cBuff.push(mousepos);
-	});
+	},false);
+	*/
+	
+	SmallGame0Globals.currHandler = this.handler;
+	
+	canvasUserInterface.addEventListener('click', storeClick, false);
 }
 
 function StartButtonUpdate() {
@@ -450,6 +532,193 @@ function ScoreButtonUpdate() {
 		
 	}	
 
+}
+
+function TutorialButtonUpdate() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					this.handler.removeAllObjects();
+					
+					var SelText = '';
+					
+					//Tutorial display
+					SelText = SelText + 'GameObject -x 10 -y 10 -v 0 0 -v 100 0 -v 100 100 -v 0 100';
+					SelText = SelText + ' -u TutorialDisplayUpdate'
+					SelText = SelText + ' -pi SetupTutorialDisplay'
+					SelText = SelText + ' -d'
+					SelText = SelText + ' -p frameTracker 0'
+					SelText = SelText + ';'
+					
+					//Tutorial Floor
+					SelText = SelText + 'GameObject -x 0 -y 500 -v 0 0 -v 640 0';
+					SelText = SelText + ' -t wall'
+					SelText = SelText + ' -d'
+					SelText = SelText + ';'
+					
+					//Tutorial Player
+					SelText = SelText + 'GameObject -x 90 -y 420';
+					SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
+					SelText = SelText + ' -rp 18 15 18'
+					SelText = SelText + ' -rp 18 40 10'
+					SelText = SelText + ' -t player'
+					SelText = SelText + ' -p xv 0 -p yv 0'
+					SelText = SelText + ' -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54'
+					SelText = SelText + ' -p BatReady 1'
+					SelText = SelText + ' -u playerTutorial_SG0'
+					SelText = SelText + ' -cf playerCollision_SG0'
+					SelText = SelText + ' -pi setupPlayer'
+					SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
+					SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
+					SelText = SelText + ' -p jumps 1'
+					SelText = SelText + ' -p maxJumps 1'
+					SelText = SelText + ' -d'
+					SelText = SelText + ' -p frameTracker 0'
+					SelText = SelText + ';'
+					
+					//Tutorial Door object
+					SelText = SelText + 'GameObject -x 520 -y 420';
+					SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
+					SelText = SelText + ' -rp 18 15 18'
+					SelText = SelText + ' -t door'
+					SelText = SelText + ' -p xv 0 -p yv 0'
+					SelText = SelText + ' -p jumpable 1 -p gravity 6 -p slideStateX 2 -p slideStateY 2 -p height 54'
+					SelText = SelText + ' -p BatReady 1'
+					SelText = SelText + ' -p opened 0 -p running 0'
+					SelText = SelText + ' -pi setupDoor'
+					
+					SelText = SelText + ' -u nonRunnyDoorEnemyUpdate_SG0'
+					SelText = SelText + ' -cf tutorialDoorEnemyCollision_SG0'
+					SelText = SelText + ' -d'
+					SelText = SelText + ';'
+					
+					//Tutorial Enemy 1
+					SelText = SelText + 'GameObject -x 30 -y 445';
+					SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
+					SelText = SelText + ' -rp 18 15 18'
+					SelText = SelText + ' -rp 18 40 10'
+					SelText = SelText + ' -t tutorialEnem'
+					SelText = SelText + ' -p xv 0 -p yv 0'
+					SelText = SelText + ' -u tutorialObjUpdate'
+					SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
+					SelText = SelText + ' -d'
+					SelText = SelText + ' -p frameTracker 0'
+					SelText = SelText + ' -p removalFrame 330'
+					SelText = SelText + ';'
+					
+					//Tutorial Enemy 2
+					SelText = SelText + 'GameObject -x 460 -y 445';
+					SelText = SelText + ' -v 0 0 topleft -v 36 0 topright -v 36 54 bottomright -v 0 54 bottomleft'
+					SelText = SelText + ' -rp 18 15 18'
+					SelText = SelText + ' -rp 18 40 10'
+					SelText = SelText + ' -t tutorialEnem'
+					SelText = SelText + ' -p xv 0 -p yv 0'
+					SelText = SelText + ' -u tutorialObjUpdate'
+					SelText = SelText + ' -a PlatformerAnimationPackage -ca 1'
+					SelText = SelText + ' -d'
+					SelText = SelText + ' -p frameTracker 0'
+					SelText = SelText + ' -p removalFrame 510'
+					SelText = SelText + ';'
+					
+					enterObjects(SelText);
+				}
+				
+			}
+		}
+		
+	}
+}
+
+function SetupTutorialDisplay() {
+	
+	var TextText = 'TextObject -x 0 -y 0 -t "" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.wordChild = TOObj;
+	this.handler.addTextObject(TOObj);
+	
+	var TextText2 = 'TextObject -x 0 -y 0 -t "" -c black;';
+	
+	var TOJ2 = createTOJsonFromString(TextText2);
+	var TOObj2 = createTOFromJSON(TOJ2);
+	this.properties.subtitle = TOObj2;
+	this.handler.addTextObject(TOObj2);
+	
+	this.properties.wordChild.textContent = "";
+	this.properties.subtitle.textContent = "";
+	
+}
+
+function TutorialDisplayUpdate() {
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	this.properties.subtitle.position.x = this.position.x + 10;
+	this.properties.subtitle.position.y = this.position.y + 120;
+	
+	if(this.properties.frameTracker == 45) {
+		this.properties.wordChild.textContent = "-> / right";
+		this.properties.subtitle.textContent = "To Move Right";
+	} else if(this.properties.frameTracker == 45 * 2) {
+
+	} else if(this.properties.frameTracker == 45 * 3) {
+		this.properties.wordChild.textContent = "<- / left";
+		this.properties.subtitle.textContent = "To Move Left";
+	} else if(this.properties.frameTracker == 45 * 4) {
+
+	} else if(this.properties.frameTracker == 45 * 5) {
+		this.properties.wordChild.textContent = "^ / up / A";
+		this.properties.subtitle.textContent = "To Jump";
+	} else if(this.properties.frameTracker == 45 * 6) {
+		
+	} else if(this.properties.frameTracker == 45 * 7) {
+		//this.currAnimation = PlatformerAnimationStates.SwingLeft;
+		this.properties.wordChild.textContent = "Space Bar / B";
+		this.properties.subtitle.textContent = "To Attack";
+	} else if(this.properties.frameTracker == 45 * 8) {
+	
+	} else if(this.properties.frameTracker == 45 * 9) {
+		this.properties.wordChild.textContent = "";
+		this.properties.subtitle.textContent = "Defeat all the enemies then head to the door";
+	} else if(this.properties.frameTracker == 45 * 10) {
+		//this.properties.xv = 0;
+		//this.currAnimation = PlatformerAnimationStates.IdleRight;
+	} else if(this.properties.frameTracker == 45 * 11) {
+		//this.currAnimation = PlatformerAnimationStates.SwingRight;
+	} else if(this.properties.frameTracker == 45 * 12) {
+		//this.currAnimation = PlatformerAnimationStates.IdleRight;
+	} else if(this.properties.frameTracker == 45 * 13) {
+		//this.properties.xv = 7;
+		//this.currAnimation = PlatformerAnimationStates.RunRight;
+	}
+	this.properties.frameTracker++;
+}
+
+function tutorialObjUpdate() {
+	if(this.properties.frameTracker == this.properties.removalFrame) {
+		this.handler.removeObject(this);
+	}
+	
+	this.properties.frameTracker++;
 }
 
 function ScoreboardUpdate() {
@@ -737,6 +1006,111 @@ function dropsButtonUpdate() {
 	}
 }
 
+function BuyDamageUpdate() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					if(SmallGame0Globals.PlayerDamage != 2 && SmallGame0Globals.score >= 20) {
+						SmallGame0Globals.PlayerDamage = 2;
+						SmallGame0Globals.score = SmallGame0Globals.score - 20;
+						this.properties.wordChild.textContent = "Bought"
+					}
+				}
+				
+			}
+		}
+		
+	}
+}
+
+function BuyHealthUpdate() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					if(SmallGame0Globals.PlayerHealth != 8 && SmallGame0Globals.score >= 10) {
+						SmallGame0Globals.PlayerHealth = 8;
+						SmallGame0Globals.score = SmallGame0Globals.score - 10;
+						this.properties.wordChild.textContent = "Bought"
+					}
+				}
+				
+			}
+		}
+		
+	}
+}
+
+function BuyCeasarKey() {
+	var triggered = false;
+	
+	this.properties.wordChild.position.x = this.position.x + 10;
+	this.properties.wordChild.position.y = this.position.y + 20;
+	
+	if(this.vertices.length < 4) {
+		return;
+	}
+		
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+	
+		if(this.handler.cBuff[i].x + this.handler.CameraX > this.position.x 
+		   && this.handler.cBuff[i].x + this.handler.CameraX < this.position.x + this.vertices[1].offX) 
+		{
+			if(this.handler.cBuff[i].y + this.handler.CameraY > this.position.y
+			   && this.handler.cBuff[i].y + this.handler.CameraY < this.position.y + this.vertices[2].offY) {
+				
+				if(triggered == false) {
+					//console.log('pressed');
+					triggered = true;
+					
+					if(SmallGame0Globals.KeyGot != 1 && SmallGame0Globals.score >= 5) {
+						SmallGame0Globals.KeyGot = 1;
+						SmallGame0Globals.score = SmallGame0Globals.score - 5;
+						this.properties.wordChild.textContent = "11"
+					}
+				}
+				
+			}
+		}
+		
+	}
+}
+
 function NextLevelButtonUpdate() {
 	var triggered = false;
 	
@@ -922,12 +1296,15 @@ function batHitCircleRUpdate_SG0() {
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 2) {
 			this.position.x = this.properties.parentObj.position.x + 18;
 			this.position.y = this.properties.parentObj.position.y + 27;
+			this.radialPoints[0].radius = 16;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 3) {
 			this.position.x = this.properties.parentObj.position.x;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 4) {
 			this.position.x = this.properties.parentObj.position.x;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		}
 	} else if(this.properties.parentObj.currAnimation == 12) {
 		if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 0) {
@@ -941,12 +1318,15 @@ function batHitCircleRUpdate_SG0() {
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 2) {
 			this.position.x = this.properties.parentObj.position.x + 18;
 			this.position.y = this.properties.parentObj.position.y + 27;
+			this.radialPoints[0].radius = 16;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 3) {
 			this.position.x = this.properties.parentObj.position.x + 36;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		} else if(this.properties.parentObj.animations[this.properties.parentObj.currAnimation].currKeyFrame == 4) {
 			this.position.x = this.properties.parentObj.position.x + 36;
 			this.position.y = this.properties.parentObj.position.y;
+			this.radialPoints[0].radius = 16;
 		}
 	} else {
 		this.handler.removeObject(this);
@@ -955,17 +1335,17 @@ function batHitCircleRUpdate_SG0() {
 
 function createBatHitBox_SG0(PlayerObj) {
 	
-	var startOffset = -72;
+	var startOffset = 72;
 	
 	if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleRight || PlayerObj.currAnimation == PlatformerAnimationStates.RunRight || PlayerObj.currAnimation == PlatformerAnimationStates.JumpRight) {
-		startOffset = -72;
+		startOffset = 0;
 	} else if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleLeft || PlayerObj.currAnimation == PlatformerAnimationStates.RunLeft || PlayerObj.currAnimation == PlatformerAnimationStates.JumpLeft) {
-		startOffset = 72;
+		startOffset = 36;
 	}
 	
 	//console.log(startOffset);
 	
-	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + startOffset) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate_SG0 -d -t playerHitBox -p HitBoxActive 1';
+	var creatinString = 'GameObject -x ' + (PlayerObj.position.x + startOffset) + ' -y ' + PlayerObj.position.y + ' -rp 0 0 16 -u batHitCircleUpdate_SG0 -d -t playerHitBox -p HitBoxActive 1 -p damage '+SmallGame0Globals.PlayerDamage+'';
 	var GOJ = createGOJsonFromString(creatinString);
 	var GOObj = createGOFromJSON(GOJ);
 	GOObj.properties.parentObj = PlayerObj;
@@ -977,10 +1357,18 @@ function createBatHitBoxR_SG0(PlayerObj) {
 	
 	var startOffset = -72;
 	
-	if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleRight || PlayerObj.currAnimation == PlatformerAnimationStates.RunRight || PlayerObj.currAnimation == PlatformerAnimationStates.JumpRight || PlayerObj.currAnimation == PlatformerAnimationStates.SwingRight) {
-		startOffset = -72;
-	} else if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleLeft || PlayerObj.currAnimation == PlatformerAnimationStates.RunLeft || PlayerObj.currAnimation == PlatformerAnimationStates.JumpLeft || PlayerObj.currAnimation == PlatformerAnimationStates.SwingLeft) {
+	if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleRight 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.RunRight 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.JumpRight 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.SwingRight
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.Swing2Right) {
 		startOffset = 72;
+	} else if(PlayerObj.currAnimation == PlatformerAnimationStates.IdleLeft 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.RunLeft 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.JumpLeft 
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.SwingLeft
+	|| PlayerObj.currAnimation == PlatformerAnimationStates.Swing2Left) {
+		startOffset = -36;
 	}
 	
 	//console.log(startOffset);
@@ -1125,7 +1513,11 @@ function controlledMovement_SG0(gameObj) {
 		}
 	}
 		
-	if(!keys.space) {
+	if(!keys.space 
+	&& gameObj.currAnimation != 6 
+	&& gameObj.currAnimation != 7
+	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Right
+	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Left) {
 		gameObj.properties.BatReady = 1;
 	}
 		
@@ -1149,23 +1541,33 @@ function controlledMovement_SG0(gameObj) {
 	}
 	
 	if(SmallGame0Globals.ComboTriggered) {
+		if(gameObj.currAnimation != PlatformerAnimationStates.Swing2Right
+	    && gameObj.currAnimation != PlatformerAnimationStates.Swing2Left) {
 		
-		if(keys.space && SmallGame0Globals.keyTracker.properties.spaceDown == false && gameObj.currAnimation == PlatformerAnimationStates.SwingRight && gameObj.animations[gameObj.currAnimation].currKeyFrame == 4) {
-			gameObj.currAnimation = PlatformerAnimationStates.Swing2Right;
-			gameObj.animations[gameObj.currAnimation].Done = false;
-			gameObj.properties.BatReady = 0;
-			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
-			gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
-			
-			createBatHitBoxR_SG0(gameObj);
-		} else if(keys.space && SmallGame0Globals.keyTracker.properties.spaceDown == false && gameObj.currAnimation == PlatformerAnimationStates.SwingLeft && gameObj.animations[gameObj.currAnimation].currKeyFrame == 4) {
-			gameObj.currAnimation = PlatformerAnimationStates.Swing2Left;
-			gameObj.animations[gameObj.currAnimation].Done = false;
-			gameObj.properties.BatReady = 0;
-			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
-			gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
-			
-			createBatHitBoxR_SG0(gameObj);
+			if(keys.space 
+			&& SmallGame0Globals.keyTracker.properties.spaceDown == false 
+			&& gameObj.currAnimation == PlatformerAnimationStates.SwingRight 
+			&& gameObj.animations[gameObj.currAnimation].currKeyFrame == 4) {
+				gameObj.currAnimation = PlatformerAnimationStates.Swing2Right;
+				gameObj.animations[gameObj.currAnimation].Done = false;
+				gameObj.properties.BatReady = 0;
+				gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+				gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
+				
+				createBatHitBoxR_SG0(gameObj);
+			} else if(keys.space 
+			&& SmallGame0Globals.keyTracker.properties.spaceDown == false 
+			&& gameObj.currAnimation == PlatformerAnimationStates.SwingLeft 
+			&& gameObj.animations[gameObj.currAnimation].currKeyFrame == 4) {
+				gameObj.currAnimation = PlatformerAnimationStates.Swing2Left;
+				gameObj.animations[gameObj.currAnimation].Done = false;
+				gameObj.properties.BatReady = 0;
+				gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+				gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
+				
+				createBatHitBoxR_SG0(gameObj);
+			}
+		
 		}
 		
 	}
@@ -1279,7 +1681,9 @@ Generic Function for platform collisions
 */
 function PlatformCollisionBehavior_SG0(gameObj,colObj,verIndex,intersection,colVer1,colVer2) {
 	if((gameObj.position.y - gameObj.delta.dy) < gameObj.position.y && (gameObj.vertices[verIndex].label == 'bottomright' || gameObj.vertices[verIndex].label == 'bottomleft') ) { 
-				
+		
+		console.log('X: ' + gameObj.position.x + ', Y: ' + gameObj.position.y);
+		
 		gameObj.position.x = gameObj.position.x - (((gameObj.position.x + gameObj.vertices[verIndex].offX) - intersection[0]));
 		gameObj.position.y = gameObj.position.y - (((gameObj.position.y + gameObj.vertices[verIndex].offY) - intersection[1]));
 				
@@ -1287,6 +1691,8 @@ function PlatformCollisionBehavior_SG0(gameObj,colObj,verIndex,intersection,colV
 			gameObj.position.y--;
 		}
 				
+		console.log('X: ' + gameObj.position.x + ', Y: ' + gameObj.position.y);		
+		
 		gameObj.properties.yv = 0;
 		if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
 			gameObj.properties.slideStateX = 1;
@@ -1324,7 +1730,11 @@ function GetHitBehavior_SG0(gameObj,colObj,verIndex,intersection,colVer1,colVer2
 			gameObj.radialPoints.push({offX: 18, offY: 40, radius: 10});
 		}
 		
-		gameObj.properties.health--;
+		if(colObj.properties.damage != null) {
+			gameObj.properties.health = gameObj.properties.health - colObj.properties.damage;
+		} else {
+			gameObj.properties.health--;
+		}
 		//console.log('To Health: ' + gameObj.properties.health);
 				
 		if(gameObj.properties.health == 0) {
@@ -1375,7 +1785,21 @@ function GetHitBehavior_SG0(gameObj,colObj,verIndex,intersection,colVer1,colVer2
 function movingPlatformBehavior() {
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
+	
+	if(this.position.y >= this.properties.lowerThreshold) {
+		this.properties.yv = Math.abs(this.properties.yv) * -1;
+	}
+	
+	if(this.position.y <= this.properties.upperThreshold) {
+		this.properties.yv = Math.abs(this.properties.yv);
+	}
 }
+
+/*
+function movingPlatformCollision(colObj,verIndex,intersection,colVer1,colVer2) {
+	console.log('mPC');
+}
+*/
 
 function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
@@ -1408,18 +1832,39 @@ function platformerVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer
 				this.properties.parentObj.properties.jumps = this.properties.parentObj.properties.maxJumps;
 				this.properties.parentObj.properties.gravity = 0;
 				this.properties.parentObj.properties.standingOn = 'plat';
+				
 				if(this.properties.hit != 1) {
 					var newPosition = {x: this.properties.parentObj.position.x, y: this.properties.parentObj.position.y}
 					if(colObj.properties.xv != null) {
 						newPosition.x = this.properties.parentObj.position.x + colObj.properties.xv
+						this.properties.parentObj.appendPosition(newPosition);
 					}
 					if(colObj.properties.yv != null) {
-						newPosition.y = this.properties.parentObj.position.y + colObj.properties.yv
+						//newPosition.y = this.properties.parentObj.position.y + colObj.properties.yv
+						this.properties.parentObj.properties.yv = colObj.properties.yv;
 					}
-					this.properties.parentObj.appendPosition(newPosition);
+					
 				}
 				
 				this.properties.hit = 1;
+				
+			} else if(colObj.properties.yv != null) {
+				if(colObj.position.y >= this.properties.parentObj.position.y + this.properties.parentObj.properties.height 
+				&& colObj.position.y + colObj.properties.yv <= this.properties.parentObj.position.y + this.properties.parentObj.properties.height) {
+					this.properties.parentObj.properties.jumpable = 1;
+					this.properties.parentObj.properties.jumps = this.properties.parentObj.properties.maxJumps;
+					this.properties.parentObj.properties.gravity = 0;
+					this.properties.parentObj.properties.standingOn = 'plat';
+					
+					
+					this.properties.parentObj.position.y = colObj.position.y - this.properties.parentObj.properties.height - 1;
+					this.properties.parentObj.properties.yv = colObj.properties.yv;
+					if(this.properties.parentObj.currAnimation == PlatformerAnimationStates.JumpRight) {
+						this.properties.parentObj.currAnimation = PlatformerAnimationStates.IdleRight;
+					} else if(this.properties.parentObj.currAnimation == PlatformerAnimationStates.JumpLeft) {
+						this.properties.parentObj.currAnimation = PlatformerAnimationStates.IdleLeft;
+					}
+				}	
 			} else {
 				//console.log('No');
 				if(this.properties.hit != 1) {
@@ -1448,6 +1893,56 @@ function platformerVectorNoCollide_SG0() {
 		this.properties.parentObj.properties.jumps--;
 	}
 }
+
+function preVectorCollide_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		//console.log(colObj.tag);
+		if(colObj.tag == 'platform') {
+			console.log('Pre Plat');
+			if(colObj.properties.yv != null) {
+				console.log('Pre yv');
+				console.log({cy: colObj.position.y, py: (this.position.y - this.delta.dy - 1), cyv: colObj.position.y + colObj.properties.yv});
+				if (colObj.position.y >= (this.position.y - this.delta.dy - 1)
+				&& colObj.position.y + colObj.properties.yv <= (this.position.y - this.delta.dy - 1)
+				&& this.properties.parentObj.properties.yv >= 0) {
+					console.log('Pre around');
+					this.properties.parentObj.properties.jumpable = 1;
+					this.properties.parentObj.properties.jumps = this.properties.parentObj.properties.maxJumps;
+					this.properties.parentObj.properties.gravity = 0;
+					this.properties.parentObj.properties.standingOn = 'plat';
+					
+					if(this.properties.hit != 1) {
+						this.properties.parentObj.properties.yv = 0;
+						this.properties.parentObj.position.y = colObj.position.y - this.properties.parentObj.properties.height - 1;
+						
+						var newPosition = {x: this.properties.parentObj.position.x, y: this.properties.parentObj.position.y}
+						if(colObj.properties.xv != null) {
+							newPosition.x = this.properties.parentObj.position.x + colObj.properties.xv
+						}
+						if(colObj.properties.yv != null) {
+							newPosition.y = this.properties.parentObj.position.y + colObj.properties.yv
+						}
+						this.properties.parentObj.appendPosition(newPosition);
+					}
+					
+					this.properties.hit = 1;
+				} else {
+					//console.log('No');
+					//if(this.properties.hit != 1) {
+					//	this.properties.parentObj.properties.jumpable = 0;
+					//	this.properties.parentObj.properties.gravity = 0.6;
+					//	this.properties.parentObj.properties.standingOn = '';
+					//}
+					
+					//if(this.properties.parentObj.properties.jumps == this.properties.parentObj.properties.maxJumps && this.properties.hit != 1) {
+					//	console.log('fixing');
+					//	this.properties.parentObj.properties.jumps--;
+				}
+			}
+		}
+	} 
+}
+
 
 /*
 PLAYERSG0
@@ -1482,6 +1977,13 @@ function playerMovement_SG0() {
 	if(this.properties.gravity == null) {
 		//console.log('No Prop');
 		return;
+	}
+	
+	if(this.properties.preVector != null) {
+		var newpreVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.preVector.setPosition(newpreVectorPosition);
+		this.properties.preVector.setPosition({x: this.properties.preVector.position.x, y: this.properties.preVector.position.y + 500});
+		this.properties.preVector.properties.hit = 0;
 	}
 	
 	if(this.properties.inStun == 0 && this.properties.inControl == 1) {
@@ -1574,10 +2076,138 @@ function setupPlayer() {
 	GOObj.properties.parentObj = this;
 	oHandler.addObject(GOObj);
 	
+	/*
+	var GOJ2 = createGOJsonFromString("GameObject -x 0 -y 0 -v 0 0 -v 36 0 -d -t vector -cf preVectorCollide_SG0 -nc preVectorNoCollide_SG0 -p hit 0");
+	var GOObj2 = createGOFromJSON(GOJ2);
+	this.properties.preVector = GOObj2;
+	GOObj2.properties.parentObj = this;
+	oHandler.addObject(GOObj2);
+	*/
+	
 	this.properties.zoomOut = false;
 	
 	SmallGame0Globals.player = this;
 	
+}
+
+function playerTutorial_SG0() {
+	if(this.properties == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.position.x == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.position.y == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.properties.xv == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.properties.yv == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.properties.gravity == null) {
+		//console.log('No Prop');
+		return;
+	}
+	
+	if(this.properties.inStun == 0 && this.properties.inControl == 1) {
+		//controlledMovement_SG0(this);
+		if(this.properties.frameTracker == 45) {
+			this.properties.xv = 7;
+			this.currAnimation = PlatformerAnimationStates.RunRight;
+		} else if(this.properties.frameTracker == 45 * 2) {
+			this.properties.xv = 0;
+			this.currAnimation = PlatformerAnimationStates.IdleRight;
+		} else if(this.properties.frameTracker == 45 * 3) {
+			this.properties.xv = -7;
+			this.currAnimation = PlatformerAnimationStates.RunLeft;
+		} else if(this.properties.frameTracker == 45 * 4) {
+			this.properties.xv = 0;
+			this.currAnimation = PlatformerAnimationStates.IdleLeft;
+		} else if(this.properties.frameTracker == 45 * 5) {
+			this.properties.yv = -10;
+			this.currAnimation = PlatformerAnimationStates.JumpLeft;
+		} else if(this.properties.frameTracker == 45 * 6) {
+			this.properties.xv = 0;
+			this.currAnimation = PlatformerAnimationStates.IdleLeft;
+		} else if(this.properties.frameTracker == 45 * 7) {
+			this.currAnimation = PlatformerAnimationStates.SwingLeft;
+		} else if(this.properties.frameTracker == 45 * 8) {
+			this.currAnimation = PlatformerAnimationStates.IdleLeft;
+		} else if(this.properties.frameTracker == 45 * 9) {
+			this.properties.xv = 7;
+			this.currAnimation = PlatformerAnimationStates.RunRight;
+		} else if(this.properties.frameTracker == 45 * 10) {
+			this.properties.xv = 0;
+			this.currAnimation = PlatformerAnimationStates.IdleRight;
+		} else if(this.properties.frameTracker == 45 * 11) {
+			this.currAnimation = PlatformerAnimationStates.SwingRight;
+		} else if(this.properties.frameTracker == 45 * 12) {
+			this.currAnimation = PlatformerAnimationStates.IdleRight;
+		} else if(this.properties.frameTracker == 45 * 13) {
+			this.properties.xv = 7;
+			this.currAnimation = PlatformerAnimationStates.RunRight;
+		}
+		this.properties.frameTracker++;
+	} else if(this.properties.inStun == 1) {
+		if(this.currAnimation == PlatformerAnimationStates.HurtRight && this.properties.climbing != 1) {
+			this.properties.xv = -4;
+		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft && this.properties.climbing != 1) {
+			this.properties.xv = 4;
+		} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft && this.properties.climbing == 1) {
+			this.properties.xv = 0;
+		}
+		
+		this.properties.stunCounter++;
+		if(this.properties.stunCounter == 30) {
+			this.properties.inStun = 0;
+			if(this.currAnimation == PlatformerAnimationStates.HurtRight) {
+				this.currAnimation = PlatformerAnimationStates.IdleRight;
+			} else if(this.currAnimation == PlatformerAnimationStates.HurtLeft) {
+				this.currAnimation = PlatformerAnimationStates.IdleLeft;
+			}
+		}
+	}
+	
+	if(this.properties.climbing == 0) {
+		this.properties.yv = this.properties.yv + this.properties.gravity
+	} else {
+		this.properties.yv = this.properties.yv;
+	}
+	
+	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
+	this.setPosition(newPosition);
+		
+	if(this.properties.jumpVector != null) {
+		var newjumpVectorPosition = {x: this.position.x, y: this.position.y + this.properties.height + 1};
+		this.properties.jumpVector.setPosition(newjumpVectorPosition);
+		this.properties.jumpVector.setPosition({x: this.properties.jumpVector.position.x, y: this.properties.jumpVector.position.y + 500});
+		this.properties.jumpVector.properties.hit = 0;
+	}
+		
+	//this.properties.xv = 0;
+		
+	if(this.properties.climbing == 1) {
+		this.properties.yv = 0;
+	}
+	
+	if(this.properties.iFrames != -1) {
+		this.properties.iFrames++;
+	}
+	if(this.properties.iFrames == 60) {
+		this.properties.iFrames = -1;
+	}
 }
 /*
 PLAYERSG0
@@ -2083,6 +2713,35 @@ function runnyDoorEnemyCollision_SG0(colObj,verIndex,intersection,colVer1,colVer
 	}
 }
 
+function tutorialDoorEnemyCollision_SG0(colObj,verIndex,intersection,colVer1,colVer2) {
+	if(colObj.tag != null) {
+		if(colObj.tag == 'wall') {
+			//console.log('wall: ' + this.vertices[verIndex].label);
+			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			if(this.currAnimation == PlatformerAnimationStates.RunRight) {
+				this.currAnimation = PlatformerAnimationStates.RunLeft;
+			} else if(this.currAnimation == PlatformerAnimationStates.RunLeft) {
+				this.currAnimation = PlatformerAnimationStates.RunRight;
+			}
+		} else if(colObj.tag == 'testBall') {
+			
+		} else if(colObj.tag == 'platform') {
+			//PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+		} else if(colObj.tag == 'ladder') {
+			
+		} else if(colObj.tag == 'playerHitBox') {
+			if(this.properties.running == 1) {
+				this.update = nonRunnyDoorEnemyUpdate_SG0;
+				this.properties.opened = 1;
+			}
+		} else if(colObj.tag == 'player') {
+			//console.log('Player!');
+			this.handler.removeAllObjects();
+			StartSmallGame0();
+		}
+	}
+}
+
 /*
 RUNNYDOOR
 end
@@ -2173,6 +2832,52 @@ function endLevel(success) {
 			SelText = SelText + ' -p wordLabel Cannons'
 			SelText = SelText + ' -pi setupButton_SG0'
 			SelText = SelText + ' -u dropsButtonUpdate'
+			SelText = SelText + ' -d'
+			SelText = SelText + ';'
+			
+			var BuyLabel = ''
+			if(SmallGame0Globals.PlayerDamage == 2) {
+				BuyLabel = 'Bought';
+			} else {
+				BuyLabel = 'More Damage: 20';
+			}
+			
+			//Buy damage
+			SelText = SelText + 'GameObject -x 20 -y 300';
+			SelText = SelText + ' -v 0 0 topleft -v 120 0 topright -v 120 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "'+BuyLabel+'"'
+			SelText = SelText + ' -pi setupButton_SG0'
+			SelText = SelText + ' -u BuyDamageUpdate'
+			SelText = SelText + ' -d'
+			SelText = SelText + ';'
+			
+			if(SmallGame0Globals.PlayerHealth == 8) {
+				BuyLabel = 'Bought';
+			} else {
+				BuyLabel = 'More Health: 10';
+			}
+			
+			//Buy Health
+			SelText = SelText + 'GameObject -x 20 -y 400';
+			SelText = SelText + ' -v 0 0 topleft -v 120 0 topright -v 120 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "'+BuyLabel+'"'
+			SelText = SelText + ' -pi setupButton_SG0'
+			SelText = SelText + ' -u BuyHealthUpdate'
+			SelText = SelText + ' -d'
+			SelText = SelText + ';'
+			
+			if(SmallGame0Globals.KeyGot == 1) {
+				BuyLabel = '11';
+			} else {
+				BuyLabel = 'Ceasars Key: 5';
+			}
+			
+			//Buy Ceasar Cipher
+			SelText = SelText + 'GameObject -x 20 -y 500';
+			SelText = SelText + ' -v 0 0 topleft -v 120 0 topright -v 120 54 bottomright -v 0 54 bottomleft'
+			SelText = SelText + ' -p wordLabel "'+BuyLabel+'"'
+			SelText = SelText + ' -pi setupButton_SG0'
+			SelText = SelText + ' -u BuyCeasarKey'
 			SelText = SelText + ' -d'
 			SelText = SelText + ';'
 			
@@ -2691,4 +3396,43 @@ function waitWall_SG0() {
 /*
 WAITWALL
 end
+*/
+
+/*
+HUD
+start
+*/
+
+function setupHUD() {
+	var TextText = 'TextObject -x 0 -y 0 -t "HP: '+SmallGame0Globals.player.properties.health+'" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.hpChild = TOObj;
+	this.handler.addTextObject(TOObj);
+	
+	var TextText2 = 'TextObject -x 0 -y 0 -t "Score: '+SmallGame0Globals.score+'" -c black;';
+	
+	var TOJ2 = createTOJsonFromString(TextText2);
+	var TOObj2 = createTOFromJSON(TOJ2);
+	this.properties.scoreChild = TOObj2;
+	this.handler.addTextObject(TOObj2);
+}
+
+function HUDUpdate() {
+	this.position.x = this.handler.CameraX + 10;
+	this.position.y = this.handler.CameraY + 10;
+	
+	this.properties.hpChild.textContent = 'HP: '+SmallGame0Globals.player.properties.health+''
+	this.properties.hpChild.position.x = this.position.x + 10;
+	this.properties.hpChild.position.y = this.position.y + 10;
+	
+	this.properties.scoreChild.textContent = 'Score: '+SmallGame0Globals.score+''
+	this.properties.scoreChild.position.x = this.position.x + 10;
+	this.properties.scoreChild.position.y = this.position.y + 20;
+}
+
+/*
+HUD
+start
 */

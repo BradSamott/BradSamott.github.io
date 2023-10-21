@@ -181,3 +181,11 @@ function UploadSmallGame0() {
 	
 	StartSmallGame0();
 }
+
+function UploadBossRush() {
+	GameTitle.innerHTML = "Boss Rush";
+	oHandler.resetCamera();
+	oHandler.removeAllObjects();
+	
+	StartBossRush();
+}
