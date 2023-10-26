@@ -136,7 +136,8 @@ var PlatformerAnimationStates = {
 	Climb: 10,
 	Swing2Right: 11,
 	Swing2Left: 12,
-	DuckingRight: 13
+	DuckingRight: 13,
+	DuckingLeft: 14
 }
 
 var AntiAnimationPackage = [
@@ -410,6 +411,16 @@ var PlatformerAnimationPackage = [
 	{
 		keyFrames: [
 			{keyFrame: './Assets/HeadRefFinal.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Ducking Left 14
+	{
+		keyFrames: [
+			{keyFrame: './Assets/HeadRefFinal_R.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
 		],
 		currKeyFrame: 0,
 		Loops: true,
