@@ -110,6 +110,7 @@ function ObjectHandler() {
 	this.CameraY = 0;
 	this.CameraZoom = 1;
 	this.cBuff = [];
+	this.removedAmt = 0;
 	
 	this.addObject = function(object) {
 		//console.log('adding');
@@ -145,6 +146,18 @@ function ObjectHandler() {
 		}
 	}
 	
+	this.removeObjectSafe = function(object,usingObject) {
+		for(var objI = 0; objI < this.Objects.length; objI++) {
+			if(this.Objects[objI] == object) {
+				if(object.properties.HandlerID <= usingObject.HandlerID) {
+					this.removedAmt++;
+				}
+				this.Objects.splice(objI, 1);
+				break;
+			}
+		}
+	}
+	
 	this.removeTextObject = function(object) {
 		for(var objI = 0; objI < this.textObjects.length; objI++) {
 			if(this.textObjects[objI] == object) {
@@ -164,6 +177,8 @@ function ObjectHandler() {
 		
 		this.Objects = [];
 		this.textObjects = [];
+		
+		this.removedAmt = 0;
 	}
 	
 	this.resetCamera = function() {
@@ -176,12 +191,16 @@ function ObjectHandler() {
 			if(this.Objects[objI].update != null) {
 				this.Objects[objI].update();
 			}
+			objI = objI - this.removedAmt;
+			this.removedAmt = 0;
 		}
 		
 		for(var objI = 0; objI < this.Objects.length; objI++) {
 			if(this.Objects[objI].lateUpdate != null) {
 				this.Objects[objI].lateUpdate();
 			}
+			objI = objI - this.removedAmt;
+			this.removedAmt = 0;
 		}
 	}
 	
@@ -197,10 +216,18 @@ function ObjectHandler() {
 	
 	this.checkCollisions = function() {
 		for(var objI = 0; objI < this.Objects.length; objI++) { 
-			//console.log('Checking Object: ' + objI + ' Tag: ' + this.Objects[objI].tag);
+			
+			var tempCurrObjOrig = this.Objects[objI];
+			
 			if(this.Objects[objI].vertices != null) {
 				for(var verI = 0; verI < this.Objects[objI].vertices.length; verI++) {
+					
+					var tempCurrObj = this.Objects[objI];
+					
 					for(var objC = 0; objC < this.Objects.length; objC++) {
+						
+						var tempCurrObj2 = this.Objects[objC];
+						
 						if(this.Objects[objC].vertices != null && objC != objI) {
 							for(var verC = 0; verC < this.Objects[objC].vertices.length; verC++) { 
 							
@@ -233,45 +260,10 @@ function ObjectHandler() {
 									
 									colVer2 = verC + 1;
 								}
-								/*
-								if(this.Objects[objI].tag == 'player' && this.Objects[objC].tag == 'wall') {
-									var printJ = {
-										startX1: startX1,
-										startY1: startY1,
-										endX1: endX1,
-										endY1: endY1,
-										startX2: startX2,
-										startY2: startY2,
-										endX2: endX2,
-										endY2: endY2
-									}
-									console.log(printJ);
-								}
-								*/
 							
 								var inter = FindSegmentIntersection(startX1,startY1,endX1,endY1,startX2,startY2,endX2,endY2);
 								
-								//console.log('Checking Collision: ' + inter);
 								if(inter[0] != -1) {
-									//console.log('Entering Collision');
-									//console.log(inter);
-									if(verC == 0 && verI == 2) {
-										//console.log('start');
-										//console.log(verC);
-										//console.log(verI);
-										//console.log((this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX) - this.Objects[objI].delta.dx);
-										//console.log((this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX));
-										//console.log(inter);
-										//console.log('end');
-									} else if(verC == 1 && verI == 2) {
-										//console.log('start');
-										//console.log(verC);
-										//console.log(verI);
-										//console.log((this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX) - this.Objects[objI].delta.dx);
-										//console.log((this.Objects[objI].position.x + this.Objects[objI].vertices[verI].offX));
-										//console.log(inter);
-										//console.log('end');
-									}
 									
 									var collisionObj = {
 										RunObject: this.Objects[objI],
@@ -295,33 +287,7 @@ function ObjectHandler() {
 										this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions.push(collisionObj);
 									}
 									
-									//colObj,verIndex,intersection,colVer1,colVer2
-									//this.Objects[objI].collideFunction(this.Objects[objC],verI,inter,colVer1,colVer2);
-									/*
-									collisionObj.RunObject.collideFunction(collisionObj.collObj
-									,collisionObj.verIndex
-									,collisionObj.intersection
-									,collisionObj.collideVer1
-									,collisionObj.collideVer2);
-									*/
-									
 									var currentLength = this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions.length - 1;
-									
-									/*
-									if(this.Objects[objI].tag == 'player' && this.Objects[objC].tag == 'wall') {
-										var printJ = {
-											startX1: startX1,
-											startY1: startY1,
-											endX1: endX1,
-											endY1: endY1,
-											startX2: startX2,
-											startY2: startY2,
-											endX2: endX2,
-											endY2: endY2
-										}
-										console.log(printJ);
-									}
-									*/
 									
 									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions[currentLength].RunObject.collideFunction(
 									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions[currentLength].collObj
@@ -331,17 +297,41 @@ function ObjectHandler() {
 									,this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].collisions[currentLength].collideVer2
 									);
 									
-									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].Ran = true;
+									if(tempCurrObj != this.Objects[objI]) {
+										break;
+									}
 									
-									//if(this.Objects[objC].properties.unmove == 1) {
-										
-									//}
+									if(tempCurrObj2 != this.Objects[objC]) {
+										break;
+									}
+									
+									this.collisionBuffer[this.Objects[objI].properties.HandlerID][this.Objects[objC].properties.HandlerID].Ran = true;
 									
 								}
 							}
 						}
+						
+						if(tempCurrObj != this.Objects[objI]) {
+							break;
+						}
+						
+						if(tempCurrObj2 != this.Objects[objC]) {
+							objC--;
+							break;
+						}
+						
 					}
+					
+					if(tempCurrObj != this.Objects[objI]) {
+						break;
+					}
+					
 				}
+			}
+			
+			if(tempCurrObjOrig != this.Objects[objI]) {
+				objI--;
+				continue;
 			}
 			
 			if(this.collisionBuffer[this.Objects[objI].properties.HandlerID] == null) {
@@ -349,9 +339,20 @@ function ObjectHandler() {
 				this.Objects[objI].nilCollideFunction();
 			}
 			
+			if(tempCurrObjOrig != this.Objects[objI]) {
+				objI--;
+				continue;
+			}
+			
 			if(this.Objects[objI].radialPoints != null) {
 				for(var radI = 0; radI < this.Objects[objI].radialPoints.length; radI++) {
+					
+					var tempCurrObj = this.Objects[objI];
+					
 					for(var objC = 0; objC < this.Objects.length; objC++) {
+						
+						var tempCurrObj2 = this.Objects[objC];
+						
 						if(this.Objects[objC].radialPoints != null && objC != objI) {
 							for(var radC = 0; radC < this.Objects[objC].radialPoints.length; radC++) {
 								
@@ -365,13 +366,44 @@ function ObjectHandler() {
 								if(dist < radiusSum) {
 									//console.log('call');
 									this.Objects[objI].collideFunction(this.Objects[objC],null,null,null,null);
+									
+									if(tempCurrObj != this.Objects[objI]) {
+										break;
+									}
+									
+									if(tempCurrObj2 != this.Objects[objC]) {
+										break;
+									}
 								}
 								
 							}
 						}
+						
+						if(tempCurrObj != this.Objects[objI]) {
+							break;
+						}
+						
+						if(tempCurrObj2 != this.Objects[objC]) {
+							objC--;
+							break;
+						}
+						
 					}
+					
+					if(tempCurrObj != this.Objects[objI]) {
+						break;
+					}
+					
 				}
 			}
+			
+			if(tempCurrObjOrig != this.Objects[objI]) {
+				objI--;
+				continue;
+			}
+			
+			//objI = objI - this.removedAmt;
+			this.removedAmt = 0;
 		}
 		
 		/*

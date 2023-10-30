@@ -32,12 +32,17 @@ function StartBossRush() {
 	var SelText = '';
 	
 	//floor
-	SelText = SelText + 'GameObject -x -10 -y 500 -v 0 0 left -v 1000 0 right -t wall'
+	SelText = SelText + 'GameObject -x -10 -y 500 -v 0 0 left -v 660 0 right -t wall'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
 	//left wall
 	SelText = SelText + 'GameObject -x -10 -y 0 -v 0 0 left -v 0 500 right -t wall'
+	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	//right wall
+	SelText = SelText + 'GameObject -x 650 -y 0 -v 0 0 left -v 0 500 right -t wall'
 	SelText = SelText + ' -d'
 	SelText = SelText + ';'
 	
@@ -78,6 +83,7 @@ function StartBossRush() {
 	SelText = SelText + ' -rp 100 500 100'
 	SelText = SelText + ' -u boss1Update'
 	SelText = SelText + ' -cf boss1Collision'
+	SelText = SelText + ' -pi boss1Setup'
 	SelText = SelText + ' -t enemy'
 	SelText = SelText + ' -p HitBoxActive 1'
 	SelText = SelText + ' -p xv 0 -p yv 0'
@@ -89,7 +95,14 @@ function StartBossRush() {
 	SelText = SelText + ' -p totalStun 60'
 	SelText = SelText + ' -p corrective 1'
 	SelText = SelText + ' -p yTrag -10'
+	SelText = SelText + ' -p grabStage 1'
 	SelText = SelText + ' -d'
+	SelText = SelText + ';'
+	
+	//Hud
+	SelText = SelText + 'GameObject -x 0 -y 0'
+	SelText = SelText + ' -pi setupHUD_BR'
+	SelText = SelText + ' -lu HUDUpdate_BR'
 	SelText = SelText + ';'
 	
 	enterObjects(SelText);
@@ -364,8 +377,8 @@ function playerCollision_BR(colObj,verIndex,intersection,colVer1,colVer2) {
 		if(colObj.tag == 'wall') {
 			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'coin') {
-			this.handler.removeObject(colObj);
-			SmallGame0Globals.score++;
+			//this.handler.removeObject(colObj);
+			//SmallGame0Globals.score++;
 		} else if(colObj.tag == 'platform') {
 			PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'ladder') {
@@ -551,6 +564,10 @@ BOSS
 start
 */
 
+function boss1Setup() {
+	BossRushGlobals.enemyDisplayed = this;
+}
+
 function boss1Collision(colObj,verIndex,intersection,colVer1,colVer2) {
 	
 	if(colObj.tag != null) {
@@ -563,7 +580,7 @@ function boss1Collision(colObj,verIndex,intersection,colVer1,colVer2) {
 		
 		} else if(colObj.tag == 'playerHitBox') {
 			console.log('Hit');
-			this.handler.removeObject(colObj);
+			this.handler.removeObjectSafe(colObj,this);
 			this.properties.health--;
 			console.log(this.properties.health);
 		} else if(colObj.tag == 'player') {
@@ -605,8 +622,8 @@ function rocketCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		
 		if(colObj.tag == 'wall' || colObj.tag == 'player') {
-			this.handler.removeObject(this.properties.childObj);
-			this.handler.removeObject(this);
+			this.handler.removeObjectSafe(this.properties.childObj,this);
+			this.handler.removeObjectSafe(this,this);
 		} else if(colObj.tag == 'platform') {
 		
 		} else if(colObj.tag == 'ladder') {
@@ -642,22 +659,17 @@ function rocketUpdate() {
 
 function minionUpdate() {
 	if(this.properties.health <= 0) {
-		this.handler.removeObject(this);
+		this.handler.removeObjectSafe(this,this);
 		
 		var creatinString = ''
 		
-		creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 445';
+		creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 463';
 		creatinString = creatinString + ' -u canUpdate';
 		creatinString = creatinString + ' -cf canCollide';
-		creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 54 -v 0 54';
-		//creatinString = creatinString + ' -p xv -10';
-		//creatinString = creatinString + ' -p yv 0';
-		creatinString = creatinString + ' -rp 0 0 16';
+		creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 36 -v 0 36';
+		creatinString = creatinString + ' -rp 18 18 16';
 		creatinString = creatinString + ' -t can';
 		creatinString = creatinString + ' -p mode 0';
-		//creatinString = creatinString + ' -p HitBoxActive 1';
-		//creatinString = creatinString + ' -p damage 1';
-		//creatinString = creatinString + ' -p health 3';
 		creatinString = creatinString + ' -d';
 		creatinString = creatinString + ';';
 		
@@ -666,15 +678,29 @@ function minionUpdate() {
 		enterObjects(creatinString);
 	}
 	
+	var mid = this.properties.lowerBound + ((this.properties.upperBound - this.properties.lowerBound) / 2);
+	var midDir = 1;
+	if(this.position.x < mid) {
+		midDir = 1;
+	} else {
+		midDir = -1;
+	}
+	
+	this.properties.xv = this.properties.xv + (this.properties.acceleration * midDir);
+	
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
 	
-	if(this.position.x <= 0) {
-		this.properties.xv = this.properties.xv * -1;
+	if(this.position.x > this.properties.lowerBound && this.position.x < this.properties.upperBound) {
+		this.properties.inBounds = 1
 	}
 	
-	if(this.position.x >= 640) {
-		this.properties.xv = this.properties.xv * -1;
+	if(this.position.x <= this.properties.lowerBound && this.properties.inBounds == 1) {
+		this.properties.xv = 1;
+	}
+	
+	if(this.position.x >= this.properties.upperBound && this.properties.inBounds == 1) {
+		this.properties.xv = -1;
 	}
 }
 
@@ -689,7 +715,7 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 		
 		} else if(colObj.tag == 'playerHitBox') {
 			console.log('Hit');
-			this.handler.removeObject(colObj);
+			this.handler.removeObjectSafe(colObj,this);
 			this.properties.health--;
 			console.log(this.properties.health);
 		} else if(colObj.tag == 'enemy') {
@@ -701,11 +727,11 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					
 					var creatinString = ''
 		
-					creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 445';
+					creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 463';
 					creatinString = creatinString + ' -u canUpdate';
 					creatinString = creatinString + ' -cf canCollide';
-					creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 54 -v 0 54';
-					creatinString = creatinString + ' -rp 0 0 16';
+					creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 36 -v 0 36';
+					creatinString = creatinString + ' -rp 18 18 16';
 					creatinString = creatinString + ' -t can';
 					creatinString = creatinString + ' -p mode 5';
 					creatinString = creatinString + ' -p moveFrames 0';
@@ -714,17 +740,17 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					
 					enterObjects(creatinString);
 					
-					this.handler.removeObject(this);
+					this.handler.removeObjectSafe(this,this);
 				} else {
 					console.log('changing to mode 6');
 					
 					var creatinString = ''
 		
-					creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 445';
+					creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 463';
 					creatinString = creatinString + ' -u canUpdate';
 					creatinString = creatinString + ' -cf canCollide';
-					creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 54 -v 0 54';
-					creatinString = creatinString + ' -rp 0 0 16';
+					creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 36 -v 0 36';
+					creatinString = creatinString + ' -rp 18 18 16';
 					creatinString = creatinString + ' -t can';
 					creatinString = creatinString + ' -p mode 6';
 					creatinString = creatinString + ' -p moveFrames 0';
@@ -733,7 +759,7 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					
 					enterObjects(creatinString);
 					
-					this.handler.removeObject(this);
+					this.handler.removeObjectSafe(this,this);
 				}
 				
 				
@@ -757,7 +783,7 @@ function canUpdate() {
 				vel = 7;
 			}
 			
-			if(this.position.x <= 0 || this.position.x >= 604) {
+			if(this.position.x <= 0) {
 				console.log('opening: ' + this.properties.mode);
 				if(this.properties.mode == 1 || this.properties.mode == 2) {
 					console.log('freeing');
@@ -767,7 +793,18 @@ function canUpdate() {
 				}
 				BossRushGlobals.canOut = false; 
 				BossRushGlobals.canState = '';
-				this.handler.removeObject(this);
+				this.handler.removeObjectSafe(this,this);
+			} else if(this.position.x >= 604) {
+				console.log('opening: ' + this.properties.mode);
+				if(this.properties.mode == 1 || this.properties.mode == 2) {
+					console.log('freeing');
+					SmallGame0Globals.player.properties.suspend = 0;
+					SmallGame0Globals.player.position.x = this.position.x - 36;
+					SmallGame0Globals.player.position.y = this.position.y - 200;
+				}
+				BossRushGlobals.canOut = false; 
+				BossRushGlobals.canState = '';
+				this.handler.removeObjectSafe(this,this);
 			}
 			
 			var newPosition = {x: this.position.x + vel, y: this.position.y};
@@ -785,7 +822,7 @@ function canUpdate() {
 			}
 			BossRushGlobals.canOut = false; 
 			BossRushGlobals.canState = '';
-			this.handler.removeObject(this);
+			this.handler.removeObjectSafe(this,this);
 		}
 	}
 }
@@ -836,7 +873,7 @@ function canCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 
 function boss1Update() {
 	if(this.properties.health <= 0) {
-		this.handler.removeObject(this);
+		this.handler.removeObjectSafe(this,this);
 	}
 	//console.log(this.properties.decidingFrames)
 	if(this.properties.bossState == 'neutral') {
@@ -851,13 +888,15 @@ function boss1Update() {
 				
 				if(stateSelect == 1) {
 					this.properties.bossState = 'grabbing';
+					this.properties.grabStage = 1;
 				} else if(stateSelect == 2) {
 					this.properties.bossState = 'rockets';
 				} else if(stateSelect == 3) {
 					if(BossRushGlobals.canOut) {
 						this.properties.bossState = 'charging';
 					} else {
-						this.properties.bossState = 'grabbing';
+						this.properties.bossState = 'spawning';
+						//this.properties.grabStage = 1;
 					}
 				} else if(stateSelect == 4) {
 					if(BossRushGlobals.canOut == false) {
@@ -871,13 +910,56 @@ function boss1Update() {
 			}
 		}
 	} else if(this.properties.bossState == 'grabbing') {
-		if(this.properties.grabber1 == null) {
+		
+		if(this.properties.decidingFrames == 0) {
+			
+			console.log('Grab Attack: ' + this.properties.grabStage);
+			
+			var pos1 = Math.floor(Math.random() * 2) + 1;
+			var gOffY = 350;
+			if(pos1 == 1) {
+				gOffY = 350;
+			} else {
+				gOffY = 420;
+			}
+			
+			var creatinString = ''
+			creatinString = creatinString + 'GameObject -x ' + (this.position.x + 10) + ' -y ' + (this.position.y + gOffY) + '';
+			creatinString = creatinString + ' -p xv -20';
+			creatinString = creatinString + ' -p yv 0';
+			creatinString = creatinString + ' -rp 0 0 16';
+			creatinString = creatinString + ' -d';
+			
+			var GOJ = createGOJsonFromString(creatinString);
+			var GOObj = createGOFromJSON(GOJ);
+			GOObj.properties.parentObj = this;
+			oHandler.addObject(GOObj);
+			
+			if(this.properties.grabStage == 1) {
+				this.properties.grabberProj1 = GOObj;
+			} else if(this.properties.grabStage == 2) {
+				this.properties.grabberProj2 = GOObj;
+			} else if(this.properties.grabStage == 3) {
+				this.properties.grabberProj3 = GOObj;
+			}
+			
+		} else if(this.properties.decidingFrames == 15) {
 			var creatinString = ''
 			
+			var gOffY = 0;
+			
+			if(this.properties.grabStage == 1) {
+				gOffY = this.properties.grabberProj1.position.y;
+			} else if(this.properties.grabStage == 2) {
+				gOffY = this.properties.grabberProj2.position.y;
+			} else if(this.properties.grabStage == 3) {
+				gOffY = this.properties.grabberProj3.position.y;
+			}
+			
 			if(this.properties.looking == 'left') {
-				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y ' + (this.position.y + 400) + '';
+				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y ' + (gOffY) + '';
 				creatinString = creatinString + ' -u grabberUpdate';
-				creatinString = creatinString + ' -p xv -15';
+				creatinString = creatinString + ' -p xv -20';
 				creatinString = creatinString + ' -p yv 0';
 				creatinString = creatinString + ' -rp 0 0 16';
 				creatinString = creatinString + ' -rp 16 0 16';
@@ -893,9 +975,9 @@ function boss1Update() {
 				creatinString = creatinString + ' -p xHitTraj 2';
 				creatinString = creatinString + ' -d';
 			} else if(this.properties.looking == 'right') {
-				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y ' + (this.position.y + 400) + '';
+				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y ' + (gOffY) + '';
 				creatinString = creatinString + ' -u grabberUpdate';
-				creatinString = creatinString + ' -p xv 15';
+				creatinString = creatinString + ' -p xv 20';
 				creatinString = creatinString + ' -p yv 0';
 				creatinString = creatinString + ' -rp 0 0 16';
 				creatinString = creatinString + ' -rp 16 0 16';
@@ -917,14 +999,52 @@ function boss1Update() {
 			GOObj.properties.parentObj = this;
 			oHandler.addObject(GOObj);
 			
-			this.properties.grabber1 = GOObj;
+			if(this.properties.grabStage == 1) {
+				this.properties.grabber1 = GOObj;
+			} else if(this.properties.grabStage == 2) {
+				this.properties.grabber2 = GOObj;
+			} else if(this.properties.grabStage == 3) {
+				this.properties.grabber3 = GOObj;
+			}
 		}
 		
-		if(this.properties.grabber1.properties.done == 1) {
-			this.handler.removeObject(this.properties.grabber1);
-			this.properties.grabber1 = null;
-			this.properties.bossState = 'neutral';
+		this.properties.decidingFrames++;
+		
+		if(this.properties.grabber1 != null) {
+			if(this.properties.grabber1.properties.done == 1) {
+				this.handler.removeObjectSafe(this.properties.grabber1,this);
+				this.properties.grabber1 = null;
+				this.handler.removeObjectSafe(this.properties.grabberProj1,this);
+				this.properties.grabberProj1 = null;
+				//this.properties.bossState = 'neutral';
+				this.properties.grabStage = 2;
+				this.properties.decidingFrames = 0;
+			}
 		}
+		
+		if(this.properties.grabber2 != null) {
+			if(this.properties.grabber2.properties.done == 1) {
+				this.handler.removeObjectSafe(this.properties.grabber2,this);
+				this.properties.grabber2 = null;
+				this.handler.removeObjectSafe(this.properties.grabberProj2,this);
+				this.properties.grabberProj2 = null;
+				//this.properties.bossState = 'neutral';
+				this.properties.grabStage = 3;
+				this.properties.decidingFrames = 0;
+			}
+		}
+		
+		if(this.properties.grabber3 != null) {
+			if(this.properties.grabber3.properties.done == 1) {
+				this.handler.removeObjectSafe(this.properties.grabber3,this);
+				this.properties.grabber3 = null;
+				this.handler.removeObjectSafe(this.properties.grabberProj3,this);
+				this.properties.grabberProj3 = null;
+				this.properties.bossState = 'neutral';
+				this.properties.decidingFrames = 0;
+			}
+		}
+		
 	} else if(this.properties.bossState == 'rockets') {
 		if(this.properties.decidingFrames == 0) {
 			console.log('Shooting');
@@ -935,6 +1055,11 @@ function boss1Update() {
 				var r1X = Math.floor(Math.random() * 390) + 10;
 				var r2X = Math.floor(Math.random() * 390) + 10;
 				var r3X = Math.floor(Math.random() * 390) + 10;
+				
+				console.log('Shots Locations');
+				console.log(r1X);
+				console.log(r2X);
+				console.log(r3X);
 				
 				creatinString = creatinString + 'GameObject -x '+r1X+' -y -100';
 				creatinString = creatinString + ' -u rocketUpdate';
@@ -986,9 +1111,14 @@ function boss1Update() {
 			
 			} else if(this.properties.looking == 'right') {
 				
-				var r1X = Math.floor(Math.random() * 630) + 250;
-				var r2X = Math.floor(Math.random() * 630) + 250;
-				var r3X = Math.floor(Math.random() * 630) + 250;
+				var r1X = Math.floor(Math.random() * (608 - 250)) + 250;
+				var r2X = Math.floor(Math.random() * (608 - 250)) + 250;
+				var r3X = Math.floor(Math.random() * (608 - 250)) + 250;
+				
+				console.log('Shots Locations');
+				console.log(r1X);
+				console.log(r2X);
+				console.log(r3X);
 				
 				creatinString = creatinString + 'GameObject -x '+r1X+' -y 0';
 				creatinString = creatinString + ' -u rocketUpdate';
@@ -1098,35 +1228,135 @@ function boss1Update() {
 		}
 		
 	} else if(this.properties.bossState == 'spawning') {
-		console.log('Shooting');
-		var creatinString = ''
+		console.log('Spawning');
 		
-		creatinString = creatinString + 'GameObject -x 630 -y 0 -x ' + (this.position.x) + ' -y 445';
-		creatinString = creatinString + ' -u minionUpdate';
-		creatinString = creatinString + ' -cf minionCollide';
-		creatinString = creatinString + ' -pi setupMinion';
-		creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 54 -v 0 54';
-		creatinString = creatinString + ' -p xv -10';
-		creatinString = creatinString + ' -p yv 0';
-		creatinString = creatinString + ' -rp 0 0 16';
-		creatinString = creatinString + ' -t enemy';
-		creatinString = creatinString + ' -p HitBoxActive 1';
-		creatinString = creatinString + ' -p damage 1';
-		creatinString = creatinString + ' -p health 3';
-		creatinString = creatinString + ' -p yTrag -6';
-		creatinString = creatinString + ' -d';
-		creatinString = creatinString + ';';
+		if(this.properties.decidingFrames == 0) {
+			
+			var creatinString = ''
+			creatinString = creatinString + 'GameObject -x ' + (this.position.x + 20) + ' -y 391';
+			creatinString = creatinString + ' -rp 0 0 16';
+			creatinString = creatinString + ' -rp 0 32 16';
+			creatinString = creatinString + ' -d';
+			
+			var GOJ = createGOJsonFromString(creatinString);
+			var GOObj = createGOFromJSON(GOJ);
+			GOObj.properties.parentObj = this;
+			oHandler.addObject(GOObj);
+			
+			this.properties.spawnerProj1 = GOObj;
+			
+		} else if(this.properties.decidingFrames == 30) {
 		
-		BossRushGlobals.canOut = true;
+			var creatinString = ''
+			
+			if(this.properties.looking == 'left') {
+			
+				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 463';
+				creatinString = creatinString + ' -u minionUpdate';
+				creatinString = creatinString + ' -cf minionCollide';
+				creatinString = creatinString + ' -pi setupMinion';
+				creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 36 -v 0 36';
+				creatinString = creatinString + ' -p xv -2';
+				creatinString = creatinString + ' -p yv 0';
+				creatinString = creatinString + ' -rp 18 18 16';
+				creatinString = creatinString + ' -t enemy';
+				creatinString = creatinString + ' -p HitBoxActive 1';
+				creatinString = creatinString + ' -p damage 1';
+				creatinString = creatinString + ' -p health 3';
+				creatinString = creatinString + ' -p yTrag -6';
+				creatinString = creatinString + ' -p inBounds 0';
+				creatinString = creatinString + ' -p lowerBound 0';
+				creatinString = creatinString + ' -p upperBound 384';
+				creatinString = creatinString + ' -p acceleration 1';
+				creatinString = creatinString + ' -d';
+				creatinString = creatinString + ';';
+				
+				BossRushGlobals.canOut = true;
+				
+				this.properties.bossState = 'neutral';
+				this.properties.decidingFrames = 0;
+				
+				enterObjects(creatinString);
+			
+			} else if(this.properties.looking == 'right') {
+			
+				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y 463';
+				creatinString = creatinString + ' -u minionUpdate';
+				creatinString = creatinString + ' -cf minionCollide';
+				creatinString = creatinString + ' -pi setupMinion';
+				creatinString = creatinString + ' -v 0 0 -v 36 0 -v 36 36 -v 0 36';
+				creatinString = creatinString + ' -p xv 2';
+				creatinString = creatinString + ' -p yv 0';
+				creatinString = creatinString + ' -rp 18 18 16';
+				creatinString = creatinString + ' -t enemy';
+				creatinString = creatinString + ' -p HitBoxActive 1';
+				creatinString = creatinString + ' -p damage 1';
+				creatinString = creatinString + ' -p health 3';
+				creatinString = creatinString + ' -p yTrag -6';
+				creatinString = creatinString + ' -p inBounds 0';
+				creatinString = creatinString + ' -p lowerBound 220';
+				creatinString = creatinString + ' -p upperBound 604';
+				creatinString = creatinString + ' -p acceleration 1';
+				creatinString = creatinString + ' -d';
+				creatinString = creatinString + ';';
+				
+				BossRushGlobals.canOut = true;
+				
+				this.properties.bossState = 'neutral';
+				this.properties.decidingFrames = 0;
+				
+				enterObjects(creatinString);
+			
+			}
+			
+			this.handler.removeObjectSafe(this.properties.spawnerProj1,this);
 		
-		this.properties.bossState = 'neutral';
-		this.properties.decidingFrames = 0;
+		}
 		
-		enterObjects(creatinString);
+		this.properties.decidingFrames++;
 	}
 }
 
 /*
 BOSS
 end
+*/
+
+/*
+HUD
+start
+*/
+
+function setupHUD_BR() {
+	var TextText = 'TextObject -x 0 -y 0 -t "HP: '+SmallGame0Globals.player.properties.health+'" -c black;';
+	
+	var TOJ = createTOJsonFromString(TextText);
+	var TOObj = createTOFromJSON(TOJ);
+	this.properties.hpChild = TOObj;
+	this.handler.addTextObject(TOObj);
+	
+	var TextText2 = 'TextObject -x 0 -y 0 -t "Enemy: '+BossRushGlobals.enemyDisplayed.properties.health+'" -c black;';
+	
+	var TOJ2 = createTOJsonFromString(TextText2);
+	var TOObj2 = createTOFromJSON(TOJ2);
+	this.properties.scoreChild = TOObj2;
+	this.handler.addTextObject(TOObj2);
+}
+
+function HUDUpdate_BR() {
+	this.position.x = this.handler.CameraX + 10;
+	this.position.y = this.handler.CameraY + 10;
+	
+	this.properties.hpChild.textContent = 'HP: '+SmallGame0Globals.player.properties.health+''
+	this.properties.hpChild.position.x = this.position.x + 10;
+	this.properties.hpChild.position.y = this.position.y + 10;
+	
+	this.properties.scoreChild.textContent = 'Enemy: '+BossRushGlobals.enemyDisplayed.properties.health+''
+	this.properties.scoreChild.position.x = this.position.x + 10;
+	this.properties.scoreChild.position.y = this.position.y + 20;
+}
+
+/*
+HUD
+start
 */
