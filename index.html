@@ -44,6 +44,8 @@
 				
 				<div>
 					<p>v0.116</p>
+					<p>This is the Staging Page<p>
+					<a href="http://ec2-44-218-172-188.compute-1.amazonaws.com/">Click Here to Go to Production Page</a>
 				</div>
 				
 				<br>
@@ -75,6 +77,25 @@
 				
 				<div onclick="UploadBossRush()" style="cursor: pointer;">
 					<p>Boss Rush</p>
+				</div>
+				
+				<br>
+				
+				<div onclick="UploadMOAB()" style="cursor: pointer;">
+					<p>MOAB</p>
+				</div>
+				
+				<br>
+				
+				<div>
+					<label for="Game">Game:</label><br>
+					<input type="text" id="Game" name="Game">
+					
+					<br>
+					<br>
+					
+					<button type="button" id="playButton">Play!</button>
+					
 				</div>
 			</div>
 			
@@ -212,6 +233,7 @@
 		
 		<script src="L_Math.js"></script>
 		<script src="L_KeyLogger.js"></script>
+		<script src="L_GamePadLogger.js"></script>
 		<script src="L_BaseObjects.js"></script>
 		<script src="L_App.js"></script>
 		<script src="L_InputHandle.js"></script>
@@ -235,10 +257,16 @@
 		<script src="Questle_Items.js"></script>
 		<script src="QuestleAnimationPackage.js"></script>
 		
+		<!--
 		<script src="./SmallGame0/SmallGame0_UpdatePackage0.js"></script>
 		<script src="SmallGame0_Animations.js"></script>
 		
+		<script src="http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game=SmallGame0&type=UpdatePackage"></script>
+		<script src="http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game=SmallGame0&type=Animations"></script>
+		-->
+		
 		<script src="./SmallGame0/BossRush_UpdatePackage.js"></script>
+		<script src="MOAB_UpdatePackage.js"></script>
 		
 		<script src="js/ExampleCode.js"></script>
 		<script src="L_SelectorInput.js"></script>

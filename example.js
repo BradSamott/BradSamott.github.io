@@ -137,7 +137,11 @@ var PlatformerAnimationStates = {
 	Swing2Right: 11,
 	Swing2Left: 12,
 	DuckingRight: 13,
-	DuckingLeft: 14
+	DuckingLeft: 14,
+	ShootingRight: 15,
+	ShootingLeft: 16,
+	DuckingShootingRight: 17,
+	DuckingShootingLeft: 18
 }
 
 var AntiAnimationPackage = [
@@ -421,6 +425,239 @@ var PlatformerAnimationPackage = [
 	{
 		keyFrames: [
 			{keyFrame: './Assets/HeadRefFinal_R.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	}
+]
+
+var ShootAnimationPackage = [
+	//Idle Right 0
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Standing.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Idle Left 1
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Standing_Rev.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Run Right 2
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Step.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Contact.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Cross.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Step2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Cross2.png', length: 54, width: 36, duration: 2, currFrame: 1}//,
+			//{keyFrame: './Assets/Animates/TheBoy_Contact2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Down2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Passing2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Up2.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Air2.png', length: 54, width: 36, duration: 2, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Run Left 3
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Step_Rev.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Contact_Rev.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Cross_Rev.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Step2_Rev.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/ProtoRunner_Cross2_Rev.png', length: 54, width: 36, duration: 2, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Contact2_R.png', length: 54, width: 36, duration: 1, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Down2_R.png', length: 54, width: 36, duration: 1, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Passing2_R.png', length: 54, width: 36, duration: 1, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Up2_R.png', length: 54, width: 36, duration: 1, currFrame: 1},
+			//{keyFrame: './Assets/Animates/TheBoy_Air2_R.png', length: 54, width: 36, duration: 1, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Jump Right 4
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Jump.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Jump Left 5
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Jump_R.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Swing Right 6
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Windup.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru.png', length: 54, width: 72, duration: 4, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: false,
+		Done: false
+	},
+	
+	//Swing Left 7
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Windup_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_Swing_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0}
+		],
+		currKeyFrame: 0,
+		Loops: false,
+		Done: false
+	},
+	
+	//Hurt Right 8
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Hurt.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Hurt Left 9
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Hurt_R.png', length: 54, width: 36, duration: 3, currFrame: 1},
+			{keyFrame: '', length: 54, width: 72, duration: 3, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Climb 10
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_Climb.png', length: 54, width: 36, duration: 5, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Climb_R.png', length: 54, width: 36, duration: 5, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Swing 2 Right 11
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru.png', length: 54, width: 72, duration: 4, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Swing.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep.png', length: 54, width: 72, duration: 2, currFrame: 1},
+			{keyFrame: './Assets/Animates/TheBoy_Windup.png', length: 54, width: 72, duration: 4, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: false,
+		Done: false
+	},
+	
+	//Swing 2 Left 12
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/TheBoy_FollowThru_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_BatHit_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_Swing_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_ReadyStep_R.png', length: 54, width: 72, duration: 2, currFrame: 1, drawOffX: -36, drawOffsetY: 0},
+			{keyFrame: './Assets/Animates/TheBoy_Windup_R.png', length: 54, width: 72, duration: 4, currFrame: 1, drawOffX: -36, drawOffsetY: 0}
+		],
+		currKeyFrame: 0,
+		Loops: false,
+		Done: false
+	},
+	
+	//Ducking Right 13
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Ducking.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Ducking Left 14
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_Ducking_Rev.png', length: 27, width: 36, duration: 60, currFrame: 1, drawOffX: 0, drawOffY: 27}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Shooting Right 15
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_StandingShoot.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Shooting Right 16
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_StandingShoot_rev.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Ducking Shooting Right 17
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_DuckingShoot.png', length: 54, width: 36, duration: 60, currFrame: 1}
+		],
+		currKeyFrame: 0,
+		Loops: true,
+		Done: false
+	},
+	
+	//Ducking Shooting Left 18
+	{
+		keyFrames: [
+			{keyFrame: './Assets/Animates/ProtoRunner_DuckingShoot_Rev.png', length: 54, width: 36, duration: 60, currFrame: 1}
 		],
 		currKeyFrame: 0,
 		Loops: true,

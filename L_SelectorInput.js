@@ -2,6 +2,21 @@
 
 var GameTitle = document.getElementById("GameTitle");
 
+var Game = document.getElementById("Game");
+var playButton = document.getElementById("playButton");
+
+playButton.onclick = function() {
+	console.log('Entered: ' + Game.value);
+	
+	var animationsScript = document.createElement('script');
+	animationsScript.setAttribute('src','http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game='+Game.value+'&type=Animations');
+	document.body.appendChild(animationsScript);
+	
+	var updateScript = document.createElement('script');
+	updateScript.setAttribute('src','http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game='+Game.value+'&type=UpdatePackage');
+	document.body.appendChild(updateScript);
+}
+
 function enterObjects(inputText) {
 
 	var inputArr = inputText.replaceAll('\n','').split(';');

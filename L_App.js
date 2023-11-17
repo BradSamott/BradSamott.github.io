@@ -57,12 +57,14 @@ function gameLoop() {
 	*/
 	//console.log('ticking');
 	if(!paused) {
+		controllerInput();
 		oHandler.tickObjects();
 		oHandler.checkCollisions();
 		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.renderTextObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
 		oHandler.cBuff = [];
 	} else if(frameFlip && paused) {
+		controllerInput();
 		oHandler.tickObjects();
 		oHandler.checkCollisions();
 		oHandler.renderObjects(ctxPlay,canvasPlay, ctxBackground, canvasBackground, ctxForeground, canvasForeground, ctxUserInterface, canvasUserInterface);
@@ -73,6 +75,7 @@ function gameLoop() {
 	oHandler.systemTick();
 	
 	if(!paused) {
+		controllerInput();
 		oHandlerDev.tickObjects();
 		oHandlerDev.checkCollisions();
 		oHandlerDev.renderObjects(ctxPlayDev,canvasPlayDev, ctxBackgroundDev, canvasBackgroundDev, ctxForegroundDev, canvasForegroundDev, ctxUserInterfaceDev, canvasUserInterfaceDev);

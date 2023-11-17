@@ -6,6 +6,7 @@ STARTSET
 PLAYER
 KEYTRACK
 BOSS
+CAMERA
 */
 
 /*
@@ -14,7 +15,8 @@ start
 */
 var BossRushGlobals = {
 	canOut: false,
-	canState: ''
+	canState: '',
+	nextBossMove: 'rockets'
 }
 
 /*
@@ -30,6 +32,21 @@ start
 function StartBossRush() {
 	
 	var SelText = '';
+	
+	
+	//debug CAMERA
+	SelText = SelText + 'GameObject -u cameraController_Debug'
+	SelText = SelText + ';'
+	
+	
+	//debuglogger
+	SelText = SelText + 'GameObject';
+	SelText = SelText + ' -su uiLogger'
+	SelText = SelText + ' -p lastRightStatus 0'
+	SelText = SelText + ' -p lastQStatus 0'
+	SelText = SelText + ' -p allDebug 0'
+	SelText = SelText + ';'
+	
 	
 	//floor
 	SelText = SelText + 'GameObject -x -10 -y 500 -v 0 0 left -v 660 0 right -t wall'
@@ -58,12 +75,14 @@ function StartBossRush() {
 	SelText = SelText + ' -u playerMovement_BR'
 	SelText = SelText + ' -cf playerCollision_BR'
 	SelText = SelText + ' -pi setupPlayer'
-	SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
+	//SelText = SelText + ' -a PlatformerAnimationPackage -ca 0'
+	SelText = SelText + ' -a ShootAnimationPackage -ca 0'
 	SelText = SelText + ' -p climbMode 0 -p climbing 0 -p health 5 -p iFrames -1 -p inControl 1 -p inStun 0 -p stunCounter 0'
 	SelText = SelText + ' -p jumps 1'
 	SelText = SelText + ' -p maxJumps 1'
 	SelText = SelText + ' -p fireFrames 0'
 	SelText = SelText + ' -p looking right'
+	SelText = SelText + ' -p pointing straight'
 	SelText = SelText + ' -xR 2'
 	SelText = SelText + ' -yR 2'
 	SelText = SelText + ' -p suspend 0'
@@ -105,6 +124,8 @@ function StartBossRush() {
 	SelText = SelText + ' -lu HUDUpdate_BR'
 	SelText = SelText + ';'
 	
+	
+	
 	enterObjects(SelText);
 }
 
@@ -120,13 +141,20 @@ start
 */
 function controlledMovement_BR(gameObj) {
 	
-	if(!keys.down && (gameObj.currAnimation == PlatformerAnimationStates.DuckingRight || gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft)) {
+	if(!keys.down && (gameObj.currAnimation == PlatformerAnimationStates.DuckingRight 
+	                  || gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft
+					  || gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingRight 
+					  || gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingLeft )) {
 		gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
 
 		if(gameObj.currAnimation == PlatformerAnimationStates.DuckingRight) {
 			gameObj.currAnimation = PlatformerAnimationStates.IdleRight;
-		} else {
+		} else if(gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft) {
 			gameObj.currAnimation = PlatformerAnimationStates.IdleLeft;
+		} else if(gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingRight) {
+			gameObj.currAnimation = PlatformerAnimationStates.ShootingRight;
+		} else if(gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingLeft) {
+			gameObj.currAnimation = PlatformerAnimationStates.ShootingLeft;
 		}
 		gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
 		
@@ -137,13 +165,13 @@ function controlledMovement_BR(gameObj) {
 		gameObj.radialPoints.push({offX: 36, offY: 80, radius: 20});
 	}
 	
-	if(keys.left && gameObj.properties.slideStateY != 0 && gameObj.properties.climbing == 0 
+	if((keys.left || GamePadButtons.leftPressed) && gameObj.properties.slideStateY != 0 && gameObj.properties.climbing == 0 
 	&& gameObj.currAnimation != PlatformerAnimationStates.SwingRight 
 	&& gameObj.currAnimation != PlatformerAnimationStates.SwingLeft
 	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Right 
 	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Left) {
 		gameObj.properties.xv = -7;
-		gameObj.properties.looking = 'left';
+		
 		if(gameObj.properties.slideStateY == 1) {
 			gameObj.properties.slideStateY = 2;
 		}
@@ -153,17 +181,18 @@ function controlledMovement_BR(gameObj) {
 			
 			gameObj.currAnimation = PlatformerAnimationStates.RunLeft;
 			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+			gameObj.properties.looking = 'left';
 		}
 	}
 	
 	
-	if(keys.right && gameObj.properties.slideStateY != 1 && gameObj.properties.climbing == 0 
+	if((keys.right || GamePadButtons.rightPressed) && gameObj.properties.slideStateY != 1 && gameObj.properties.climbing == 0 
 	&& gameObj.currAnimation != PlatformerAnimationStates.SwingRight 
 	&& gameObj.currAnimation != PlatformerAnimationStates.SwingLeft
 	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Right 
 	&& gameObj.currAnimation != PlatformerAnimationStates.Swing2Left) {
 		gameObj.properties.xv = 7;
-		gameObj.properties.looking = 'right';
+		
 		if(gameObj.properties.slideStateY == 0) {
 			gameObj.properties.slideStateY = 2;
 		}
@@ -173,6 +202,7 @@ function controlledMovement_BR(gameObj) {
 
 			gameObj.currAnimation = PlatformerAnimationStates.RunRight;
 			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+			gameObj.properties.looking = 'right';
 		}
 	}
 	
@@ -205,7 +235,7 @@ function controlledMovement_BR(gameObj) {
 		}
 	} 
 		
-	if(keys.up && gameObj.properties.slideStateX != 0 && gameObj.properties.climbMode == 0) {
+	if((keys.up || GamePadButtons.Clock6Pressed) && gameObj.properties.slideStateX != 0 && gameObj.properties.climbMode == 0) {
 		//console.log('up');
 		if(gameObj.properties.jumps > 0 && BossRushGlobals.keyTracker.properties.upDown == false) {
 			gameObj.properties.jumps--;
@@ -237,7 +267,7 @@ function controlledMovement_BR(gameObj) {
 		}
 	}
 		
-	if(keys.down) {
+	if(keys.down || GamePadButtons.downPressed) {
 		gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
 
 		if(gameObj.properties.looking == 'right') {
@@ -276,12 +306,38 @@ function controlledMovement_BR(gameObj) {
 		}
 	}
 	
-	if(keys.space) {
+	if(keys.c) {
+		gameObj.properties.pointing = 'up'
+	} else {
+		gameObj.properties.pointing = 'straight'
+	}
+	
+	if(keys.space || GamePadButtons.Clock9Pressed) {
+		if(gameObj.properties.looking == 'right') {
+			if(gameObj.currAnimation == PlatformerAnimationStates.DuckingRight) {
+				gameObj.currAnimation = PlatformerAnimationStates.DuckingShootingRight;
+			} else {
+				gameObj.currAnimation = PlatformerAnimationStates.ShootingRight;
+			}
+		} else if(gameObj.properties.looking == 'left') {
+			if(gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft) {
+				gameObj.currAnimation = PlatformerAnimationStates.DuckingShootingLeft;
+			} else {
+				gameObj.currAnimation = PlatformerAnimationStates.ShootingLeft;
+			}
+		}
+		
 		if(gameObj.properties.fireFrames == 0) {
 			createBullet(gameObj);
 			gameObj.properties.fireFrames = 10;
 		} else {
 			gameObj.properties.fireFrames--;
+		}
+	} else {
+		if(gameObj.currAnimation == PlatformerAnimationStates.ShootingRight) {
+			gameObj.currAnimation = PlatformerAnimationStates.IdleRight;
+		} else if(gameObj.currAnimation == PlatformerAnimationStates.ShootingLeft) {
+			gameObj.currAnimation = PlatformerAnimationStates.IdleLeft;
 		}
 	}
 		
@@ -306,10 +362,10 @@ function PlayerGetHitBehavior_BR(gameObj,colObj,verIndex,intersection,colVer1,co
 		gameObj.vertices[0].offY = 0; 
 		gameObj.vertices[1].offY = 0; 
 		
-		gameObj.radialPoints[0].offY = 15;
+		gameObj.radialPoints[0].offY = 30;
 		
 		if(gameObj.radialPoints[1] == null) {
-			gameObj.radialPoints.push({offX: 18, offY: 40, radius: 10});
+			gameObj.radialPoints.push({offX: 36, offY: 80, radius: 20});
 		}
 		
 		if(colObj.properties.damage != null) {
@@ -354,8 +410,10 @@ function PlayerGetHitBehavior_BR(gameObj,colObj,verIndex,intersection,colVer1,co
 			
 			if(gameObj.position.x <= colObj.position.x) {
 				gameObj.currAnimation = PlatformerAnimationStates.HurtRight;
+				gameObj.properties.looking = 'right';
 			} else {
 				gameObj.currAnimation = PlatformerAnimationStates.HurtLeft;
+				gameObj.properties.looking = 'left';
 			}
 		}
 				
@@ -371,26 +429,108 @@ function PlayerGetHitBehavior_BR(gameObj,colObj,verIndex,intersection,colVer1,co
 	}
 }
 
+function WallCollisionBehavior_BR(gameObj,colObj,verIndex,intersection,colVer1,colVer2) {
+	console.log('Wall Collide');
+	var origX = gameObj.position.x;
+	var origY = gameObj.position.y;
+	
+	var newPosition = {};
+	newPosition.x = gameObj.position.x - (((gameObj.position.x + gameObj.vertices[verIndex].offX) - intersection[0]));
+	newPosition.y = gameObj.position.y - (((gameObj.position.y + gameObj.vertices[verIndex].offY) - intersection[1]));
+	
+	//gameObj.position.x = gameObj.position.x - (((gameObj.position.x + gameObj.vertices[verIndex].offX) - intersection[0]));
+	//gameObj.position.y = gameObj.position.y - (((gameObj.position.y + gameObj.vertices[verIndex].offY) - intersection[1]));
+			
+	if((gameObj.position.x - gameObj.delta.dx) > gameObj.position.x) {
+		//console.log('Pressing Right');
+		//gameObj.position.x++;
+		newPosition.x++;
+		if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+			gameObj.properties.slideStateY = 0;
+		}
+	} else if((gameObj.position.x - gameObj.delta.dx) < gameObj.position.x) {
+		//console.log('Pressing Left');
+		//gameObj.position.x--;
+		newPosition.x--;
+		if(colObj.position.x + colObj.vertices[colVer1].offX == colObj.position.x + colObj.vertices[colVer2].offX) {
+			gameObj.properties.slideStateY = 1;
+		}
+	}
+			
+	if((gameObj.position.y - gameObj.delta.dy) > gameObj.position.y) {
+		
+		console.log('origX:' + origX);
+		console.log('origY:' + origY);
+		console.log('newX:' + gameObj.position.x);
+		console.log('newY:' + gameObj.position.y);
+		console.log('deltaY:' + gameObj.delta.dy);
+		console.log('preDelt:' + (gameObj.position.y - gameObj.delta.dy));
+		console.log('orig preDelt:' + (origY - gameObj.delta.dy));
+		console.log('inter X:' + intersection[0]);
+		console.log('inter Y' + intersection[1]);
+		
+		if(colObj.position.x + colObj.vertices[colVer1].offX != colObj.position.x + colObj.vertices[colVer2].offX) {
+			console.log('Pressing Down');
+			//gameObj.position.y++;
+			newPosition.y++;
+		}
+				
+		gameObj.properties.yv = 0;
+		if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+			gameObj.properties.slideStateX = 0;
+		}
+	} else if((gameObj.position.y - gameObj.delta.dy) < gameObj.position.y) {
+	
+		if(colObj.position.x + colObj.vertices[colVer1].offX != colObj.position.x + colObj.vertices[colVer2].offX) {
+			console.log('Pressing Up');
+			//gameObj.position.y--;
+			newPosition.y--;
+		}
+				
+		gameObj.properties.yv = 0;
+		if(colObj.position.y + colObj.vertices[colVer1].offY == colObj.position.y + colObj.vertices[colVer2].offY) {
+			gameObj.properties.slideStateX = 1;
+		}
+				
+		//var newjumpVectorPosition = {x: gameObj.position.x, y: gameObj.position.y + gameObj.properties.height + 1};
+		var newjumpVectorPosition = {x: newPosition.x, y: newPosition.y + gameObj.properties.height + 1};
+		gameObj.properties.jumpVector.setPosition(newjumpVectorPosition);
+		gameObj.properties.jumpVector.setPosition({x: gameObj.properties.jumpVector.position.x, y: gameObj.properties.jumpVector.position.y + 500});
+				
+		if(gameObj.currAnimation == PlatformerAnimationStates.JumpRight) {
+			gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
+			gameObj.currAnimation = PlatformerAnimationStates.IdleRight;
+			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+		} else if(gameObj.currAnimation == PlatformerAnimationStates.JumpLeft) {
+			gameObj.animations[gameObj.currAnimation].keyFrames[gameObj.animations[gameObj.currAnimation].currKeyFrame].currFrame = 1;
+			gameObj.currAnimation = PlatformerAnimationStates.IdleLeft;
+			gameObj.animations[gameObj.currAnimation].currKeyFrame = 0;
+		}
+	}
+	
+	gameObj.appendPosition(newPosition);
+}
+
 function playerCollision_BR(colObj,verIndex,intersection,colVer1,colVer2) {
 	
 	if(colObj.tag != null) {
 		if(colObj.tag == 'wall') {
-			WallCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			WallCollisionBehavior_BR(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'coin') {
 			//this.handler.removeObject(colObj);
 			//SmallGame0Globals.score++;
 		} else if(colObj.tag == 'platform') {
-			PlatformCollisionBehavior_SG0(this,colObj,verIndex,intersection,colVer1,colVer2);
+			PlatformCollisionBehavior_BR(this,colObj,verIndex,intersection,colVer1,colVer2);
 		} else if(colObj.tag == 'ladder') {
 			
 		} else if(colObj.tag == 'enemy') {
-			if(verIndex == null) {
-				//console.log(colObj.tag);
+			//if(verIndex == null) {
+				console.log(colObj);
 				PlayerGetHitBehavior_BR(this,colObj,verIndex,intersection,colVer1,colVer2);
 				//if(this.properties.health <= 0) {
 					
 				//}
-			}
+			//}
 		} else if(colObj.tag == 'enemyHitBox') {
 			
 		} else if(colObj.tag == 'reaper') {
@@ -498,17 +638,35 @@ function playerMovement_BR() {
 function createBullet(gameObj) {
 	
 	var bVel = 0;
+	var bVelY = 0;
 	var xStartOff = 72;
 	var yStartOff = 54;
 	if(gameObj.properties.looking == 'right') {
-		bVel = 17;
-		xStartOff = 72;
+		if(gameObj.properties.pointing == 'up') {
+			bVel = 0;
+			bVelY = -17;
+			xStartOff = 10;
+			yStartOff = 0;
+		} else {
+			bVel = 17;
+			xStartOff = 72;
+		}
 	} else if(gameObj.properties.looking == 'left') {
-		bVel = -17;
-		xStartOff = 0;
+		if(gameObj.properties.pointing == 'up') {
+			bVel = 0;
+			bVelY = -17;
+			xStartOff = 62;
+			yStartOff = 0;
+		} else {
+			bVel = -17;
+			xStartOff = 0;
+		}
 	}
 	
-	if(gameObj.currAnimation == PlatformerAnimationStates.DuckingRight || gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft) {
+	if(gameObj.currAnimation == PlatformerAnimationStates.DuckingRight 
+	|| gameObj.currAnimation == PlatformerAnimationStates.DuckingLeft
+	|| gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingRight
+	|| gameObj.currAnimation == PlatformerAnimationStates.DuckingShootingLeft) {
 		yStartOff = 74;
 	}
 	
@@ -516,7 +674,7 @@ function createBullet(gameObj) {
 	creatinString = creatinString + 'GameObject -x ' + (gameObj.position.x + xStartOff) + ' -y ' + (gameObj.position.y + yStartOff) + '';
 	creatinString = creatinString + ' -u bulletUpdate';
 	creatinString = creatinString + ' -p xv '+bVel+'';
-	creatinString = creatinString + ' -p yv 0';
+	creatinString = creatinString + ' -p yv '+bVelY+'';
 	creatinString = creatinString + ' -rp 0 0 8';
 	creatinString = creatinString + ' -t playerHitBox';
 	creatinString = creatinString + ' -p HitBoxActive 1';
@@ -579,10 +737,10 @@ function boss1Collision(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'ladder') {
 		
 		} else if(colObj.tag == 'playerHitBox') {
-			console.log('Hit');
+			//console.log('Hit');
 			this.handler.removeObjectSafe(colObj,this);
 			this.properties.health--;
-			console.log(this.properties.health);
+			//console.log(this.properties.health);
 		} else if(colObj.tag == 'player') {
 		
 		}
@@ -607,12 +765,12 @@ function grabberUpdate() {
 	
 	if(this.properties.parentObj.properties.looking == 'left') {
 		if(this.position.x > this.properties.parentObj.position.x + 100) {
-			console.log('Fin');
+			//console.log('Fin');
 			this.properties.done = 1;
 		}
 	} else if(this.properties.parentObj.properties.looking == 'right') {
 		if(this.position.x < this.properties.parentObj.position.x) {
-			console.log('Fin');
+			//console.log('Fin');
 			this.properties.done = 1;
 		}
 	}
@@ -621,15 +779,21 @@ function grabberUpdate() {
 function rocketCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 	if(colObj.tag != null) {
 		
-		if(colObj.tag == 'wall' || colObj.tag == 'player') {
-			this.handler.removeObjectSafe(this.properties.childObj,this);
-			this.handler.removeObjectSafe(this,this);
-		} else if(colObj.tag == 'platform') {
-		
+		if(colObj.tag == 'player') {
+			//this.handler.removeObjectSafe(this.properties.childObj,this);
+			//this.handler.removeObjectSafe(this,this);
+			PlayerGetHitBehavior_BR(SmallGame0Globals.player,this,verIndex,intersection,colVer1,colVer2);
+			this.properties.explode = 1;
+		} else if(colObj.tag == 'wall') {
+			this.properties.explode = 1;
 		} else if(colObj.tag == 'ladder') {
 		
 		} else if(colObj.tag == 'playerHitBox') {
-			
+			this.handler.removeObjectSafe(colObj,this);
+			this.properties.health--;
+			if(this.properties.health <= 0) {
+				this.properties.explode = 1;
+			}
 		} else if(colObj.tag == 'player') {
 		
 		}
@@ -638,6 +802,11 @@ function rocketCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 }
 
 function rocketUpdate() {
+	
+	if(this.properties.explode == 1) {
+		this.handler.removeObjectSafe(this.properties.childObj,this);
+		this.handler.removeObjectSafe(this,this);
+	}
 	
 	var newPosition = {x: this.position.x + this.properties.xv, y: this.position.y + this.properties.yv};
 	this.setPosition(newPosition);
@@ -714,16 +883,16 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 		} else if(colObj.tag == 'ladder') {
 		
 		} else if(colObj.tag == 'playerHitBox') {
-			console.log('Hit');
+			//console.log('Hit');
 			this.handler.removeObjectSafe(colObj,this);
 			this.properties.health--;
-			console.log(this.properties.health);
+			//console.log(this.properties.health);
 		} else if(colObj.tag == 'enemy') {
 			if(colObj.properties.bossState == 'charging') {
 				
 				BossRushGlobals.canState = 'rolling';
 				if(colObj.properties.xv > 0) {
-					console.log('changing to mode 5');
+					//console.log('changing to mode 5');
 					
 					var creatinString = ''
 		
@@ -741,8 +910,8 @@ function minionCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 					enterObjects(creatinString);
 					
 					this.handler.removeObjectSafe(this,this);
-				} else {
-					console.log('changing to mode 6');
+				} else if(colObj.properties.xv < 0) {
+					//console.log('changing to mode 6');
 					
 					var creatinString = ''
 		
@@ -783,10 +952,10 @@ function canUpdate() {
 				vel = 7;
 			}
 			
-			if(this.position.x <= 0) {
-				console.log('opening: ' + this.properties.mode);
+			if(this.position.x <= 5) {
+				//console.log('opening: ' + this.properties.mode);
 				if(this.properties.mode == 1 || this.properties.mode == 2) {
-					console.log('freeing');
+					//console.log('freeing');
 					SmallGame0Globals.player.properties.suspend = 0;
 					SmallGame0Globals.player.position.x = this.position.x;
 					SmallGame0Globals.player.position.y = this.position.y - 200;
@@ -794,10 +963,10 @@ function canUpdate() {
 				BossRushGlobals.canOut = false; 
 				BossRushGlobals.canState = '';
 				this.handler.removeObjectSafe(this,this);
-			} else if(this.position.x >= 604) {
-				console.log('opening: ' + this.properties.mode);
+			} else if(this.position.x >= 599) {
+				//console.log('opening: ' + this.properties.mode);
 				if(this.properties.mode == 1 || this.properties.mode == 2) {
-					console.log('freeing');
+					//console.log('freeing');
 					SmallGame0Globals.player.properties.suspend = 0;
 					SmallGame0Globals.player.position.x = this.position.x - 36;
 					SmallGame0Globals.player.position.y = this.position.y - 200;
@@ -813,9 +982,9 @@ function canUpdate() {
 			this.properties.moveFrames++;
 			
 		} else {
-			console.log('opening: ' + this.properties.mode);
+			//console.log('opening: ' + this.properties.mode);
 			if(this.properties.mode == 1 || this.properties.mode == 2) {
-				console.log('freeing');
+				//console.log('freeing');
 				SmallGame0Globals.player.properties.suspend = 0;
 				SmallGame0Globals.player.position.x = this.position.x;
 				SmallGame0Globals.player.position.y = this.position.y - 200;
@@ -835,8 +1004,9 @@ function canCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				colObj.properties.suspend = 1;
 				colObj.position.x = -100;
 				colObj.position.y = -100;
-				console.log('changing to mode 4');
+				//console.log('changing to mode 4');
 				this.properties.mode = 4;
+				BossRushGlobals.nextBossMove = 'charging';
 			}
 		} else if(colObj.tag == 'enemy') {
 			if(colObj.properties.bossState == 'charging' && (this.properties.mode == 0 || this.properties.mode == 4)) {
@@ -844,22 +1014,22 @@ function canCollide(colObj,verIndex,intersection,colVer1,colVer2) {
 				if(this.properties.mode == 4) {
 					BossRushGlobals.canState = 'rolling';
 					if(colObj.properties.xv > 0) {
-						console.log('changing to mode 1');
+						//console.log('changing to mode 1');
 						this.properties.mode = 1;
 						this.properties.moveFrames = 0;
 					} else {
-						console.log('changing to mode 2');
+						//console.log('changing to mode 2');
 						this.properties.mode = 2;
 						this.properties.moveFrames = 0;
 					}
 				} else {
 					BossRushGlobals.canState = 'rolling';
 					if(colObj.properties.xv > 0) {
-						console.log('changing to mode 5');
+						//console.log('changing to mode 5');
 						this.properties.mode = 5;
 						this.properties.moveFrames = 0;
 					} else {
-						console.log('changing to mode 6');
+						//console.log('changing to mode 6');
 						this.properties.mode = 6;
 						this.properties.moveFrames = 0;
 					}
@@ -906,6 +1076,11 @@ function boss1Update() {
 					}
 				}
 				
+				if(BossRushGlobals.nextBossMove != '') {
+					this.properties.bossState = BossRushGlobals.nextBossMove;
+					BossRushGlobals.nextBossMove = '';
+				}
+				
 				this.properties.decidingFrames = 0;
 			}
 		}
@@ -913,7 +1088,7 @@ function boss1Update() {
 		
 		if(this.properties.decidingFrames == 0) {
 			
-			console.log('Grab Attack: ' + this.properties.grabStage);
+			//console.log('Grab Attack: ' + this.properties.grabStage);
 			
 			var pos1 = Math.floor(Math.random() * 2) + 1;
 			var gOffY = 350;
@@ -973,6 +1148,7 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p xHitTraj 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 			} else if(this.properties.looking == 'right') {
 				creatinString = creatinString + 'GameObject -x ' + (this.position.x) + ' -y ' + (gOffY) + '';
@@ -991,6 +1167,7 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p xHitTraj 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 			}
 			
@@ -1047,7 +1224,10 @@ function boss1Update() {
 		
 	} else if(this.properties.bossState == 'rockets') {
 		if(this.properties.decidingFrames == 0) {
-			console.log('Shooting');
+			//console.log('Shooting');
+			
+			this.radialPoints.push({offX: 100, offY: 80, radius: 20});
+			
 			var creatinString = ''
 			
 			if(this.properties.looking == 'left') {
@@ -1056,12 +1236,12 @@ function boss1Update() {
 				var r2X = Math.floor(Math.random() * 390) + 10;
 				var r3X = Math.floor(Math.random() * 390) + 10;
 				
-				console.log('Shots Locations');
-				console.log(r1X);
-				console.log(r2X);
-				console.log(r3X);
+				//console.log('Shots Locations');
+				//console.log(r1X);
+				//console.log(r2X);
+				//console.log(r3X);
 				
-				creatinString = creatinString + 'GameObject -x '+r1X+' -y -100';
+				creatinString = creatinString + 'GameObject -x '+r1X+' -y -800';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1074,10 +1254,12 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 				
-				creatinString = creatinString + 'GameObject -x '+r2X+' -y -50';
+				creatinString = creatinString + 'GameObject -x '+r2X+' -y -750';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1090,10 +1272,12 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 				
-				creatinString = creatinString + 'GameObject -x '+r3X+' -y 0';
+				creatinString = creatinString + 'GameObject -x '+r3X+' -y -700';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1106,6 +1290,8 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 			
@@ -1115,12 +1301,12 @@ function boss1Update() {
 				var r2X = Math.floor(Math.random() * (608 - 250)) + 250;
 				var r3X = Math.floor(Math.random() * (608 - 250)) + 250;
 				
-				console.log('Shots Locations');
-				console.log(r1X);
-				console.log(r2X);
-				console.log(r3X);
+				//console.log('Shots Locations');
+				//console.log(r1X);
+				//console.log(r2X);
+				//console.log(r3X);
 				
-				creatinString = creatinString + 'GameObject -x '+r1X+' -y 0';
+				creatinString = creatinString + 'GameObject -x '+r1X+' -y -700';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1133,10 +1319,12 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 				
-				creatinString = creatinString + 'GameObject -x '+r2X+' -y -50';
+				creatinString = creatinString + 'GameObject -x '+r2X+' -y -750';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1149,10 +1337,12 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 				
-				creatinString = creatinString + 'GameObject -x '+r3X+' -y -100';
+				creatinString = creatinString + 'GameObject -x '+r3X+' -y -800';
 				creatinString = creatinString + ' -u rocketUpdate';
 				creatinString = creatinString + ' -cf rocketCollide';
 				creatinString = creatinString + ' -v 16 32';
@@ -1165,6 +1355,8 @@ function boss1Update() {
 				creatinString = creatinString + ' -p damage 1';
 				creatinString = creatinString + ' -p done 0';
 				creatinString = creatinString + ' -p targetDown 0';
+				creatinString = creatinString + ' -p health 2';
+				creatinString = creatinString + ' -p totalStun 10';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
 			}
@@ -1180,6 +1372,7 @@ function boss1Update() {
 			this.properties.decidingFrames++;
 			
 			if(this.properties.decidingFrames == 30) {
+				this.radialPoints.splice(3);
 				this.properties.bossState = 'neutral';
 				this.properties.decidingFrames = 0;
 			}
@@ -1228,7 +1421,7 @@ function boss1Update() {
 		}
 		
 	} else if(this.properties.bossState == 'spawning') {
-		console.log('Spawning');
+		//console.log('Spawning');
 		
 		if(this.properties.decidingFrames == 0) {
 			
@@ -1266,7 +1459,7 @@ function boss1Update() {
 				creatinString = creatinString + ' -p yTrag -6';
 				creatinString = creatinString + ' -p inBounds 0';
 				creatinString = creatinString + ' -p lowerBound 0';
-				creatinString = creatinString + ' -p upperBound 384';
+				creatinString = creatinString + ' -p upperBound 344';
 				creatinString = creatinString + ' -p acceleration 1';
 				creatinString = creatinString + ' -d';
 				creatinString = creatinString + ';';
@@ -1294,7 +1487,7 @@ function boss1Update() {
 				creatinString = creatinString + ' -p health 3';
 				creatinString = creatinString + ' -p yTrag -6';
 				creatinString = creatinString + ' -p inBounds 0';
-				creatinString = creatinString + ' -p lowerBound 220';
+				creatinString = creatinString + ' -p lowerBound 260';
 				creatinString = creatinString + ' -p upperBound 604';
 				creatinString = creatinString + ' -p acceleration 1';
 				creatinString = creatinString + ' -d';
@@ -1359,4 +1552,26 @@ function HUDUpdate_BR() {
 /*
 HUD
 start
+*/
+
+/*
+CAMERA
+start
+*/
+
+function cameraController_Debug() {
+	if(keys.z) {
+		this.handler.CameraZoom = this.handler.CameraZoom + 0.01;
+		console.log('zoom press: ' + this.handler.CameraZoom);
+	}
+		
+	if(keys.x) {
+		this.handler.CameraZoom = this.handler.CameraZoom - 0.01;
+		console.log('zoom press: ' + this.handler.CameraZoom);
+	}
+}
+
+/*
+CAMERA
+end
 */
