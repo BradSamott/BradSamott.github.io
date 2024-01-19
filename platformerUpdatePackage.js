@@ -1517,6 +1517,14 @@ function showClickPosition() {
 	}
 }
 
+function showClickPosition() {
+	for(var i = 0; i < this.handler.cBuff.length; i++) {
+		console.log({ localX: this.handler.cBuff[i].x, localY: this.handler.cBuff[i].y} );
+		console.log({ absX: this.handler.cBuff[i].x + this.handler.CameraX, absY: this.handler.cBuff[i].y + this.handler.CameraY} );
+	}
+}
+
+
 function moveCameraPosition() {
 	this.handler.CameraX = this.position.x;
 	this.handler.CameraY = this.position.y;

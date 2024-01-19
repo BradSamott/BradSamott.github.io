@@ -5,16 +5,33 @@ var GameTitle = document.getElementById("GameTitle");
 var Game = document.getElementById("Game");
 var playButton = document.getElementById("playButton");
 
+var codeScriptElem = null;
+var animScriptElem = null;
+
 playButton.onclick = function() {
 	console.log('Entered: ' + Game.value);
 	
+	if(codeScriptElem != null) {
+		codeScriptElem.remove();
+	}
+	
+	if(animScriptElem != null) {
+		animScriptElem.remove();
+	}
+	
 	var animationsScript = document.createElement('script');
 	animationsScript.setAttribute('src','http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game='+Game.value+'&type=Animations');
+	animationsScript.setAttribute('id','animationScript');
 	document.body.appendChild(animationsScript);
+	
+	animScriptElem = document.getElementById("animationScript");
 	
 	var updateScript = document.createElement('script');
 	updateScript.setAttribute('src','http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game='+Game.value+'&type=UpdatePackage');
+	updateScript.setAttribute('id','codeScript');
 	document.body.appendChild(updateScript);
+	
+	codeScriptElem = document.getElementById("codeScript");
 }
 
 function enterObjects(inputText) {
@@ -35,6 +52,35 @@ function enterObjects(inputText) {
 			var GOJ = createTOJsonFromString(inputArr[i]);
 			var GOObj = createTOFromJSON(GOJ);
 			oHandler.addTextObject(GOObj);
+		} else if(ArgumentArr[0] == 'Run') {
+			eval(ArgumentArr[1] + "();");
+		} else if(ArgumentArr[0] == 'AreaSize') {
+		
+		} else {
+			console.log('Argument Not Recognized');
+		}
+	}
+
+}
+
+function enterObjectsDev(inputText) {
+
+	var inputArr = inputText.replaceAll('\n','').split(';');
+	
+	for(var i = 0; i < inputArr.length; i++) {
+		var ArgumentArr = inputArr[i].split(' ');
+		console.log(ArgumentArr[0]);
+		if(ArgumentArr[0] == 'GameObject') {
+			var GOJ = createGOJsonFromString(inputArr[i]);
+			var GOObj = createGOFromJSON(GOJ);
+			oHandlerDev.addObject(GOObj);			
+		} else if(ArgumentArr[0] == 'CanvasEdit') {
+			var CEJ = createCanvasArgJSONFromString(inputArr[i]);
+			EditCanvasFromJSON(CEJ);
+		} else if(ArgumentArr[0] == 'TextObject') {
+			var GOJ = createTOJsonFromString(inputArr[i]);
+			var GOObj = createTOFromJSON(GOJ);
+			oHandlerDev.addTextObject(GOObj);
 		} else if(ArgumentArr[0] == 'Run') {
 			eval(ArgumentArr[1] + "();");
 		} else if(ArgumentArr[0] == 'AreaSize') {

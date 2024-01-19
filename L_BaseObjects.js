@@ -6,7 +6,8 @@ Hold basic data such as position, tag, an update function
 to be ran and a late update to be run after.
 Also has a list of vertices used to keep track of the shape.
 */
-function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth, debugMode, properties, canvas, context, audio, init, postInit, nilCollideFunction, xRenderFactor, yRenderFactor) {
+function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, systemUpdate, collideFunction, animations, currAnimation, defaultFrame, defaultLength, defaultWidth
+					, debugMode, properties, canvas, context, audio, init, postInit, nilCollideFunction, xRenderFactor, yRenderFactor, skeletalJoints, spriteSheet, skeletalSheetMappings) {
 	this.position = {x, y};
 	this.delta = {dx: 0, dy: 0};
 
@@ -58,6 +59,20 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	this.xRenderFactor = xRenderFactor;
 	this.yRenderFactor = yRenderFactor;
 	
+	this.skeletalJoints = skeletalJoints;
+	this.spriteSheet = spriteSheet;
+	console.log(spriteSheet);
+	if(spriteSheet != null && spriteSheet != '') {
+		var imgSS = new Image();
+		imgSS.src = spriteSheet;
+		var newLen = LocalSpriteSheets.push(imgSS);
+		this.spriteSheetIndex = newLen - 1;
+	} else {
+		this.spriteSheetIndex = -1;
+	}
+	
+	this.skeletalSheetMappings = skeletalSheetMappings;
+	
 	this.getPosition = function() {return this.position}
 	this.getTag = function() {return this.tag}
 	
@@ -83,6 +98,10 @@ function GameObject(x, y, vertices, radialPoints, tag, update, lateUpdate, syste
 	this.handler = null;
 	
 }
+
+var LocalSpriteSheets = [];
+
+var LocalCanvases = [];
 
 function TextObject(x, y, size, font, color, textContent, properties, fixedPosition) {
 	this.position = {x, y};
@@ -452,6 +471,10 @@ function ObjectHandler() {
 		//ctxGrid.clearRect(0, 0, canvasGrid.width, canvasGrid.height);
 		UIArea.clearRect(0, 0, UICanvas.width, UICanvas.height);
 		
+		for(var canI = 0; canI < LocalCanvases.length; canI++) {
+			LocalCanvases[canI].context.clearRect(0, 0, LocalCanvases[canI].canvas.width, LocalCanvases[canI].canvas.height);
+		}
+		
 		for(var objI = 0; objI < this.Objects.length; objI++) {
 			//var img = new Image();
 			//img.src = "";
@@ -480,8 +503,13 @@ function ObjectHandler() {
 			var drawOffsetY = 0;
 			
 			var textured = false;
+			var skeletal = false;
 			
 			if(this.Objects[objI].animations[0] != null) {
+				if(this.Objects[objI].animations[0].LocalCurrentKeyFrame != null) {
+					skeletal = true;
+				}
+				
 				if(this.Objects[objI].animations[0].texture) {
 					
 					textured = true;
@@ -517,7 +545,7 @@ function ObjectHandler() {
 				}
 			}
 			
-			if(!textured) {
+			if(!textured && !skeletal) {
 				if(this.Objects[objI].animations.length == 0 || this.Objects[objI].currAnimation < 0 || this.Objects[objI].currAnimation >= this.Objects[objI].animations.length) {
 					img = new Image();
 					img.src = this.Objects[objI].defaultFrame;
@@ -631,6 +659,65 @@ function ObjectHandler() {
 					PlayArea.stroke();
 				}
 				
+				//Create a stack to run through the joints
+				//console.log(this.Objects[objI].skeletalJoints);
+				var JointsStack = [];
+				if(this.Objects[objI].skeletalJoints.length > 1) {
+					JointsStack.push(this.Objects[objI].skeletalJoints[0]); //push the first joint for the following loop
+				}
+				while(JointsStack.length > 0) {
+					var currJoint = JointsStack.pop();
+					
+					var radX = this.Objects[objI].position.x + currJoint.offX - this.CameraX;
+					var radY = this.Objects[objI].position.y + currJoint.offY - this.CameraY;
+					var cRadius = 5;
+					
+					var zoomOffsetXR = (radX - 320) * (this.CameraZoom - 1);
+					var zoomOffsetYR = (radY - 288) * (this.CameraZoom - 1);
+					
+					radX = radX + zoomOffsetXR;
+					radY = radY + zoomOffsetYR;
+					cRadius = cRadius * this.CameraZoom;
+					
+					PlayArea.beginPath();
+					PlayArea.arc(radX, radY, cRadius, 0, 2 * Math.PI, false);
+					PlayArea.stroke();
+					
+					for(var jI = 0; jI < currJoint.joints.length; jI++) {
+						//start point
+						var startX = this.Objects[objI].position.x + currJoint.offX - this.CameraX;
+						var startY = this.Objects[objI].position.y + currJoint.offY - this.CameraY;
+						
+						var zoomOffsetXS = (startX - 320) * (this.CameraZoom - 1);
+						var zoomOffsetYS = (startY - 288) * (this.CameraZoom - 1);
+						
+						startX = startX + zoomOffsetXS;
+						startY = startY + zoomOffsetYS;
+						
+						PlayArea.beginPath();
+						PlayArea.moveTo(startX, startY);
+						
+						//end point
+						var endX = 0;
+						var endY = 0;
+						
+						endX = this.Objects[objI].position.x + this.Objects[objI].skeletalJoints[currJoint.joints[jI]].offX - this.CameraX;
+						endY = this.Objects[objI].position.y + this.Objects[objI].skeletalJoints[currJoint.joints[jI]].offY - this.CameraY;
+						
+						var zoomOffsetXE = (endX - 320) * (this.CameraZoom - 1);
+						var zoomOffsetYE = (endY - 288) * (this.CameraZoom - 1);
+						
+						endX = endX + zoomOffsetXE;
+						endY = endY + zoomOffsetYE;
+						
+						PlayArea.lineTo(endX, endY);
+						
+						PlayArea.stroke();
+						
+						JointsStack.push(this.Objects[objI].skeletalJoints[currJoint.joints[jI]]);
+					}
+				}
+				
 				/*
 				objectViewer.rows[objI + 1].cells[2].innerHTML = 'position: ' + JSON.stringify(this.Objects[objI].position) + ', properties: {';
 				
@@ -645,6 +732,7 @@ function ObjectHandler() {
 				objectViewer.rows[objI + 1].cells[2].innerHTML = objectViewer.rows[objI + 1].cells[2].innerHTML + "}";
 				*/
 			}
+			renderAnimationObject(this.Objects[objI]);
 		}
 	}
 	
@@ -709,6 +797,9 @@ function createGOFromJSON(jArg,DevFlag) {
 	var nilCollideFunction = function() {};
 	var xRenderFactor = 1;
 	var yRenderFactor = 1;
+	var skeletalJoints = [];
+	var spriteSheet = '';
+	var skeletalSheetMappings = null;
 	
 	if(jArg.x != null) {
 		x = jArg.x;
@@ -806,7 +897,19 @@ function createGOFromJSON(jArg,DevFlag) {
 		yRenderFactor = jArg.yRenderFactor;
 	}
 	
-	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,postInit,nilCollideFunction,xRenderFactor,yRenderFactor);
+	if(jArg.skeletalJoints != null) {
+		skeletalJoints = jArg.skeletalJoints;
+	}
+	
+	if(jArg.spriteSheet != null) {
+		spriteSheet = jArg.spriteSheet;
+	}
+	
+	if(jArg.skeletalSheetMappings != null) {
+		skeletalSheetMappings = jArg.skeletalSheetMappings;
+	}
+	
+	var newGameObject = new GameObject(x,y,vertices,radialPoints,tag,update,lateUpdate,systemUpdate,collideFunction,animations,currAnimation,defaultFrame,defaultLength,defaultWidth,debugMode,properties,canvas,context,audio,init,postInit,nilCollideFunction,xRenderFactor,yRenderFactor,skeletalJoints,spriteSheet,skeletalSheetMappings);
 	
 	return newGameObject;
 }
@@ -1146,6 +1249,74 @@ function createGOJsonFromString(args) {
 			if(!isNaN(argsList[i + 1]) && argsList[i + 1] != null && argsList[i + 1] != '') {
 				jsonArg.yRenderFactor = parseFloat(argsList[i + 1]);
 				i++;
+			}
+		}
+		
+		//skeletal joint
+		else if(argsList[i] == '-sj') {
+			var displacement = 0;
+			if(!isNaN(argsList[i + 1]) && argsList[i + 1] != null && argsList[i + 1] != '') {
+				var newSJ = {joints: []};
+				newSJ.offX = parseFloat(argsList[i + 1]);
+				displacement++;
+				
+				if(!isNaN(argsList[i + 2]) && argsList[i + 2] != null && argsList[i + 2] != '') {
+					newSJ.offY = parseFloat(argsList[i + 2]);
+					displacement++;
+					/*
+					if(!isNaN(argsList[i + 3]) && argsList[i + 3] != null && argsList[i + 3] != '') {
+						newSJ.radius = parseFloat(argsList[i + 3]);
+						i = i + 3;
+					} else {
+						newSJ.radius = 0;
+						i = i + 2;
+					}
+					*/
+				} else {
+					newSJ.offY = 0;
+					newSJ.radius = 0;
+					//i++;
+				}
+				
+				var tO = displacement + 1;
+				while(!isNaN(argsList[i + tO]) && argsList[i + tO] != null && argsList[i + tO] != '') {
+					newSJ.joints.push(parseInt(argsList[i + tO]));
+					displacement++;
+					tO++;
+				}
+				
+				if(jsonArg.skeletalJoints == null) {
+					jsonArg.skeletalJoints = [];
+				}
+				
+				jsonArg.skeletalJoints.push(newSJ);
+			}
+			i = i + displacement;
+		}
+		
+		//Sprite Sheet
+		else if(argsList[i] == '-spr') {
+			if(argsList[i + 1] != null && argsList[i + 1] != '') {
+				try {
+					console.log(argsList[i + 1]);
+					eval("jsonArg.spriteSheet = "+ argsList[i + 1] + ";");
+					i++;
+				} catch(e) {
+					console.log('Error: Sprite Sheets String Does not exist.');
+				}
+			}
+		}
+		
+		//Skeletal Sheet Mappings
+		else if(argsList[i] == '-ssm') {
+			if(argsList[i + 1] != null && argsList[i + 1] != '') {
+				try {
+					console.log(argsList[i + 1]);
+					eval("jsonArg.skeletalSheetMappings = "+ argsList[i + 1] + ";");
+					i++;
+				} catch(e) {
+					console.log('Error: Skeletal Sheet Mappings Does not exist.');
+				}
 			}
 		}
 	}

@@ -87,6 +87,24 @@
 				
 				<br>
 				
+				<div onclick="UploadHolySpirit()" style="cursor: pointer;">
+					<p>Holy Spirit</p>
+				</div>
+				
+				<br>
+				
+				<div onclick="UploadNoGame()" style="cursor: pointer;">
+					<p>No Game</p>
+				</div>
+				
+				<br>
+				
+				<div onclick="UploadMobiusMouse()" style="cursor: pointer;">
+					<p>Mobius Mouse</p>
+				</div>
+				
+				<br>
+				
 				<div>
 					<label for="Game">Game:</label><br>
 					<input type="text" id="Game" name="Game">
@@ -218,7 +236,7 @@
 			</div>
 			
 			<div class="customDivLatterHead">
-				<div style="width: 640px; height: 576px;">
+				<div style="width: 640px; height: 576px;" id="Canvases">
 					
 					<canvas width="640" height="576" class="gamecanvasBG" id="canvasBGDev"></canvas>	
 					<canvas width="640" height="576" class="gamecanvasPL" id="canvasPLDev"></canvas>
@@ -226,6 +244,26 @@
 					<canvas width="640" height="576" class="gamecanvasGD" id="canvasGDDev"></canvas>
 					<canvas width="640" height="576" class="gamecanvasUI" id="canvasUIDev"></canvas>
 						
+				</div>
+			</div>
+			
+			<div class="customDivLatterHead">
+				<div>
+					<input type="button" id="createObjectButton" value="Create Object">
+					<input type="button" id="vertexModeButton" value="Vertex">
+					<input type="button" id="radialPointModeButton" value="Radial Point">
+					<input type="button" id="refreshDevObjectTableButton" value="Refresh Table">
+					<input type="button" id="PrintSkeletonButton" value="Print Skeleton">
+					<input type="button" id="PrintAnimationButton" value="Print Animation">
+					<table id="DevObjects">
+						<tbody>
+						</tbody>
+					</table>
+					
+					<table id="CurrSkeletonTable">
+						<tbody>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		
@@ -266,12 +304,23 @@
 		-->
 		
 		<script src="./SmallGame0/BossRush_UpdatePackage.js"></script>
+		<script src="MOAB_Animations.js"></script>
 		<script src="MOAB_UpdatePackage.js"></script>
+		<script src="HolySpirit_UpdatePackage.js"></script>
+		<script src="NoGame_Animations.js"></script>
+		<script src="NoGame_UpdatePackage.js"></script>
+		
+		<script src="MobiusMouse_Animations.js"></script>
+		<script src="MobiusMouse_UpdatePackage.js"></script>
 		
 		<script src="js/ExampleCode.js"></script>
 		<script src="L_SelectorInput.js"></script>
 		<script src="L_ConsoleInputLogger.js"></script>
 		<script src="L_APIUse.js"></script>
+		
+		<script src="TestAnimations.js"></script>
+		
+		<script src="DefaultDev_UpdatePackage.js"></script>
 		
 		<noscript>You need to enable JavaScript to view the full site.</noscript>
 	</body>
