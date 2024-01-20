@@ -26,84 +26,6 @@
 			<h1 style="text-align:center" id="GameTitle">Game</h1>
 			
 			<div class="customDivPrior">
-			
-				<!--
-				<div onclick="UploadTestGame()" style="cursor: pointer;">
-					<p>Test Game</p>
-				</div>
-				
-				<br>
-				-->
-				<!--
-				<div onclick="UploadAntiGame()" style="cursor: pointer;">
-					<p>Anti</p>
-				</div>
-				
-				<br>
-				-->
-				
-				<div>
-					<p>v0.116</p>
-					<p>This is the Staging Page<p>
-					<a href="http://ec2-44-218-172-188.compute-1.amazonaws.com/">Click Here to Go to Production Page</a>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadDoomScrollerGame()" style="cursor: pointer;">
-					<p>Doom Scroller</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadMimiGame()" style="cursor: pointer;">
-					<!--<p>Mimi's Delivery Service</p>-->
-					<img src="Assets/Animates/MimiGameCover.png" width="300" height="100">
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadQuestleGame()" style="cursor: pointer;">
-					<p>Questle</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadSmallGame0()" style="cursor: pointer;">
-					<p>Small Game 0</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadBossRush()" style="cursor: pointer;">
-					<p>Boss Rush</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadMOAB()" style="cursor: pointer;">
-					<p>MOAB</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadHolySpirit()" style="cursor: pointer;">
-					<p>Holy Spirit</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadNoGame()" style="cursor: pointer;">
-					<p>No Game</p>
-				</div>
-				
-				<br>
-				
-				<div onclick="UploadMobiusMouse()" style="cursor: pointer;">
-					<p>Mobius Mouse</p>
-				</div>
-				
-				<br>
 				
 				<div>
 					<label for="Game">Game:</label><br>
@@ -118,14 +40,14 @@
 			</div>
 			
 			<div class="customDivLatterHead">
-				<div style="width: 640px; height: 576px;">
-					
+				<div style="width: 640px; height: 576px;" id="Canvases">
+					<!--
 					<canvas width="640" height="576" class="gamecanvasBG" id="canvasBG"></canvas>	
 					<canvas width="640" height="576" class="gamecanvasPL" id="canvasPL"></canvas>
 					<canvas width="640" height="576" class="gamecanvasFG" id="canvasFG"></canvas>
 					<canvas width="640" height="576" class="gamecanvasGD" id="canvasGD"></canvas>
 					<canvas width="640" height="576" class="gamecanvasUI" id="canvasUI"></canvas>
-						
+					-->
 				</div>
 				
 				<br>
@@ -236,14 +158,14 @@
 			</div>
 			
 			<div class="customDivLatterHead">
-				<div style="width: 640px; height: 576px;" id="Canvases">
-					
+				<div style="width: 640px; height: 576px;" id="CanvasesDev">
+					<!--
 					<canvas width="640" height="576" class="gamecanvasBG" id="canvasBGDev"></canvas>	
 					<canvas width="640" height="576" class="gamecanvasPL" id="canvasPLDev"></canvas>
 					<canvas width="640" height="576" class="gamecanvasFG" id="canvasFGDev"></canvas>
 					<canvas width="640" height="576" class="gamecanvasGD" id="canvasGDDev"></canvas>
 					<canvas width="640" height="576" class="gamecanvasUI" id="canvasUIDev"></canvas>
-						
+					-->
 				</div>
 			</div>
 			
@@ -269,58 +191,25 @@
 		
 		<div>
 		
-		<script src="L_Math.js"></script>
-		<script src="L_KeyLogger.js"></script>
-		<script src="L_GamePadLogger.js"></script>
-		<script src="L_BaseObjects.js"></script>
-		<script src="L_App.js"></script>
-		<script src="L_InputHandle.js"></script>
-		<script src="bannerControls.js"></script>
+		<!--Engine Files 1-->
+		<script src="./js/L_Math.js"></script>
+		<script src="./js/L_KeyLogger.js"></script>
+		<script src="./js/L_GamePadLogger.js"></script>
+		<script src="./js/L_BaseObjects.js"></script>
+		<script src="./js/L_App.js"></script>
+		<script src="./js/L_InputHandle.js"></script>
+		<script src="./js/bannerControls.js"></script>
+		<script src="./js/L_ConsoleInputLogger.js"></script>
+		<script src="./js/L_SelectorInput.js"></script>
 		
-		<script src="example.js"></script>
+		<!--DevGame-->
+		<script src="./Games/DevGame/Code/DefaultDev_UpdatePackage.js"></script>
 		
-		<script src="MimiAnimationPackages.js"></script>
-		<script src="platformerUpdatePackage.js"></script>
-		<script src="bossTestUpdatePackage.js"></script>
+		<!--Steam Boat Bubbly-->
+		<script src="./Games/SteamBoatBubbly/Code/SteamBoatBubbly_UpdatePackage.js"></script>
 		
-		<script src="AntiUpdatePackage.js"></script>
-		
-		<script src="MimiUpdatePackage.js"></script>
-		
-		<script src="Questle_LevelSelectHandler.js"></script>
-		<script src="Questle_WordInputUpdatePackage.js"></script>
-		<script src="Questle_BattlePackage.js"></script>
-		<script src="Questle_LevelList.js"></script>
-		<script src="Questle_Parties.js"></script>
-		<script src="Questle_Items.js"></script>
-		<script src="QuestleAnimationPackage.js"></script>
-		
-		<!--
-		<script src="./SmallGame0/SmallGame0_UpdatePackage0.js"></script>
-		<script src="SmallGame0_Animations.js"></script>
-		
-		<script src="http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game=SmallGame0&type=UpdatePackage"></script>
-		<script src="http://ec2-44-218-172-188.compute-1.amazonaws.com/gameCode/?game=SmallGame0&type=Animations"></script>
-		-->
-		
-		<script src="./SmallGame0/BossRush_UpdatePackage.js"></script>
-		<script src="MOAB_Animations.js"></script>
-		<script src="MOAB_UpdatePackage.js"></script>
-		<script src="HolySpirit_UpdatePackage.js"></script>
-		<script src="NoGame_Animations.js"></script>
-		<script src="NoGame_UpdatePackage.js"></script>
-		
-		<script src="MobiusMouse_Animations.js"></script>
-		<script src="MobiusMouse_UpdatePackage.js"></script>
-		
-		<script src="js/ExampleCode.js"></script>
-		<script src="L_SelectorInput.js"></script>
-		<script src="L_ConsoleInputLogger.js"></script>
-		<script src="L_APIUse.js"></script>
-		
-		<script src="TestAnimations.js"></script>
-		
-		<script src="DefaultDev_UpdatePackage.js"></script>
+		<!--Engine Files 1-->
+		<script src="./js/L_SelectorInput2.js"></script>
 		
 		<noscript>You need to enable JavaScript to view the full site.</noscript>
 	</body>
