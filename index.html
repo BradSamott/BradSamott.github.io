@@ -4,10 +4,439 @@
 
 <html lang="en" dir="ltr">
 
+	<body>
+		<canvas width="640" height="640" style="border:1px solid #000000;" id="GameScreen"></canvas>
+	</body>
+
 	<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/testpull.js"></script>
 
-	<script>console.log('In Script')</script>
+	<script>
+		console.log('Resize Set');
+		
+		function windowResizeAction() {
+			console.log('Resize');
+			
+			var canvasGameScreen = document.getElementById("GameScreen");
+			var ctxGameScreen = canvasGameScreen.getContext("2d");
+			
+			var side = window.innerWidth;
+			
+			console.log(side - 60);
+			
+			if(side - 60 > 900) {
+				canvasGameScreen.width = 900;
+				canvasGameScreen.height = 900;
+			}
+			else if(side - 60 < 500) {
+				canvasGameScreen.width = 500;
+				canvasGameScreen.height = 500;
+			}
+			else {
+				canvasGameScreen.width = side - 60;
+				canvasGameScreen.height = side - 60;
+			}
+			
+			canvasGameScreen.style.position = 'absolute';
+			canvasGameScreen.style.left = '50%';
+			canvasGameScreen.style.transform = 'translate(-50%)';
+		}
+		
+		windowResizeAction();
+		
+		window.addEventListener('resize', windowResizeAction)
+	</script>
+	
+	<script>
+		console.log('Key Logger');
+		
+		// The status of the arrow keys
+		var keys = {
+			right: false,
+			left: false,
+			up: false,
+			lastUp: false,
+			space: false,
+			lastSpace: false,
+			p: false,
+			lastP: false,
+			w: false,
+			a: false,
+			s: false,
+			d: false,
+			enter: false,
+			q: false,
+			b: false,
+			c: false,
+			e: false,
+			f: false,
+			g: false,
+			h: false,
+			i: false,
+			j: false,
+			k: false,
+			l: false,
+			m: false,
+			n: false,
+			o: false,
+			r: false,
+			t: false,
+			u: false,
+			v: false,
+			x: false,
+			y: false,
+			z: false
+		};
+		
+		// This function will be called when a key on the keyboard is pressed
+		function keydown(e) {
+			
+			// 37 is the code for the left arrow key
+			if(e.keyCode == 37) {
+				keys.left = true;
+			}
+			
+			// 38 is the code for the up arrow key
+			if(e.keyCode == 38) {
+				keys.up = true;
+			}
+			
+			// 39 is the code for the right arrow key
+			if(e.keyCode == 39) {
+				keys.right = true;
+			}
+			
+			// 40 is the code for the down arrow key
+			if(e.keyCode == 40) {
+				keys.down = true;
+			}
+			
+			// 32 is the code for the space key
+			if(e.keyCode == 32) {
+				keys.space = true;
+			}
+			
+			// 80 is the code for the p key
+			if(e.keyCode == 80) {
+				keys.p = true;
+			}
+			
+			// 87 is the code for the w key
+			if(e.keyCode == 87) {
+				keys.w = true;
+			}
+			
+			// 65 is the code for the w key
+			if(e.keyCode == 65) {
+				keys.a = true;
+			}
+			
+			// 83 is the code for the w key
+			if(e.keyCode == 83) {
+				keys.s = true;
+			}
+			
+			// 68 is the code for the w key
+			if(e.keyCode == 68) {
+				keys.d = true;
+			}
+			
+			// 13 is the code for the enter key
+			if(e.keyCode == 13) {
+				keys.enter = true;
+			}
+			
+			// 81 is the code for the q key
+			if(e.keyCode == 81) {
+				keys.q = true;
+			}
+			
+			if(e.keyCode == 66) {
+				keys.b = true;
+			}
+
+			if(e.keyCode == 67) {
+				keys.c = true;
+			}
+
+			if(e.keyCode == 69) {
+				keys.e = true;
+			}
+
+			if(e.keyCode == 70) {
+				keys.f = true;
+			}
+
+			if(e.keyCode == 71) {
+				keys.g = true;
+			}
+
+			if(e.keyCode == 72) {
+				keys.h = true;
+			}
+
+			if(e.keyCode == 73) {
+				keys.i = true;
+			}
+
+			if(e.keyCode == 74) {
+				keys.j = true;
+			}
+
+			if(e.keyCode == 75) {
+				keys.k = true;
+			}
+
+			if(e.keyCode == 76) {
+				keys.l = true;
+			}
+
+			if(e.keyCode == 77) {
+				keys.m = true;
+			}
+
+			if(e.keyCode == 78) {
+				keys.n = true;
+			}
+
+			if(e.keyCode == 79) {
+				keys.o = true;
+			}
+
+			if(e.keyCode == 82) {
+				keys.r = true;
+			}
+
+			if(e.keyCode == 84) {
+				keys.t = true;
+			}
+
+			if(e.keyCode == 85) {
+				keys.u = true;
+			}
+
+			if(e.keyCode == 86) {
+				keys.v = true;
+			}
+
+			if(e.keyCode == 88) {
+				keys.x = true;
+			}
+
+			if(e.keyCode == 89) {
+				keys.y = true;
+			}
+
+			if(e.keyCode == 90) {
+				keys.z = true;
+			}
+		}
+			
+		// This function is called when the pressed key is released
+		function keyup(e) {
+			//left
+			if(e.keyCode == 37) {
+				keys.left = false;
+			}
+			
+			//up
+			if(e.keyCode == 38) {
+				keys.up = false;
+			}
+			
+			//right
+			if(e.keyCode == 39) {
+				keys.right = false;
+			}
+			
+			//down
+			if(e.keyCode == 40) {
+				keys.down = false;
+			}
+			
+			//space
+			if(e.keyCode == 32) {
+				keys.space = false;
+			}
+			
+			//p
+			if(e.keyCode == 80) {
+				keys.p = false;
+			}
+			
+			//w
+			if(e.keyCode == 87) {
+				keys.w = false;
+			}
+			
+			//a
+			if(e.keyCode == 65) {
+				keys.a = false;
+			}
+			
+			//s
+			if(e.keyCode == 83) {
+				keys.s = false;
+			}
+			
+			//d
+			if(e.keyCode == 68) {
+				keys.d = false;
+			}
+			
+			//enter
+			if(e.keyCode == 13) {
+				keys.enter = false;
+			}
+			
+			//q
+			if(e.keyCode == 81) {
+				keys.q = false;
+			}
+			
+			if(e.keyCode == 66) {
+				keys.b = false;
+			}
+
+			if(e.keyCode == 67) {
+				keys.c = false;
+			}
+
+			if(e.keyCode == 69) {
+				keys.e = false;
+			}
+
+			if(e.keyCode == 70) {
+				keys.f = false;
+			}
+
+			if(e.keyCode == 71) {
+				keys.g = false;
+			}
+
+			if(e.keyCode == 72) {
+				keys.h = false;
+			}
+
+			if(e.keyCode == 73) {
+				keys.i = false;
+			}
+
+			if(e.keyCode == 74) {
+				keys.j = false;
+			}
+
+			if(e.keyCode == 75) {
+				keys.k = false;
+			}
+
+			if(e.keyCode == 76) {
+				keys.l = false;
+			}
+
+			if(e.keyCode == 77) {
+				keys.m = false;
+			}
+
+			if(e.keyCode == 78) {
+				keys.n = false;
+			}
+
+			if(e.keyCode == 79) {
+				keys.o = false;
+			}
+
+			if(e.keyCode == 82) {
+				keys.r = false;
+			}
+
+			if(e.keyCode == 84) {
+				keys.t = false;
+			}
+
+			if(e.keyCode == 85) {
+				keys.u = false;
+			}
+
+			if(e.keyCode == 86) {
+				keys.v = false;
+			}
+
+			if(e.keyCode == 88) {
+				keys.x = false;
+			}
+
+			if(e.keyCode == 89) {
+				keys.y = false;
+			}
+
+			if(e.keyCode == 90) {
+				keys.z = false;
+			}
+		}
+		
+		// Adding the event listeners
+		document.addEventListener("keydown",keydown);
+		document.addEventListener("keyup",keyup);
+	</script>
+	
+	<script>
+		var canvasGameScreen = document.getElementById("GameScreen");
+		var ctxGameScreen = canvasGameScreen.getContext("2d");
+	
+		objHandler = {
+			objs: [],
+			GS: canvasGameScreen,
+			CTX: ctxGameScreen,
+			
+			tickObjects: function() {
+				for(var i = 0; i < this.objs.length; i++) {
+					this.objs[i].update();
+				}
+			},
+			
+			renderObjects: function() {
+				for(var i = 0; i < this.objs.length; i++) {
+					this.objs[i].draw();
+				}
+			},
+			
+			addObject: function(newObj) {
+				newObj.handler = this;
+				this.objs.push(newObj);
+			}
+		}
+	
+		function gameLoop() {
+			objHandler.tickObjects();
+			objHandler.renderObjects();
+		}
+		
+		setInterval(gameLoop,33);
+	</script>
+
+	<script>
+		testobject = {
+			handler: null,
+			
+			update: function() {
+				if(keys.a) {
+					console.log('AAA');
+				}
+			},
+			
+			draw: function() {
+				console.log('DDD');
+				if(this.handler != null) {
+					console.log('circle');
+					this.handler.CTX.beginPath();
+					this.handler.CTX.arc(10, 10, 10, 0, 2 * Math.PI, false);
+					this.handler.CTX.stroke();
+				}
+			}
+		}
+		
+		objHandler.addObject(testobject);
+	</script>
 
 </html>
 
-</html>
