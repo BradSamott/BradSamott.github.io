@@ -50,6 +50,7 @@
 		console.log('Key Logger');
 		
 		// The status of the arrow keys
+		/*
 		var keys = {
 			right: false,
 			left: false,
@@ -60,6 +61,7 @@
 			p: false,
 			lastP: false,
 			w: false,
+			lastA: false,
 			a: false,
 			s: false,
 			d: false,
@@ -86,10 +88,21 @@
 			y: false,
 			z: false
 		};
+		*/
+		
+		var keys = {
+			65: {key: 'a', pressed: false},
+			83: {key: 's', pressed: false}
+		}
 		
 		// This function will be called when a key on the keyboard is pressed
 		function keydown(e) {
+		
+			if(keys[e.keyCode] != null) {
+				keys[e.keyCode].pressed = true;
+			}
 			
+			/*
 			// 37 is the code for the left arrow key
 			if(e.keyCode == 37) {
 				keys.left = true;
@@ -229,10 +242,17 @@
 			if(e.keyCode == 90) {
 				keys.z = true;
 			}
+			*/
 		}
 			
 		// This function is called when the pressed key is released
 		function keyup(e) {
+		
+			if(keys[e.keyCode] != null) {
+				keys[e.keyCode].pressed = false;
+			}
+		
+			/*
 			//left
 			if(e.keyCode == 37) {
 				keys.left = false;
@@ -372,6 +392,7 @@
 			if(e.keyCode == 90) {
 				keys.z = false;
 			}
+			*/
 		}
 		
 		// Adding the event listeners
@@ -387,11 +408,41 @@
 			objs: [],
 			GS: canvasGameScreen,
 			CTX: ctxGameScreen,
+			checkKeys: {
+				a: {curr: false, last: false},
+				s: {curr: false, last: false}
+			},
+			
+			getKeys: function() {
+				for (var key in keys){
+					if(this.checkKeys[keys[key].key] != null) {
+						if(keys[key].pressed) {
+							if(this.checkKeys[keys[key].key].curr == true) {
+								this.checkKeys[keys[key].key].last = true;
+							} else {
+								this.checkKeys[keys[key].key].last = false;
+							}
+							this.checkKeys[keys[key].key].curr = true;
+						} else {
+							if(this.checkKeys[keys[key].key].curr == true) {
+								this.checkKeys[keys[key].key].last = true;
+							} else {
+								this.checkKeys[keys[key].key].last = false;
+							}
+							this.checkKeys[keys[key].key].curr = false;
+						}
+					}
+				}
+			},
 			
 			tickObjects: function() {
 				for(var i = 0; i < this.objs.length; i++) {
 					this.objs[i].update();
 				}
+			},
+			
+			clearScreen: function() {
+				this.CTX.clearRect(0, 0, this.GS.width, this.GS.height);
 			},
 			
 			renderObjects: function() {
@@ -407,6 +458,8 @@
 		}
 	
 		function gameLoop() {
+			objHandler.getKeys();
+			objHandler.clearScreen();
 			objHandler.tickObjects();
 			objHandler.renderObjects();
 		}
@@ -419,15 +472,15 @@
 			handler: null,
 			
 			update: function() {
-				if(keys.a) {
+				if(this.handler.checkKeys.a.curr && !this.handler.checkKeys.a.last) {
 					console.log('AAA');
 				}
 			},
 			
 			draw: function() {
-				console.log('DDD');
+				//console.log('DDD');
 				if(this.handler != null) {
-					console.log('circle');
+					//console.log('circle');
 					this.handler.CTX.beginPath();
 					this.handler.CTX.arc(10, 10, 10, 0, 2 * Math.PI, false);
 					this.handler.CTX.stroke();
