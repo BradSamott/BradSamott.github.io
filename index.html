@@ -11,6 +11,7 @@
 	<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/testpull.js"></script>
 
 	<script>
+	/*
 		console.log('Resize Set');
 		
 		function windowResizeAction() {
@@ -44,6 +45,7 @@
 		windowResizeAction();
 		
 		window.addEventListener('resize', windowResizeAction)
+		*/
 	</script>
 	
 	<script>
@@ -403,11 +405,22 @@
 	<script>
 		var canvasGameScreen = document.getElementById("GameScreen");
 		var ctxGameScreen = canvasGameScreen.getContext("2d");
+		
+		var initRes = 128;
+		var initBitSize = canvasGameScreen.width / initRes;
+		
+		var initBitDrawMap = Array(initRes).fill().map(() => Array(initRes).fill().map(() => Array(3).fill(-1)));
 	
 		objHandler = {
 			objs: [],
+			cBuff: [],
 			GS: canvasGameScreen,
 			CTX: ctxGameScreen,
+			maxUpdateLayer: -1,
+			maxDrawLayer: -1,
+			res: initRes,
+			bitSize: initBitSize,
+			bitDrawMap: initBitDrawMap,
 			checkKeys: {
 				a: {curr: false, last: false},
 				s: {curr: false, last: false}
@@ -436,59 +449,204 @@
 			},
 			
 			tickObjects: function() {
-				for(var i = 0; i < this.objs.length; i++) {
-					this.objs[i].update();
+				for(var lay = 0; lay <= this.maxUpdateLayer; lay++) {
+					for(var i = 0; i < this.objs.length; i++) {
+						if(this.objs[i].updateFunctions[lay] != null) {
+							this.objs[i].updateFunctions[lay](this.objs[i]);
+						}
+					}
 				}
 			},
 			
 			clearScreen: function() {
 				this.CTX.clearRect(0, 0, this.GS.width, this.GS.height);
+				this.bitDrawMap = Array(this.res).fill().map(() => Array(this.res).fill().map(() => Array(3).fill(-1)));
 			},
 			
 			renderObjects: function() {
-				for(var i = 0; i < this.objs.length; i++) {
-					this.objs[i].draw();
+				for(var lay = 0; lay <= this.maxDrawLayer; lay++) {
+					for(var i = 0; i < this.objs.length; i++) {
+						if(this.objs[i].drawFunctions[lay] != null) {
+							this.objs[i].drawFunctions[lay](this.objs[i]);
+						}
+					}
+				}
+				
+				for(var xC = 0; xC < this.bitDrawMap.length; xC++) {
+					for(var yC = 0; yC < this.bitDrawMap[xC].length; yC++) {
+						if(this.bitDrawMap[xC][yC][0] != -1) {
+							this.CTX.fillStyle = 'rgb('+this.bitDrawMap[xC][yC][0]+','+this.bitDrawMap[xC][yC][1]+','+this.bitDrawMap[xC][yC][2]+')'
+							this.CTX.fillRect(xC * this.bitSize, yC * this.bitSize, this.bitSize, this.bitSize);
+						}
+					}
 				}
 			},
 			
 			addObject: function(newObj) {
 				newObj.handler = this;
 				this.objs.push(newObj);
+				
+				if(newObj.updateFunctions.length - 1 > this.maxUpdateLayer) {
+					this.maxUpdateLayer = newObj.updateFunctions.length - 1
+				}
+				
+				if(newObj.drawFunctions.length - 1 > this.maxDrawLayer) {
+					this.maxDrawLayer = newObj.drawFunctions.length - 1
+				}
+			},
+			
+			clearCBuff() {
+				this.cBuff = [];
+			},
+			
+			pset(x, y, r, g, b) {
+				this.bitDrawMap[x][y][0] = r;
+				this.bitDrawMap[x][y][1] = g;
+				this.bitDrawMap[x][y][2] = b;
 			}
 		}
+		
+		function getMousePos(canvas, evt) {
+			var rect = canvas.getBoundingClientRect();
+			return {
+			  x: evt.clientX - rect.left,
+			  y: evt.clientY - rect.top
+			};
+		}
+		
+		function getClick(e) {
+			var mousepos = getMousePos(objHandler.GS,e);
+			objHandler.cBuff.push(mousepos);
+		}
+		
+		objHandler.GS.addEventListener('click',getClick,false);
 	
 		function gameLoop() {
 			objHandler.getKeys();
 			objHandler.clearScreen();
 			objHandler.tickObjects();
 			objHandler.renderObjects();
+			objHandler.clearCBuff();
 		}
 		
 		setInterval(gameLoop,33);
+		
+		console.log('Resize Set');
+		
+		function windowResizeAction() {
+			console.log('Resize');
+			
+			var canvasGameScreen = document.getElementById("GameScreen");
+			var ctxGameScreen = canvasGameScreen.getContext("2d");
+			
+			var side = window.innerWidth;
+			
+			console.log(side - 60);
+			
+			if(side - 60 > 900) {
+				canvasGameScreen.width = 900;
+				canvasGameScreen.height = 900;
+			}
+			else if(side - 60 < 500) {
+				canvasGameScreen.width = 500;
+				canvasGameScreen.height = 500;
+			}
+			else {
+				canvasGameScreen.width = side - 60;
+				canvasGameScreen.height = side - 60;
+			}
+			
+			canvasGameScreen.style.position = 'absolute';
+			canvasGameScreen.style.left = '50%';
+			canvasGameScreen.style.transform = 'translate(-50%)';
+			
+			objHandler.bitSize = canvasGameScreen.width / objHandler.res;
+		}
+		
+		windowResizeAction();
+		
+		window.addEventListener('resize', windowResizeAction)
 	</script>
 
 	<script>
 		testobject = {
 			handler: null,
+			name: 'test object',
 			
-			update: function() {
-				if(this.handler.checkKeys.a.curr && !this.handler.checkKeys.a.last) {
-					console.log('AAA');
+			updateFunctions: [
+				function(obj) {
+					if(obj.handler.checkKeys.a.curr && !obj.handler.checkKeys.a.last) {
+						console.log('AAA');
+					}
+				},
+				
+				function(obj) {
+					if(obj.handler.checkKeys.s.curr && !obj.handler.checkKeys.s.last) {
+						console.log('SSS');
+					}
 				}
-			},
+			],
 			
-			draw: function() {
-				//console.log('DDD');
-				if(this.handler != null) {
-					//console.log('circle');
-					this.handler.CTX.beginPath();
-					this.handler.CTX.arc(10, 10, 10, 0, 2 * Math.PI, false);
-					this.handler.CTX.stroke();
+			drawFunctions: [
+				function(obj) {
+					//console.log('DDD');
+					if(obj.handler != null) {
+						//console.log('circle');
+						obj.handler.CTX.beginPath();
+						obj.handler.CTX.arc(10, 10, 10, 0, 2 * Math.PI, false);
+						obj.handler.CTX.stroke();
+						
+						obj.handler.pset(100,50,0,0,0);
+						obj.handler.pset(101,50,0,0,0);
+					}
 				}
-			}
+			]
+		}
+		
+		selector0 = {
+			handler: null,
+			name: 'selector 0',
+			wSquares: 4,
+			lSquares: 4,
+			
+			updateFunctions: [
+				function(obj) {
+					for(var i = 0; i < obj.handler.cBuff.length; i++) {
+						console.log(obj.handler.cBuff[i]);
+						//console.log(obj.handler.GS.width / obj.wSquares);
+						console.log(Math.floor(obj.handler.cBuff[i].x / (obj.handler.GS.width / obj.wSquares)));
+						console.log(Math.floor(obj.handler.cBuff[i].y / (obj.handler.GS.height / obj.lSquares)));
+					}
+					
+					
+				}
+			],
+			
+			drawFunctions: [
+				function(obj) {
+					var seplines = 0
+					sepWlines = obj.handler.GS.width / obj.wSquares;
+					sepLlines = obj.handler.GS.height / obj.lSquares;
+					
+					for(var i = 1; i < obj.wSquares; i++) {
+						obj.handler.CTX.beginPath();
+						obj.handler.CTX.moveTo(sepWlines * i, 0);
+						obj.handler.CTX.lineTo(sepWlines * i, obj.handler.GS.height);
+						obj.handler.CTX.stroke();
+					}
+					
+					for(var i = 1; i < obj.lSquares; i++) {
+						obj.handler.CTX.beginPath();
+						obj.handler.CTX.moveTo(0, sepLlines * i);
+						obj.handler.CTX.lineTo(obj.handler.GS.width, sepLlines * i);
+						obj.handler.CTX.stroke();
+					}
+				}
+			]
 		}
 		
 		objHandler.addObject(testobject);
+		objHandler.addObject(selector0);
 	</script>
 
 </html>
