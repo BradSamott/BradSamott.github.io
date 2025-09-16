@@ -1,3 +1,5 @@
+console.log('randomTests v1.0')
+
 objHandler.checkKeys['a'] = {curr: false, last: false};
 keys[65] = {key: 'a', pressed: false};
 objHandler.checkKeys['s'] = {curr: false, last: false};
