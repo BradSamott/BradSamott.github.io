@@ -384,7 +384,7 @@
 	<script>
 		var toAddButton = document.getElementById("ToAddButton");
 		
-		toAddButton.addEventListener("click" ,function() {
+		function activateGame() {
 			console.log('Adding');
 		
 			addedScripts = document.getElementById("AddedScripts");
@@ -399,7 +399,10 @@
 				addedScripts.appendChild(newGameScript);
 				toAddText.value = '';
 			}
-		});
+		}
+		
+		toAddButton.addEventListener("click", activateGame());
+		toAddButton.addEventListener("touchstart", activateGame());
 	</script>
 	
 	<div id="AddedScripts">
