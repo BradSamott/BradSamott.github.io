@@ -458,3 +458,5 @@ touchButtons.push({
 windowResizeAction();
 
 objHandler.addObject(selector);
+
+alert("Aedyn's Game");
