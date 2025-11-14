@@ -405,15 +405,21 @@
 			
 			var toAddText = document.getElementById("ToAdd");
 			var arg = toAddText.value;
+			var cleanedArg = arg.replace(/[^a-zA-Z0-9]/g, "");
 			
-			if(arg == "Aedyns Game") {
+			//console.log(ver);
+			//if(arg == "Aedyns Game") {
 				//newGameScript.src = "AedynsGame_v0.1.js"
-				//newGameScript.src = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/AedynsGame_v0.1.js"
-				addedScripts.appendChild(newGameScript);
-				toAddText.value = '';
-			}
+			//	newGameScript.src = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v0.1/AedynsGame.js"
+			//	addedScripts.appendChild(newGameScript);
+			//	toAddText.value = '';
+			//}
 			
 			//alert("Game Start");
+			console.log(cleanedArg);
+			newGameScript.src = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"+cleanedArg+".js"
+			addedScripts.appendChild(newGameScript);
+			toAddText.value = '';
 		}
 		
 		toAddButton.addEventListener("click", activateGame);
