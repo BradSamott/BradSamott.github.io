@@ -411,13 +411,13 @@
 			var arg = toAddText.value;
 			var cleanedArg = arg.replace(/[^a-zA-Z0-9]/g, "");
 			
-			//console.log(ver);
-			//if(arg == "Aedyns Game") {
-				//newGameScript.src = "AedynsGame_v0.1.js"
-			//	newGameScript.src = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v0.1/AedynsGame.js"
-			//	addedScripts.appendChild(newGameScript);
-			//	toAddText.value = '';
-			//}
+			objHandler.objs = [];
+			objHandler.cBuff = [];
+			objHandler.maxUpdateLayer = -1;
+			objHandler.maxDrawLayer = -1;
+			objHandler.checkKeys = {};
+			keys = {};
+			touchButtons = [];
 			
 			//alert("Game Start");
 			console.log(cleanedArg);
