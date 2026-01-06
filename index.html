@@ -20,8 +20,10 @@
 		<canvas width="640" height="640" style="border:1px solid #000000;" id="GameScreen"></canvas>
 		
 		<div id="ConsoleComponents">
-			<input type="text" id="ToAdd" style="font-size: 20px"></input>
-			<button id="ToAddButton">Enter</button>
+			<!--<input type="text" id="ToAdd" style="font-size: 20px"></input>-->
+			<!--<button id="ToAddButton">Enter</button>-->
+			
+			<button id="ResetButton">Reset</button>
 		</div>
 		
 		<canvas width="640" height="480" style="border:1px solid #000000;" id="touchControls"></canvas>
@@ -30,7 +32,7 @@
 	<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/testpull.js"></script>
 
 	<script>
-		ver = '0.2'
+		ver = '0.3'
 	</script>
 	
 	<script>
@@ -282,10 +284,14 @@
 			},
 			
 			pset(x, y, r, g, b) {
-				if(r != -1) {
-					this.bitDrawMap[x][y][0] = r;
-					this.bitDrawMap[x][y][1] = g;
-					this.bitDrawMap[x][y][2] = b;
+				if(x >= 0 && y >= 0) {
+					if(x < this.res && y < this.res) {
+						if(r != -1) {
+							this.bitDrawMap[x][y][0] = r;
+							this.bitDrawMap[x][y][1] = g;
+							this.bitDrawMap[x][y][2] = b;
+						}
+					}
 				}
 			},
 			
@@ -367,13 +373,7 @@
 			
 			objHandler.bitSize = canvasGameScreen.width / objHandler.res;
 			
-			var consoleComponents = document.getElementById("ConsoleComponents");
 			var canvasElemBound = canvasGameScreen.getBoundingClientRect();
-			
-			consoleComponents.style.position = 'absolute';
-			consoleComponents.style.left = ''+canvasElemBound.left+'px';
-			consoleComponents.style.top = ''+(canvasElemBound.bottom + 20)+'px';
-			
 			
 			var touchControls = document.getElementById("touchControls");
 			touchControls.width = canvasGameScreen.width;
@@ -382,6 +382,14 @@
 			touchControls.style.left = '50%';
 			touchControls.style.transform = 'translate(-50%)';
 			touchControls.style.top = ''+(canvasElemBound.bottom + 50)+'px';
+			
+			var touchControlsBound = touchControls.getBoundingClientRect();
+			var consoleComponents = document.getElementById("ConsoleComponents");
+			
+			consoleComponents.style.position = 'absolute';
+			consoleComponents.style.left = ''+canvasElemBound.left+'px';
+			consoleComponents.style.top = ''+(touchControlsBound.bottom + 20)+'px';
+			
 			
 			var tctx = touchControls.getContext('2d');
 			for(var i = 0; i < touchButtons.length; i++) {
@@ -404,13 +412,24 @@
 		
 		window.addEventListener('resize', windowResizeAction)
 	</script>
+	
+	<div id="ScriptCheck">
+	
+	</div>
+	
+	<div id="AddedScripts">
+		<!--<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/randomTests_v2.js"></script>-->
+		<!--<script src="randomTests.js"></script>-->
+		<!--<script src="AedynsGame.js"></script>-->
+		<!--<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/AedynsGame_v0.js"></script>-->
+	</div>
 
 	<script>
 		var CheckBucket = {
 		
 		}
 	
-		var toAddButton = document.getElementById("ToAddButton");
+		//var toAddButton = document.getElementById("ToAddButton");
 		
 		function activateGame() {
 			console.log('Adding');
@@ -422,7 +441,7 @@
 			
 			var toAddText = document.getElementById("ToAdd");
 			var arg = toAddText.value;
-			var cleanedArg = arg.replace(/[^a-zA-Z0-9]/g, "");
+			var cleanedArg = arg.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 			
 			CheckBucket[cleanedArg] = false;
 			
@@ -463,20 +482,40 @@
 			*/
 		}
 		
-		toAddButton.addEventListener("click", activateGame);
+		//toAddButton.addEventListener("click", activateGame);
 		//toAddButton.addEventListener("touchstart", activateGame);
+		
+		function activateGameByArg(arg) {
+			console.log('Adding');
+		
+			scriptCheck = document.getElementById("ScriptCheck");
+			addedScripts = document.getElementById("AddedScripts");
+			const newGameScript = document.createElement('script');
+			const newCheckScript = document.createElement('script');
+		
+			var cleanedArg = arg.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+			
+			CheckBucket[cleanedArg] = false;
+			
+			var urlPrefix = '';
+			urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
+			//urlPrefix = "WorkFolder/"
+			
+			newCheckScript.src = urlPrefix+cleanedArg+"Check.js"
+			addedScripts.appendChild(newCheckScript);
+		}
+		
+		function resetSystem() {
+			activateGameByArg("Command Line");
+		}
+		
+		var resetButton = document.getElementById("ResetButton");
+		resetButton.addEventListener("click", resetSystem);
+		
+		resetSystem();
 	</script>
 	
-	<div id="ScriptCheck">
 	
-	</div>
-	
-	<div id="AddedScripts">
-		<!--<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/randomTests_v2.js"></script>-->
-		<!--<script src="randomTests.js"></script>-->
-		<!--<script src="AedynsGame.js"></script>-->
-		<!--<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/AedynsGame_v0.js"></script>-->
-	</div>
 
 </html>
 
