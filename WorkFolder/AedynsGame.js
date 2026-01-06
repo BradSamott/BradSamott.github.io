@@ -574,6 +574,7 @@ touchButtons.push({
 	x: 80,
 	y: 170,
 	r: 50,
+	buttonLabel: 'left',
 	downPress: function() {
 		console.log('left Pressed');
 		keys[37].pressed = true;
@@ -589,6 +590,7 @@ touchButtons.push({
 	x: 175,
 	y: 100,
 	r: 50,
+	buttonLabel: 'up',
 	downPress: function() {
 		console.log('up Pressed');
 		keys[38].pressed = true;
@@ -604,6 +606,7 @@ touchButtons.push({
 	x: 270,
 	y: 170,
 	r: 50,
+	buttonLabel: 'right',
 	downPress: function() {
 		console.log('right Pressed');
 		keys[39].pressed = true;
@@ -619,6 +622,7 @@ touchButtons.push({
 	x: 175,
 	y: 240,
 	r: 50,
+	buttonLabel: 'down',
 	downPress: function() {
 		console.log('down Pressed');
 		keys[40].pressed = true;
@@ -634,6 +638,7 @@ touchButtons.push({
 	x: 640,
 	y: 170,
 	r: 50,
+	buttonLabel: 'select',
 	downPress: function() {
 		console.log('select Pressed');
 		keys[32].pressed = true;
@@ -649,6 +654,7 @@ touchButtons.push({
 	x: 440,
 	y: 570,
 	r: 50,
+	buttonLabel: 'enter',
 	downPress: function() {
 		console.log('enter Pressed');
 		keys[13].pressed = true;
