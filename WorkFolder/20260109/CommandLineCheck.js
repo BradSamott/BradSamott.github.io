@@ -4,9 +4,9 @@ CheckBucket.CommandLine = true;
 
 var addedScripts = document.getElementById("AddedScripts");
 
-//var urlPrefix = '';
+var urlPrefix = '';
 //urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
-//urlPrefix = "WorkFolder/"
+urlPrefix = "WorkFolder/"
 
 objHandler.objs = [];
 objHandler.cBuff = [];

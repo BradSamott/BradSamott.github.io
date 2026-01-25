@@ -1,12 +1,12 @@
-console.log('Command Line Found');
+console.log('Aedyns Game Found');
 
-CheckBucket.CommandLine = true;
+CheckBucket.AedynsGame = true;
 
 var addedScripts = document.getElementById("AddedScripts");
 
-//var urlPrefix = '';
+var urlPrefix = '';
 //urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
-//urlPrefix = "WorkFolder/"
+urlPrefix = "WorkFolder/"
 
 objHandler.objs = [];
 objHandler.cBuff = [];
@@ -23,7 +23,7 @@ addedScripts.innerHTML = '';
 var newGameScript = document.createElement('script');
 			
 //alert("Game Start");
-newGameScript.src = urlPrefix+"CommandLine.js"
+newGameScript.src = urlPrefix+"AedynsGame.js"
 addedScripts.appendChild(newGameScript);
 
 var toAddText = document.getElementById("ToAdd");

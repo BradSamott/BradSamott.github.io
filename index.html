@@ -32,7 +32,10 @@
 	<script src="https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/testpull.js"></script>
 
 	<script>
-		ver = '0.3'
+		var ver = '0.3'
+		var urlPrefix = '';
+		//urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
+		urlPrefix = "WorkFolder/"
 	</script>
 	
 	<script>
@@ -445,9 +448,9 @@
 			
 			CheckBucket[cleanedArg] = false;
 			
-			var urlPrefix = '';
+			//var urlPrefix = '';
 			//urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
-			urlPrefix = "WorkFolder/"
+			//urlPrefix = "WorkFolder/"
 			
 			newCheckScript.src = urlPrefix+cleanedArg+"Check.js"
 			addedScripts.appendChild(newCheckScript);
@@ -497,8 +500,8 @@
 			
 			CheckBucket[cleanedArg] = false;
 			
-			var urlPrefix = '';
-			urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
+			//var urlPrefix = '';
+			//urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
 			//urlPrefix = "WorkFolder/"
 			
 			newCheckScript.src = urlPrefix+cleanedArg+"Check.js"
