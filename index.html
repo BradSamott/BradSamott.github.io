@@ -34,8 +34,8 @@
 	<script>
 		var ver = '0.5'
 		var urlPrefix = '';
-		urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
-		//urlPrefix = "WorkFolder/"
+		//urlPrefix = "https://cdn.jsdelivr.net/gh/BradSamott/BradSamott.github.io/v"+ver+"/"
+		urlPrefix = "WorkFolder/"
 	</script>
 	
 	<script>
@@ -201,6 +201,7 @@
 		objHandler = {
 			objs: [],
 			cBuff: [],
+			rcBuff: [],
 			GS: canvasGameScreen,
 			CTX: ctxGameScreen,
 			maxUpdateLayer: -1,
@@ -284,6 +285,7 @@
 			
 			clearCBuff() {
 				this.cBuff = [];
+				this.rcBuff = [];
 			},
 			
 			pset(x, y, r, g, b) {
@@ -320,6 +322,7 @@
 			}
 		}
 		
+		
 		function getMousePos(canvas, evt) {
 			var rect = canvas.getBoundingClientRect();
 			return {
@@ -333,7 +336,15 @@
 			objHandler.cBuff.push(mousepos);
 		}
 		
+		function getRightClick(e) {
+			e.preventDefault();
+			var mousepos = getMousePos(objHandler.GS,e);
+			objHandler.rcBuff.push(mousepos);
+			return false;
+		}
+		
 		objHandler.GS.addEventListener('click',getClick,false);
+		objHandler.GS.addEventListener('contextmenu',getRightClick,false);
 	
 		function gameLoop() {
 			objHandler.getKeys();
